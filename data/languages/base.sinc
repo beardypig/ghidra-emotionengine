@@ -79,7 +79,21 @@ define token instr(32)
     ind26		= (0,25) 			# 26 bit absolute address
 
     fct         = (0,5)
-    
+  
+# cop0 stuff
+	bit25		= (25,25)
+	copop		= (21,25)
+
+    rd0			= (11,15)
+	
+	copfill     = (6,24)
+	op			= (16,20)
+	mfcop		= (0,10)
+	reg0		= (2,5)
+	reg			= (1,1)
+	
+	bit0 		= (0,0)
+  
 ;
 
 # 64 bit
@@ -132,4 +146,4 @@ Rel21: reloc		is off21	[ reloc=inst_start+4+4*off21; ]					{ export *:4 reloc; }
 Rel26: reloc		is off26	[ reloc=inst_start+4+4*off26; ]					{ export *:4 reloc; }
 Abs26: reloc		is ind26	[ reloc=((inst_start+4) $and 0xfffffffff0000000) | 4*ind26; ]	{ export *:4 reloc; }
 
-OFF_BASE: simmed(base)  is simmed & base    { tmp:4 = base:4 + simmed; export tmp; }
+OFF_BASE: simmed(base)  	is simmed & base    { tmp:4 = base:4 + simmed; export tmp; }

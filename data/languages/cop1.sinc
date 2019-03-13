@@ -2,6 +2,7 @@
 
 #The Emotion Engine version of MIPS COP1 only supports single precision float operations
 
+define pcodeop trapIfNaN;
 define pcodeop trapIfSNaN;
 
 define register offset=0x1000 size=4 [
@@ -14,6 +15,11 @@ define register offset=0x1000 size=4 [
 # Floating point control registers
 define register offset=0x1200 size=4 [
     fir     fccr       fexr     fenr    fcsr
+];
+
+# Hidden floating point registers 
+define register offset=0x1300 size=4 [
+	ACC
 ];
 
 attach variables [ fs ft fd fr ] [
@@ -31,20 +37,17 @@ attach variables [ fs_fcr ] [
 with : prime=17 {  #COP1
 	# 0100 01ff fff0 0000 ssss sddd dd00 0101
 	:abs.S fd, fs               		is fct=5 & format=0x10 & fs & fd {
-	    fd[0,32] = abs( fs:4 );
+	    fd = abs(fs);
 	}
+	
+	:adda.S fs, ft						is fct=24 & format=0x10 & ft & fs & fd=0 {
+		ACC = fs f+ ft;
+	} 
 	
 	# 0100 01ff ffft tttt ssss sddd dd00 0000
 	:add.S fd, fs, ft           		is fct=0 & format=0x10 & ft & fs & fd {
-	    fd_tmp:4 = fs:4 f+ ft:4;
-	    fd[0,32] = fs:4 f+ ft:4;
+	    fd = fs f+ ft;
 	}
-	
-	#:adda.S {
-	#
-	#}
-	
-	###TODO: check the fct values
 	
 	# 0100 0101 0000 0000 iiii iiii iiii iiii
 	:bc1f Rel16                 		is copop=8 & copfct=0 & Rel16 {
@@ -82,7 +85,7 @@ with : prime=17 {  #COP1
 	# 0100 01ff ffft tttt ssss s000 0011 0010
 	:c.eq.S fs, ft              		is fct=50 & format=0x10 & fs & ft {
 	    trapIfSNaN(fs:4, ft:4);
-	    fcsr[23,1] = (fs:4 f== ft:4);
+	    fcsr[23,1] = (fs f== ft);
 	}
 	
 	:c.f.S fs, ft               		is fct=48 & format=0x10 & fs & ft {
@@ -92,11 +95,137 @@ with : prime=17 {  #COP1
 	
 	:c.le.S fs, ft              		is fct=54 & format=0x10 & fs & ft {
 	    trapIfNaN(fs:4, ft:4);
-	    fcsr[23,1] = (fs:4 f<= ft:4);
+	    fcsr[23,1] = (fs f<= ft);
 	}
 	
 	:c.lt.S fs, ft              		is fct=52 & format=0x10 & fs & ft {
 	    trapIfNaN(fs:4, ft:4);
-	    fcsr[23,1] = (fs:4 f< ft:4);
+	    fcsr[23,1] = (fs f< ft);
+	}
+	
+	# only defined for fir (0) and fcsr (31) 
+	:cfc1 RT, fs_fcr                	is copop=2 & RT & fs_fcr & (fs=0 | fs=31) & bigfunct=0 { 
+    	RT = sext(fs_fcr);
+	}
+	
+	# only defined for fcsr (31)
+	:ctc1 RTsrc, fs_fcr             	is copop=6 & RTsrc & fs_fcr & fs=31 & bigfunct=0 {    
+	    fs_fcr = RTsrc:4;
+	}
+	
+	:cvt.s.W fd, fs             		is ft=0 & fct=32 & fd & fs & format=0x14 {
+    	fd = int2float(fs);
+	}
+	
+	# 0100 0110 0000 0000 ssss sddd dd10 0100
+	:cvt.w.S fd, fs             		is ft=0 & fct=36 & fd & fs & format=0x10 {
+	    # Convert from single float source to 32-bit integer word, using the fcsr RM rounding mode bits
+	    bias:1 = fs[23,8];
+	    msb:1 = fs[31,1];
+	    
+	    if (bias > 0x9d) goto <clamp>;
+	    fd = trunc(fs); 
+	    goto inst_next;
+	   <clamp>
+	    if (msb == 0) goto <neg>;
+	    fd = 0x7FFFFFFF;
+	    goto inst_next;
+	   <neg>
+		fd = 0x80000000;
+	}
+
+	# 0100 01ff ffft tttt ssss sddd dd00 0011
+	:div.S fd, fs, ft           		is fct=3 & ft & fs & fd & format=0x10 {
+	    fd = fs f/ ft;
+	}
+	
+	:madd.S fd, fs, ft      			is fct=28 & fd & fs & ft & format=0x10 {
+	    # TODO: not a complete implementation at all
+	    fd = (fs f* ft) f+ ACC; 
+	}
+		
+	:madda.S fd, fs, ft      			is fct=30 & fd & fs & ft & format=0x10 {
+	    # TODO: not a complete implementation at all
+	    fd = (fs f* ft) f+ ACC; 
+	}
+			
+	:max.S fd, fs, ft      				is fct=40 & fd & fs & ft & format=0x10 {
+	    tmp_cond:1 = fs f> ft;
+	    fd = (fs * zext(tmp_cond == 1)) | (ft * zext(tmp_cond == 0)); 
+	}
+	
+	# 0100 0100 000t tttt ssss s000 0000 0000
+	:mfc1 RT, fs                    	is copop=0 & RT & fs & bigfunct=0 {
+	    RT = sext(fs);
+	}
+				
+	:min.S fd, fs, ft      				is fct=41 & fd & fs & ft & format=0x10 {
+	    tmp_cond:1 = fs f< ft;
+	    fd = (fs * zext(tmp_cond == 1)) | (ft * zext(tmp_cond == 0)); 
+	}
+	
+	# 0100 01ff fff0 0000 ssss sddd dd00 0110
+	:mov.S fd, fs               		is fct=6 & fs & fd & format=0x10 & ft=0 {
+	    fd = fs;
+	}
+		
+	:msub.S fd, fs, ft      			is fct=29 & fd & fs & ft & format=0x10 {
+	    # TODO: not a complete implementation at all
+	    fd = ACC f- (fs f* ft); 
+	}
+			
+	:msuba.S fd, fs, ft      			is fct=31 & fd & fs & ft & format=0x10 {
+	    # TODO: not a complete implementation at all
+	    fd = ACC f- (fs f* ft); 
+	}
+	
+	# 0100 0100 100t tttt dddd d000 0000 0000
+	:mtc1 RT32src, fs                 	is copop=4 & RT32src & fs & bigfunct=0 {
+	    # Move 32-bits of RTsrc to FPR fs
+		fs = RT32src;
+	}
+	
+	# 0100 01ff ffft tttt ssss sddd dd00 0010
+	:mul.S fd, fs, ft           		is fct=2 & ft & fs & fd & format=0x10 {
+	    fd = fs f* ft;
+	}
+	
+	# 0100 01ff ffft tttt ssss sddd dd00 0010
+	:mul.S fs, ft           			is fct=26 & ft & fs & fd=0 & format=0x10 {
+	    ACC = fs f* ft;
+	}
+	
+	# 0100 01ff fff0 0000 ssss sddd dd00 0111
+	:neg.S fd, fs               		is fct=7 & ft=0 & fs & fd & format=0x10 {
+	    fd = f- fs;
+	}
+
+	# 0100 01ff fff0 0000 ssss sddd dd01 0110
+	:rsqrt.S fd, fs             		is ft=0 & fct=22 & fd & fs & format=0x10 {
+	    fd = 1:4 f/ sqrt(fs);
+	}
+	
+	:sqrt.S fd, fs              		is ft=0 & fct=4 & fd & fs & format=0x10 {
+	    fd = sqrt(fs);
+	}
+	
+	# 0100 0110 000t tttt ssss sddd dd00 0001
+	:sub.S fd, fs, ft           		is fct=1 & ft & fs & fd & format=0x10 {
+	    fd = fs f- ft;
+	}
+	
+	# 0100 0110 000t tttt ssss s000 0000 0001
+	:suba.S fs, ft           			is fct=25 & ft & fs & fd=0 & format=0x10 {
+	    ACC = fs f- ft;
 	}
 }
+	
+:lwc1 ft, OFF_BASE              		is prime=49 & OFF_BASE & ft {        
+    ft = *[ram]:4 OFF_BASE;
+}
+
+# 1110 01bb bbbt tttt iiii iiii iiii iiii
+:swc1 ft, OFF_BASE              		is prime=57 & OFF_BASE & ft { 
+    *[ram]:4 OFF_BASE = ft:4; 
+}
+

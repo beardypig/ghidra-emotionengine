@@ -15,9 +15,9 @@ define register offset=0 size=16 [
 
 # other registers 
 define register offset=0x3000 size=16 [ hi_qw lo_qw ];	     # 128 bit
-define register offset=0x3000 size=8 [ hi hi1 lo lo1 tsp ];  # 64 bit
+define register offset=0x3000 size=8 [ hi hi1 lo lo1 tsp ];  #64 bit
 
-# 64 bit representation of the 128 bit registers
+#64 bit representation of the 128 bit registers
 define register offset=0 size=8 [
     zero _ at _ v0 _ v1 _
     a0 _ a1 _ a2 _ a3 _
@@ -102,6 +102,7 @@ define token instr(32)
     fs          = (11,15)
     fs_fcr		= (11,15)
     fd          = (6,10)
+    bigfunct	= (0,10)
 ;
 
 # 64 bit
@@ -128,7 +129,7 @@ attach variables [ rs32 rt32 rd32 ] [
     t8_lo    t9_lo  k0_lo  k1_lo  gp_lo  sp_lo  s8_lo  ra_lo 
 ];
 
-# different sized registers 
+#different sized registers 
 RD128: rd        is rd & rd128      { export rd128; }
 RS128src: rs     is rs & rs128      { export rs128; }
 RT128: rt        is rt & rt128      { export rt128; }

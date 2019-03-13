@@ -83,6 +83,7 @@ define token instr(32)
 # cop0 stuff
 	bit25		= (25,25)
 	copop		= (21,25)
+	copfct		= (16,20)
 
     rd0			= (11,15)
 	
@@ -93,7 +94,14 @@ define token instr(32)
 	reg			= (1,1)
 	
 	bit0 		= (0,0)
-  
+
+# cop1 stuff
+    format      = (21,25)
+    fr          = (21,25)
+    ft          = (16,20)
+    fs          = (11,15)
+    fs_fcr		= (11,15)
+    fd          = (6,10)
 ;
 
 # 64 bit

@@ -1,1 +1,102 @@
 # FPU (COP1) instructions
+
+#The Emotion Engine version of MIPS COP1 only supports single precision float operations
+
+define pcodeop trapIfSNaN;
+
+define register offset=0x1000 size=4 [
+    f1  f0  f3  f2  f5  f4  f7  f6
+    f9  f8  f11 f10 f13 f12 f15 f14
+    f17 f16 f19 f18 f21 f20 f23 f22
+    f25 f24 f27 f26 f29 f28 f31 f30
+];
+
+# Floating point control registers
+define register offset=0x1200 size=4 [
+    fir     fccr       fexr     fenr    fcsr
+];
+
+attach variables [ fs ft fd fr ] [
+    f0  f1  f2  f3  f4  f5  f6  f7  f8  f9  f10 f11 f12 f13 f14 f15
+    f16 f17 f18 f19 f20 f21 f22 f23 f24 f25 f26 f27 f28 f29 f30 f31
+];
+
+attach variables [ fs_fcr ] [
+	fir		_		_		_		_		_		_		_
+	_		_		_		_		_		_		_		_
+	_		_		_		_		_		_		_		_
+	_		fccr	fexr	_		fenr	_		_		fcsr
+];
+
+with : prime=17 {  #COP1
+	# 0100 01ff fff0 0000 ssss sddd dd00 0101
+	:abs.S fd, fs               		is fct=5 & format=0x10 & fs & fd {
+	    fd[0,32] = abs( fs:4 );
+	}
+	
+	# 0100 01ff ffft tttt ssss sddd dd00 0000
+	:add.S fd, fs, ft           		is fct=0 & format=0x10 & ft & fs & fd {
+	    fd_tmp:4 = fs:4 f+ ft:4;
+	    fd[0,32] = fs:4 f+ ft:4;
+	}
+	
+	#:adda.S {
+	#
+	#}
+	
+	###TODO: check the fct values
+	
+	# 0100 0101 0000 0000 iiii iiii iiii iiii
+	:bc1f Rel16                 		is copop=8 & copfct=0 & Rel16 {
+	    tmp:1 = fcsr[23,1]; # The floating point condition bit
+	    delayslot(1);
+	    if (tmp != 0) goto inst_next;
+	    goto Rel16;
+	}
+	
+	
+	# 0100 0101 0000 0010 iiii iiii iiii iiii
+	:bc1fl Rel16                    	is copop=8 & copfct=2 & Rel16 {
+	    tmp:1 = fcsr[23,1]; # The floating point condition bit
+	    delayslot(1);
+	    if (tmp != 0) goto inst_next;
+	    goto Rel16;
+	}
+	
+	# 0100 0101 0000 0001 iiii iiii iiii iiii
+	:bc1t Rel16                     	is copop=8 & copfct=1 & Rel16 {
+	    tmp:1 = fcsr[23,1];
+	    delayslot(1);
+	    if (tmp == 0) goto inst_next;
+	    goto Rel16;
+	}
+	
+	# 0100 0101 0000 0011 iiii iiii iiii iiii
+	:bc1tl Rel16                     	is copop=8 & copfct=3 & Rel16 {
+	    tmp:1 = fcsr[23,1];
+	    delayslot(1);
+	    if (tmp == 0) goto inst_next;
+	    goto Rel16;
+	}
+	
+	# 0100 01ff ffft tttt ssss s000 0011 0010
+	:c.eq.S fs, ft              		is fct=50 & format=0x10 & fs & ft {
+	    trapIfSNaN(fs:4, ft:4);
+	    fcsr[23,1] = (fs:4 f== ft:4);
+	}
+	
+	:c.f.S fs, ft               		is fct=48 & format=0x10 & fs & ft {
+	    trapIfSNaN(fs:4, ft:4); # Trap if either operand is a Signaling NaN
+	    fcsr[23,1] = 0; # Always false
+	}
+	
+	:c.le.S fs, ft              		is fct=54 & format=0x10 & fs & ft {
+	    trapIfNaN(fs:4, ft:4);
+	    fcsr[23,1] = (fs:4 f<= ft:4);
+	}
+	
+	:c.lt.S fs, ft              		is fct=52 & format=0x10 & fs & ft {
+	    trapIfNaN(fs:4, ft:4);
+	    fcsr[23,1] = (fs:4 f< ft:4);
+	}
+}

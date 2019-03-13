@@ -2,20 +2,20 @@
 
 # COP0 registers, sel=0
 define register offset=0x2000 size=4 [
-    Index 		Random 		EntryLo0 	EntryLo1 
-	Context 	PageMask 	Wired 		cop0reg.7 
+    Index 		Random 		EntryLo0 	EntryLo1
+	Context 	PageMask 	Wired 		cop0reg.7
     BadVAddr 	Count 		EntryHi 	Compare
     Status 		Cause 		EPC 		PRId
-    Config 		cop0reg.17 	cop0reg.18 	cop0reg.19 
-    cop0reg.20	cop0reg.21	cop0reg.22	BadPAddr 
-    Debug 		Perf 		cop0reg.26	cop0reg.27 
+    Config 		cop0reg.17 	cop0reg.18 	cop0reg.19
+    cop0reg.20	cop0reg.21	cop0reg.22	BadPAddr
+    Debug 		Perf 		cop0reg.26	cop0reg.27
     TagLo 		TagHi 		ErrorPC 	cop0reg.31
 ];
 
 # Debug Registers
 define register offset=0x2100 size=4 [
 	BPC			IAB			IABM		DAB
-	DABM		DVB			DVBM		
+	DABM		DVB			DVBM
 ];
 
 # Performance Counter Registers
@@ -23,15 +23,15 @@ define register offset=0x2200 size=4 [
 	PCCR		PCR0		PCR1
 ];
 
-attach variables [ rd0 ] [ 
-    Index 		Random 		EntryLo0 	EntryLo1 
-	Context 	PageMask 	Wired 		cop0reg.7 
+attach variables [ rd0 ] [
+    Index 		Random 		EntryLo0 	EntryLo1
+	Context 	PageMask 	Wired 		cop0reg.7
     BadVAddr 	Count 		EntryHi 	Compare
     Status 		Cause 		EPC 		PRId
-    Config 		cop0reg.17 	cop0reg.18 	cop0reg.19 
-    cop0reg.20	cop0reg.21	cop0reg.22	BadPAddr 
-    Debug 		Perf 		cop0reg.26	cop0reg.27 
-    TagLo 		TagHi 		ErrorPC 	cop0reg.31 
+    Config 		cop0reg.17 	cop0reg.18 	cop0reg.19
+    cop0reg.20	cop0reg.21	cop0reg.22	BadPAddr
+    Debug 		Perf 		cop0reg.26	cop0reg.27
+    TagLo 		TagHi 		ErrorPC 	cop0reg.31
 ];
 
 attach variables [ reg ] [
@@ -77,7 +77,7 @@ define pcodeop TLB_write_random_entry;
     delayslot(1);
     if (tmp == 0) goto inst_next;
     goto Rel16;
-} 
+}
 
 #Branch on Coprocessor 0 True Likely
 # 0100 0001 0000 0011 iiii iiii iiii iiii
@@ -112,7 +112,7 @@ define pcodeop TLB_write_random_entry;
 	return[EPC];
 }
 
-# Move from System Control Coprocessor  
+# Move from System Control Coprocessor
 # 0100 0000 000t tttt dddd d000 0000 0sss
 :mfc0 RT, RD0                         is prime=16 & copop=0 & RT & RD0 & mfcop=0 {
     RT = sext(RD0);
@@ -126,43 +126,43 @@ define pcodeop TLB_write_random_entry;
     RT = sext(BPC);
 }
 
-#Data Address Breakpoint Register 
+#Data Address Breakpoint Register
 :mfdab  RT                            is prime=16 & copop=0 & RT & rd=24 & mfcop=4 {
     RT = sext(DAB);
 }
 
-# Data Address Breakpoint Mask Register  
+# Data Address Breakpoint Mask Register
 :mfdabm RT                            is prime=16 & copop=0 & RT & rd=24 & mfcop=5 {
     RT = sext(DABM);
 }
 
-# Data value Breakpoint Register 
+# Data value Breakpoint Register
 :mfdvb RT                             is prime=16 & copop=0 & RT & rd=24 & mfcop=6 {
     RT = sext(DVB);
 }
 
-# Data Value Breakpoint Mask Register 
+# Data Value Breakpoint Mask Register
 :mfdvbm RT                            is prime=16 & copop=0 & RT & rd=24 & mfcop=7 {
     RT = sext(DVBM);
 }
 
-# Instruction Address Breakpoint Register  
+# Instruction Address Breakpoint Register
 :mfiab RT                             is prime=16 & copop=0 & RT & rd=24 & mfcop=2 {
     RT = sext(IAB);
 }
 
-# Instruction Address Breakpoint Mask Register  
+# Instruction Address Breakpoint Mask Register
 :mfiabm RT                            is prime=16 & copop=0 & RT & rd=24 & mfcop=3 {
     RT = sext(IABM);
 }
 
 
-# Move from Performance Counter 
+# Move from Performance Counter
 :mfpc RT, PCR							is prime=16 & copop=0 & RT & rd=25 & zero5=0 & PCR & reg0=0 & bit0=1 {
 	RT = sext(PCR);
 }
 
-# Move from Performance Event Specifier  
+# Move from Performance Event Specifier
 :mfps RT, 0								is prime=16 & copop=0 & RT & rd=25 & zero5=0 & reg=0 & reg0=0 & bit0=0 {
 	RT = sext(PCCR);
 }
@@ -211,12 +211,12 @@ define pcodeop TLB_write_random_entry;
     IABM = RT32src;
 }
 
-# Probe TLB for Matching Entry 
+# Probe TLB for Matching Entry
 :tlbp										is prime=16 & bit25=1 & copfill=0 & fct=8 {
     Index = TLB_probe_for_matching_entry(EntryHi);
 }
 
-# Read Indexed TLB Entry 
+# Read Indexed TLB Entry
 :tlbr           							is prime=16 & bit25=1 & copfill=0 & fct=1 {
     EntryHi = TLB_read_indexed_entryHi(Index);
     EntryLo0 = TLB_read_indexed_entryLo0(Index);
@@ -224,7 +224,7 @@ define pcodeop TLB_write_random_entry;
     PageMask = TLB_read_indexed_entryLo1(Index);
 }
 
-# Write Index TLB Entry  
+# Write Index TLB Entry
 :tlbwi										is prime=16 & bit25=1 & copfill=0 & fct=2 {
     TLB_write_indexed_entry(Index, EntryHi, EntryLo0, EntryLo1, PageMask);
 }

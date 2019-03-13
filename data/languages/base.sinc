@@ -1,19 +1,19 @@
 # Standard MIPS instruction set
 
 # General purpose registers (128-bit)
-define register offset=0 size=16 [ 
-    zero_qw at_qw v0_qw v1_qw 
-    a0_qw a1_qw a2_qw a3_qw 
-    t0_qw t1_qw t2_qw t3_qw 
-    t4_qw t5_qw t6_qw t7_qw 
-    s0_qw s1_qw s2_qw s3_qw 
-    s4_qw s5_qw s6_qw s7_qw 
-    t8_qw t9_qw k0_qw k1_qw 
+define register offset=0 size=16 [
+    zero_qw at_qw v0_qw v1_qw
+    a0_qw a1_qw a2_qw a3_qw
+    t0_qw t1_qw t2_qw t3_qw
+    t4_qw t5_qw t6_qw t7_qw
+    s0_qw s1_qw s2_qw s3_qw
+    s4_qw s5_qw s6_qw s7_qw
+    t8_qw t9_qw k0_qw k1_qw
     gp_qw sp_qw s8_qw ra_qw
     pc_qw
 ];
 
-# other registers 
+# other registers
 define register offset=0x3000 size=16 [ hi_qw lo_qw ];	     # 128 bit
 define register offset=0x3000 size=8 [ hi hi1 lo lo1 tsp ];  #64 bit
 
@@ -47,21 +47,21 @@ define token instr(32)
     prime       = (26,31)
     op32		= (0,31)
     base        = (21,25)
-    
+
     rs128		= (21,25)
     rt128		= (16,20)
     rd128		= (11,15)
-    
+
     rs32		= (21,25)
     rt32		= (16,20)
     rd32		= (11,15)
-      
+
     rs			= (21,25)
     rt			= (16,20)
     rd			= (11,15)
     sa			= (6,10)
 
-    hint        = (16,20)    
+    hint        = (16,20)
     cond		= (16,20)
     szero       = (11,25)
     code		= (6,15)
@@ -69,30 +69,30 @@ define token instr(32)
     zero5       = (6,10)
     zero10		= (6,15)
     breakcode	= (6,25)
-    
+
     immed       = (0,15)
     simmed      = (0,15) signed
-    
+
     off21		= (0,20) signed		# 21 bit signed offset in conditional branch/link
     off16		= (0,15) signed		# 16 bit signed offset in conditional branch/link
     off26		= (0,25) signed		# 26 bit signed offset in conditional branch/link
     ind26		= (0,25) 			# 26 bit absolute address
 
     fct         = (0,5)
-  
+
 # cop0 stuff
 	bit25		= (25,25)
 	copop		= (21,25)
 	copfct		= (16,20)
 
     rd0			= (11,15)
-	
+
 	copfill     = (6,24)
 	op			= (16,20)
 	mfcop		= (0,10)
 	reg0		= (2,5)
 	reg			= (1,1)
-	
+
 	bit0 		= (0,0)
 
 # cop1 stuff
@@ -106,15 +106,15 @@ define token instr(32)
 ;
 
 # 64 bit
-attach variables [ rs rt rd base ] [ 
+attach variables [ rs rt rd base ] [
     zero  at  v0  v1  a0  a1  a2  a3
     t0    t1  t2  t3  t4  t5  t6  t7
     s0    s1  s2  s3  s4  s5  s6  s7
-    t8    t9  k0  k1  gp  sp  s8  ra 
+    t8    t9  k0  k1  gp  sp  s8  ra
 ];
 
 # 128 bit
-attach variables [ rs128 rt128 rd128 ] [ 
+attach variables [ rs128 rt128 rd128 ] [
     zero_qw  at_qw  v0_qw  v1_qw  a0_qw  a1_qw  a2_qw  a3_qw
     t0_qw    t1_qw  t2_qw  t3_qw  t4_qw  t5_qw  t6_qw  t7_qw
     s0_qw    s1_qw  s2_qw  s3_qw  s4_qw  s5_qw  s6_qw  s7_qw
@@ -122,14 +122,14 @@ attach variables [ rs128 rt128 rd128 ] [
 ];
 
 # 32 bit
-attach variables [ rs32 rt32 rd32 ] [ 
+attach variables [ rs32 rt32 rd32 ] [
     zero_lo  at_lo  v0_lo  v1_lo  a0_lo  a1_lo  a2_lo  a3_lo
     t0_lo    t1_lo  t2_lo  t3_lo  t4_lo  t5_lo  t6_lo  t7_lo
     s0_lo    s1_lo  s2_lo  s3_lo  s4_lo  s5_lo  s6_lo  s7_lo
-    t8_lo    t9_lo  k0_lo  k1_lo  gp_lo  sp_lo  s8_lo  ra_lo 
+    t8_lo    t9_lo  k0_lo  k1_lo  gp_lo  sp_lo  s8_lo  ra_lo
 ];
 
-#different sized registers 
+#different sized registers
 RD128: rd        is rd & rd128      { export rd128; }
 RS128src: rs     is rs & rs128      { export rs128; }
 RT128: rt        is rt & rt128      { export rt128; }

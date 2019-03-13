@@ -31,7 +31,7 @@
     tmp1:8 = sext(RS32src);
     tmp2:8 = sext(RT32src);
     tmp3:8 = (hi << 32) | lo;
-    
+
     prod:8 = tmp3 + (tmp1 * tmp2);
     lo = sext(prod:4);
     prod = prod >> 32;
@@ -43,7 +43,7 @@
     tmp1:8 = sext(RS32src);
     tmp2:8 = sext(RT32src);
     tmp3:8 = (hi << 32) | lo;
-    
+
     prod:8 = tmp3 + (tmp1 * tmp2);
     lo = sext(prod:4);
     prod = prod >> 32;
@@ -56,7 +56,7 @@
     tmp1:8 = sext(RS32src);
     tmp2:8 = sext(RT32src);
     tmp3:8 = (hi << 32) | lo;
-    
+
     prod:8 = tmp3 + (tmp1 * tmp2);
     lo1 = sext(prod:4);
     prod = prod >> 32;
@@ -68,7 +68,7 @@
     tmp1:8 = sext(RS32src);
     tmp2:8 = sext(RT32src);
     tmp3:8 = (hi << 32) | lo;
-    
+
     prod:8 = tmp3 + (tmp1 * tmp2);
     lo1 = sext(prod:4);
     prod = prod >> 32;
@@ -82,7 +82,7 @@
     tmp1:8 = sext(RS32src);
     tmp2:8 = sext(RT32src);
     tmp3:8 = (hi << 32) | lo;
-    
+
     prod:8 = tmp3 + (tmp1 * tmp2);
     lo = sext(prod:4);
     prod = prod >> 32;
@@ -94,7 +94,7 @@
     tmp1:8 = sext(RS32src);
     tmp2:8 = sext(RT32src);
     tmp3:8 = (hi << 32) | lo;
-    
+
     prod:8 = tmp3 + (tmp1 * tmp2);
     lo = sext(prod:4);
     prod = prod >> 32;
@@ -107,7 +107,7 @@
     tmp1:8 = sext(RS32src);
     tmp2:8 = sext(RT32src);
     tmp3:8 = (hi << 32) | lo;
-    
+
     prod:8 = tmp3 + (tmp1 * tmp2);
     lo1 = sext(prod:4);
     prod = prod >> 32;
@@ -119,7 +119,7 @@
     tmp1:8 = sext(RS32src);
     tmp2:8 = sext(RT32src);
     tmp3:8 = (hi << 32) | lo;
-    
+
     prod:8 = tmp3 + (tmp1 * tmp2);
     lo1 = sext(prod:4);
     prod = prod >> 32;

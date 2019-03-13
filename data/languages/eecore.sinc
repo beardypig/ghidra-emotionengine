@@ -1,0 +1,138 @@
+# EE core-specific instructions
+
+# 0011 10ss ssst tttt 0000 0000 0001 1010
+:div1 RS32src, RT32src           	is prime=28 & fct=26 & zero10=0 & RS32src & RT32src {
+	quotient:4 = RS32src s/ RT32src;
+	remainder:4 = RS32src s% RT32src;
+	lo1 = sext(quotient);
+	hi1 = sext(remainder);
+}
+
+# 0011 10ss ssst tttt 0000 0000 0001 1011
+:divu1 RS32src, RT32src           	is prime=28 & fct=27 & zero10=0 & RS32src & RT32src {
+	quotient:4 = RS32src / RT32src;
+	remainder:4 = RS32src % RT32src;
+	lo1 = sext(quotient);
+	hi1 = sext(remainder);
+}
+
+# 0111 10bb bbbt tttt iiii iiii iiii iiii
+:lq RT128, OFF_BASE                		is prime=30 & OFF_BASE & RT128 {
+    RT128 = *[ram]:16 OFF_BASE;
+}
+
+# 0111 11bb bbbt tttt iiii iiii iiii iiii
+:sq RT128src, OFF_BASE                		is prime=31 & OFF_BASE & RT128src {
+    *[ram]:16 OFF_BASE = RT128src;
+}
+
+# 0111 00ss ssst tttt dddd d000 0000 0000
+:madd RS32src, RT32src 						is prime=28 & RS32src & RT32src & rd=0 & zero5=0 & fct=0 {
+    tmp1:8 = sext(RS32src);
+    tmp2:8 = sext(RT32src);
+    tmp3:8 = (hi << 32) | lo;
+    
+    prod:8 = tmp3 + (tmp1 * tmp2);
+    lo = sext(prod:4);
+    prod = prod >> 32;
+    hi = sext(prod:4);
+}
+
+# 0111 00ss ssst tttt dddd d000 0000 0000
+:madd RD, RS32src, RT32src 						is prime=28 & RS32src & RT32src & RD & zero5=0 & fct=0 {
+    tmp1:8 = sext(RS32src);
+    tmp2:8 = sext(RT32src);
+    tmp3:8 = (hi << 32) | lo;
+    
+    prod:8 = tmp3 + (tmp1 * tmp2);
+    lo = sext(prod:4);
+    prod = prod >> 32;
+    hi = sext(prod:4);
+    RD = sext(prod:4);
+}
+
+# 0111 00ss ssst tttt dddd d000 0010 0000
+:madd1 RS32src, RT32src 						is prime=28 & RS32src & RT32src & rd=0 & zero5=0 & fct=32 {
+    tmp1:8 = sext(RS32src);
+    tmp2:8 = sext(RT32src);
+    tmp3:8 = (hi << 32) | lo;
+    
+    prod:8 = tmp3 + (tmp1 * tmp2);
+    lo1 = sext(prod:4);
+    prod = prod >> 32;
+    hi1 = sext(prod:4);
+}
+
+# 0111 00ss ssst tttt dddd d000 0010 0000
+:madd1 RD, RS32src, RT32src 					is prime=28 & RS32src & RT32src & RD & zero5=0 & fct=32 {
+    tmp1:8 = sext(RS32src);
+    tmp2:8 = sext(RT32src);
+    tmp3:8 = (hi << 32) | lo;
+    
+    prod:8 = tmp3 + (tmp1 * tmp2);
+    lo1 = sext(prod:4);
+    prod = prod >> 32;
+    hi1 = sext(prod:4);
+    RD = sext(prod:4);
+}
+
+
+# 0111 00ss ssst tttt dddd d000 0000 0001
+:maddu RS32src, RT32src 						is prime=28 & RS32src & RT32src & rd=0 & zero5=0 & fct=1 {
+    tmp1:8 = sext(RS32src);
+    tmp2:8 = sext(RT32src);
+    tmp3:8 = (hi << 32) | lo;
+    
+    prod:8 = tmp3 + (tmp1 * tmp2);
+    lo = sext(prod:4);
+    prod = prod >> 32;
+    hi = sext(prod:4);
+}
+
+# 0111 00ss ssst tttt dddd d000 0000 0001
+:maddu RD, RS32src, RT32src 						is prime=28 & RS32src & RT32src & RD & zero5=0 & fct=1 {
+    tmp1:8 = sext(RS32src);
+    tmp2:8 = sext(RT32src);
+    tmp3:8 = (hi << 32) | lo;
+    
+    prod:8 = tmp3 + (tmp1 * tmp2);
+    lo = sext(prod:4);
+    prod = prod >> 32;
+    hi = sext(prod:4);
+    RD = sext(prod:4);
+}
+
+# 0111 00ss ssst tttt dddd d000 0010 0001
+:maddu1 RS32src, RT32src 						is prime=28 & RS32src & RT32src & rd=0 & zero5=0 & fct=33 {
+    tmp1:8 = sext(RS32src);
+    tmp2:8 = sext(RT32src);
+    tmp3:8 = (hi << 32) | lo;
+    
+    prod:8 = tmp3 + (tmp1 * tmp2);
+    lo1 = sext(prod:4);
+    prod = prod >> 32;
+    hi1 = sext(prod:4);
+}
+
+# 0111 00ss ssst tttt dddd d000 0010 0001
+:maddu1 RD, RS32src, RT32src 					is prime=28 & RS32src & RT32src & RD & zero5=0 & fct=33 {
+    tmp1:8 = sext(RS32src);
+    tmp2:8 = sext(RT32src);
+    tmp3:8 = (hi << 32) | lo;
+    
+    prod:8 = tmp3 + (tmp1 * tmp2);
+    lo1 = sext(prod:4);
+    prod = prod >> 32;
+    hi1 = sext(prod:4);
+    RD = sext(prod:4);
+}
+
+# 0111 0000 0000 0000 dddd d000 0001 0000
+:mfhi1 RD										is prime=28 & RD & zero10=0 & zero5=0 & fct=16 {
+	RD = hi1;
+}
+
+# 0111 0000 0000 0000 dddd d000 0001 0000
+:mflo1 RD										is prime=28 & RD & zero10=0 & zero5=0 & fct=18 {
+	RD = lo1;
+}

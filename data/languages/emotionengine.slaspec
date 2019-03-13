@@ -1,0 +1,25 @@
+# MIPS Emotion Engine specification file
+
+# The following instruction sets are supported
+#  1. CPU Instruction Set - the 64-bit instructions that conform to the MIPS architecture
+#  2. EE Core-Specific Instruction Set
+#  3. System Control Coprocessor (COP0) Instruction Set
+#  4. COP1 (FPU) Instruction Set
+
+define endian=little;
+define alignment=2;
+
+define space ram type=ram_space size=4 default;
+define space register type=register_space size=4;
+
+
+# User pcodes
+define pcodeop trap;
+define pcodeop prefetch;
+define pcodeop syscall;
+
+@include "base.sinc"
+@include "mips.sinc"
+@include "eecore.sinc"
+@include "cop0.sinc"
+@include "cop1.sinc"

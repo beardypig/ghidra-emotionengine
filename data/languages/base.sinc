@@ -1,0 +1,135 @@
+# Standard MIPS instruction set
+
+# General purpose registers (128-bit)
+define register offset=0 size=16 [ 
+    zero_qw at_qw v0_qw v1_qw 
+    a0_qw a1_qw a2_qw a3_qw 
+    t0_qw t1_qw t2_qw t3_qw 
+    t4_qw t5_qw t6_qw t7_qw 
+    s0_qw s1_qw s2_qw s3_qw 
+    s4_qw s5_qw s6_qw s7_qw 
+    t8_qw t9_qw k0_qw k1_qw 
+    gp_qw sp_qw s8_qw ra_qw
+    pc_qw
+];
+
+# other registers 
+define register offset=0x3000 size=16 [ hi_qw lo_qw ];	     # 128 bit
+define register offset=0x3000 size=8 [ hi hi1 lo lo1 tsp ];  # 64 bit
+
+# 64 bit representation of the 128 bit registers
+define register offset=0 size=8 [
+    zero _ at _ v0 _ v1 _
+    a0 _ a1 _ a2 _ a3 _
+    t0 _ t1 _ t2 _ t3 _
+    t4 _ t5 _ t6 _ t7 _
+    s0 _ s1 _ s2 _ s3 _
+    s4 _ s5 _ s6 _ s7 _
+    t8 _ t9 _ k0 _ k1 _
+    gp _ sp _ s8 _ ra _
+    pc _
+];
+
+# 32 bit representation of the 128 bit registers
+define register offset=0 size=4 [
+    zero_lo zero_hi _ _ at_lo at_hi _ _ v0_lo v0_hi _ _ v1_lo v1_hi _ _
+    a0_lo a0_hi _ _ a1_lo a1_hi _ _ a2_lo a2_hi _ _ a3_lo a3_hi _ _
+    t0_lo t0_hi _ _ t1_lo t1_hi _ _ t2_lo t2_hi _ _ t3_lo t3_hi _ _
+    t4_lo t4_hi _ _ t5_lo t5_hi _ _ t6_lo t6_hi _ _ t7_lo t7_hi _ _
+    s0_lo s0_hi _ _ s1_lo s1_hi _ _ s2_lo s2_hi _ _ s3_lo s3_hi _ _
+    s4_lo s4_hi _ _ s5_lo s5_hi _ _ s6_lo s6_hi _ _ s7_lo s7_hi _ _
+    t8_lo t8_hi _ _ t9_lo t9_hi _ _ k0_lo k0_hi _ _ k1_lo k1_hi _ _
+    gp_lo gp_hi _ _ sp_lo sp_hi _ _ s8_lo s8_hi _ _ ra_lo ra_hi _ _
+    pc_lo pc_hi _ _
+];
+
+define token instr(32)
+    prime       = (26,31)
+    op32		= (0,31)
+    base        = (21,25)
+    
+    rs128		= (21,25)
+    rt128		= (16,20)
+    rd128		= (11,15)
+    
+    rs32		= (21,25)
+    rt32		= (16,20)
+    rd32		= (11,15)
+      
+    rs			= (21,25)
+    rt			= (16,20)
+    rd			= (11,15)
+    sa			= (6,10)
+
+    hint        = (16,20)    
+    cond		= (16,20)
+    szero       = (11,25)
+    code		= (6,15)
+    stype       = (6,10)
+    zero5       = (6,10)
+    zero10		= (6,15)
+    breakcode	= (6,25)
+    
+    immed       = (0,15)
+    simmed      = (0,15) signed
+    
+    off21		= (0,20) signed		# 21 bit signed offset in conditional branch/link
+    off16		= (0,15) signed		# 16 bit signed offset in conditional branch/link
+    off26		= (0,25) signed		# 26 bit signed offset in conditional branch/link
+    ind26		= (0,25) 			# 26 bit absolute address
+
+    fct         = (0,5)
+    
+;
+
+# 64 bit
+attach variables [ rs rt rd base ] [ 
+    zero  at  v0  v1  a0  a1  a2  a3
+    t0    t1  t2  t3  t4  t5  t6  t7
+    s0    s1  s2  s3  s4  s5  s6  s7
+    t8    t9  k0  k1  gp  sp  s8  ra 
+];
+
+# 128 bit
+attach variables [ rs128 rt128 rd128 ] [ 
+    zero_qw  at_qw  v0_qw  v1_qw  a0_qw  a1_qw  a2_qw  a3_qw
+    t0_qw    t1_qw  t2_qw  t3_qw  t4_qw  t5_qw  t6_qw  t7_qw
+    s0_qw    s1_qw  s2_qw  s3_qw  s4_qw  s5_qw  s6_qw  s7_qw
+    t8_qw    t9_qw  k0_qw  k1_qw  gp_qw  sp_qw  s8_qw  ra_qw
+];
+
+# 32 bit
+attach variables [ rs32 rt32 rd32 ] [ 
+    zero_lo  at_lo  v0_lo  v1_lo  a0_lo  a1_lo  a2_lo  a3_lo
+    t0_lo    t1_lo  t2_lo  t3_lo  t4_lo  t5_lo  t6_lo  t7_lo
+    s0_lo    s1_lo  s2_lo  s3_lo  s4_lo  s5_lo  s6_lo  s7_lo
+    t8_lo    t9_lo  k0_lo  k1_lo  gp_lo  sp_lo  s8_lo  ra_lo 
+];
+
+# different sized registers 
+RD128: rd        is rd & rd128      { export rd128; }
+RS128src: rs     is rs & rs128      { export rs128; }
+RT128: rt        is rt & rt128      { export rt128; }
+RT128src: rt     is rt & rt128      { export rt128; }
+
+RD: rd      	is rd	        	{ export rd; }
+RSsrc: rs   	is rs	        	{ export rs; }
+RSsrc: rs   	is rs & rs=0      	{ export 0:8; }
+RT: rt      	is rt	        	{ export rt; }
+RTsrc: rt   	is rt	        	{ export rt; }
+RTsrc: rt   	is rt & rt=0	    { export 0:8; }
+
+RD32: rd      	is rd & rd32        { export rd32; }
+RS32src: rs   	is rs & rs32        { export rs32; }
+RS32src: rs   	is rs & rs32=0      { export 0:4; }
+RT32: rt      	is rt & rt32        { export rt32; }
+RT32src: rt   	is rt & rt32        { export rt32; }
+RT32src: rt   	is rt & rt32=0      { export 0:4; }
+
+# relative offsets
+Rel16: reloc		is off16	[ reloc=inst_start+4+4*off16; ]					{ export *:4 reloc; }
+Rel21: reloc		is off21	[ reloc=inst_start+4+4*off21; ]					{ export *:4 reloc; }
+Rel26: reloc		is off26	[ reloc=inst_start+4+4*off26; ]					{ export *:4 reloc; }
+Abs26: reloc		is ind26	[ reloc=((inst_start+4) $and 0xfffffffff0000000) | 4*ind26; ]	{ export *:4 reloc; }
+
+OFF_BASE: simmed(base)  is simmed & base    { tmp:4 = base:4 + simmed; export tmp; }

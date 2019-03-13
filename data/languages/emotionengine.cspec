@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<compiler_spec>
+  <data_organization>
+        <pointer_size value="4"/>
+        <float_size value="4" />
+        <double_size value="8" />
+        <long_double_size value="8" />
+  </data_organization>
+
+  <stackpointer register="sp" space="ram"/>
+  <funcptr align="2"/>
+  <global>
+    <range space="ram"/>
+    <range space="register" first="0x2000" last="0x2fff"/>
+  </global>
+  <returnaddress>
+    <register name="ra"/>
+  </returnaddress>
+  <default_proto>
+    <prototype name="__stdcall" extrapop="0" stackshift="0">
+      <input>
+      </input>
+      <output>
+      </output>
+      <unaffected>
+        <register name="s0"/>
+        <register name="s1"/>
+        <register name="s2"/>
+        <register name="s3"/>
+        <register name="s4"/>
+        <register name="s5"/>
+        <register name="s6"/>
+        <register name="s7"/>
+        <register name="s8"/>
+        <register name="sp"/>
+        <register name="gp"/>
+      </unaffected>
+      <localrange>
+        <range space="stack" first="0xfff0bdc0" last="0xffffffff"/>
+        <range space="stack" first="0" last="15"/>  <!-- This is backup storage space for register params, but we treat as locals -->
+      </localrange>
+    </prototype>
+  </default_proto>
+    
+</compiler_spec>

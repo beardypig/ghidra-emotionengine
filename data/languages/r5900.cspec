@@ -1,47 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <compiler_spec>
   <data_organization>
-        <pointer_size value="4"/>
-        <float_size value="4" />
-        <double_size value="8" />
-        <long_double_size value="8" />
+    <pointer_size value="4"/>
+    <float_size value="4" />
+    <long_double_size value="16" /> 
   </data_organization>
-
   <stackpointer register="sp" space="ram"/>
   <funcptr align="2"/>
+  <spacebase name="gp" register="gp" space="ram"/>
   <global>
+    <range space="gp"/>
     <range space="ram"/>
     <range space="register" first="0x2000" last="0x2fff"/>
   </global>
-  <returnaddress>
-    <register name="ra"/>
-  </returnaddress>
-  
+  <aggressivetrim signext="true"/>  <!-- Aggressively try to eliminate sign extensions -->
   <default_proto>
     <prototype name="__stdcall" extrapop="0" stackshift="0">
-      <input>
+      <input killedbycall="true">
+        <pentry minsize="1" maxsize="4" metatype="float">
+          <register name="f12"/>
+        </pentry>
+        <pentry minsize="1" maxsize="4" metatype="float">
+          <register name="f13"/>
+        </pentry>
+        <pentry minsize="1" maxsize="4" metatype="float">
+          <register name="f14"/>
+        </pentry>
+        <pentry minsize="1" maxsize="4" metatype="float">
+          <register name="f15"/>
+        </pentry>
+        <pentry minsize="1" maxsize="4" metatype="float">
+          <register name="f16"/>
+        </pentry>
+        <pentry minsize="1" maxsize="4" metatype="float">
+          <register name="f17"/>
+        </pentry>
+        <pentry minsize="1" maxsize="4" metatype="float">
+          <register name="f18"/>
+        </pentry>
+        <pentry minsize="1" maxsize="4" metatype="float">
+          <register name="f19"/>
+        </pentry>
+        <pentry minsize="1" maxsize="16">
+          <register name="a0_qw"/>
+        </pentry>
+        <pentry minsize="1" maxsize="16">
+          <register name="a1_qw"/>
+        </pentry>
+        <pentry minsize="1" maxsize="16">
+          <register name="a2_qw"/>
+        </pentry>
+        <pentry minsize="1" maxsize="16">
+          <register name="a3_qw"/>
+        </pentry>
+        <pentry minsize="1" maxsize="16">
+          <register name="t0_qw"/>
+        </pentry>
+        <pentry minsize="1" maxsize="16">
+          <register name="t1_qw"/>
+        </pentry>
+        <pentry minsize="1" maxsize="16">
+          <register name="t2_qw"/>
+        </pentry>
+        <pentry minsize="1" maxsize="16">
+          <register name="t3_qw"/>
+        </pentry>
+        <pentry minsize="1" maxsize="500" align="4">
+          <addr offset="0" space="stack"/>
+        </pentry>
       </input>
       <output>
+        <pentry minsize="4" maxsize="4" metatype="float">
+          <register name="f0"/>
+        </pentry>
+        <pentry minsize="1" maxsize="16">
+          <register name="v0_qw"/>
+        </pentry>
       </output>
       <unaffected>
-        <register name="s0"/>
-        <register name="s1"/>
-        <register name="s2"/>
-        <register name="s3"/>
-        <register name="s4"/>
-        <register name="s5"/>
-        <register name="s6"/>
-        <register name="s7"/>
-        <register name="s8"/>
+        <register name="s0_qw"/>
+        <register name="s1_qw"/>
+        <register name="s2_qw"/>
+        <register name="s3_qw"/>
+        <register name="s4_qw"/>
+        <register name="s5_qw"/>
+        <register name="s6_qw"/>
+        <register name="s7_qw"/>
+        <register name="s8_qw"/>
         <register name="sp"/>
         <register name="gp"/>
+        <register name="f24"/>
+        <register name="f25"/>
+        <register name="f26"/>
+        <register name="f27"/>
+        <register name="f28"/>
+        <register name="f29"/>
+        <register name="f30"/>
+        <register name="f31"/>
       </unaffected>
-      <localrange>
-        <range space="stack" first="0xfff0bdc0" last="0xffffffff"/>
-        <range space="stack" first="0" last="15"/>  <!-- This is backup storage space for register params, but we treat as locals -->
-      </localrange>
     </prototype>
   </default_proto>
-    
 </compiler_spec>

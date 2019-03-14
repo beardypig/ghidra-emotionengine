@@ -1,139 +1,174 @@
 # EE core-specific instructions
 
-# 0011 10ss ssst tttt 0000 0000 0001 1010
-:div1 RS32src, RT32src           	is prime=28 & fct=26 & zero10=0 & RS32src & RT32src {
-	quotient:4 = RS32src s/ RT32src;
-	remainder:4 = RS32src s% RT32src;
-	lo1 = sext(quotient);
-	hi1 = sext(remainder);
-}
-
-# 0011 10ss ssst tttt 0000 0000 0001 1011
-:divu1 RS32src, RT32src           	is prime=28 & fct=27 & zero10=0 & RS32src & RT32src {
-	quotient:4 = RS32src / RT32src;
-	remainder:4 = RS32src % RT32src;
-	lo1 = sext(quotient);
-	hi1 = sext(remainder);
-}
+define pcodeop loadQuadWord;
+define pcodeop storeQuadWord;
+define pcodeop PADDUB;
+define pcodeop PADDUH;
+define pcodeop PADDUW;
 
 # 0111 10bb bbbt tttt iiii iiii iiii iiii
-:lq RT128, OFF_BASE                		is prime=30 & OFF_BASE & RT128 {
-    RT128 = *[ram]:16 OFF_BASE;
+:lq RT128, OFF_BASE                         is prime=30 & OFF_BASE & RT128 {
+    RT128 = loadQuadWord(OFF_BASE);
 }
 
 # 0111 11bb bbbt tttt iiii iiii iiii iiii
-:sq RT128src, OFF_BASE                		is prime=31 & OFF_BASE & RT128src {
-    *[ram]:16 OFF_BASE = RT128src;
+:sq RT128src, OFF_BASE                      is prime=31 & OFF_BASE & RT128src {
+    storeQuadWord(OFF_BASE, RT128src);
 }
 
-# 0111 00ss ssst tttt dddd d000 0000 0000
-:madd RS32src, RT32src 						is prime=28 & RS32src & RT32src & rd=0 & zero5=0 & fct=0 {
-    tmp1:8 = sext(RS32src);
-    tmp2:8 = sext(RT32src);
-    tmp3:8 = (hi << 32) | lo;
+with : prime=28 {
 
-    prod:8 = tmp3 + (tmp1 * tmp2);
-    lo = sext(prod:4);
-    prod = prod >> 32;
-    hi = sext(prod:4);
+    # 0011 10ss ssst tttt 0000 0000 0001 1010
+    :div1 RS32src, RT32src                          is fct=26 & zero10=0 & RS32src & RT32src {
+        quotient:4 = RS32src s/ RT32src;
+        remainder:4 = RS32src s% RT32src;
+        lo1 = sext(quotient);
+        hi1 = sext(remainder);
+    }
+
+    # 0011 10ss ssst tttt 0000 0000 0001 1011
+    :divu1 RS32src, RT32src                         is fct=27 & zero10=0 & RS32src & RT32src {
+        quotient:4 = RS32src / RT32src;
+        remainder:4 = RS32src % RT32src;
+        lo1 = sext(quotient);
+        hi1 = sext(remainder);
+    }
+
+
+
+    # 0111 00ss ssst tttt dddd d000 0000 0000
+    :madd RS32src, RT32src                          is RS32src & RT32src & rd=0 & zero5=0 & fct=0 {
+        tmp1:8 = sext(RS32src);
+        tmp2:8 = sext(RT32src);
+        tmp3:8 = (hi << 32) | lo;
+
+        prod:8 = tmp3 + (tmp1 * tmp2);
+        lo = sext(prod:4);
+        prod = prod >> 32;
+        hi = sext(prod:4);
+    }
+
+    # 0111 00ss ssst tttt dddd d000 0000 0000
+    :madd RD, RS32src, RT32src                      is RS32src & RT32src & RD & zero5=0 & fct=0 {
+        tmp1:8 = sext(RS32src);
+        tmp2:8 = sext(RT32src);
+        tmp3:8 = (hi << 32) | lo;
+
+        prod:8 = tmp3 + (tmp1 * tmp2);
+        lo = sext(prod:4);
+        prod = prod >> 32;
+        hi = sext(prod:4);
+        RD = sext(prod:4);
+    }
+
+    # 0111 00ss ssst tttt dddd d000 0010 0000
+    :madd1 RS32src, RT32src                          is RS32src & RT32src & rd=0 & zero5=0 & fct=32 {
+        tmp1:8 = sext(RS32src);
+        tmp2:8 = sext(RT32src);
+        tmp3:8 = (hi << 32) | lo;
+
+        prod:8 = tmp3 + (tmp1 * tmp2);
+        lo1 = sext(prod:4);
+        prod = prod >> 32;
+        hi1 = sext(prod:4);
+    }
+
+    # 0111 00ss ssst tttt dddd d000 0010 0000
+    :madd1 RD, RS32src, RT32src                      is RS32src & RT32src & RD & zero5=0 & fct=32 {
+        tmp1:8 = sext(RS32src);
+        tmp2:8 = sext(RT32src);
+        tmp3:8 = (hi << 32) | lo;
+
+        prod:8 = tmp3 + (tmp1 * tmp2);
+        lo1 = sext(prod:4);
+        prod = prod >> 32;
+        hi1 = sext(prod:4);
+        RD = sext(prod:4);
+    }
+
+
+    # 0111 00ss ssst tttt dddd d000 0000 0001
+    :maddu RS32src, RT32src                          is RS32src & RT32src & rd=0 & zero5=0 & fct=1 {
+        tmp1:8 = sext(RS32src);
+        tmp2:8 = sext(RT32src);
+        tmp3:8 = (hi << 32) | lo;
+
+        prod:8 = tmp3 + (tmp1 * tmp2);
+        lo = sext(prod:4);
+        prod = prod >> 32;
+        hi = sext(prod:4);
+    }
+
+    # 0111 00ss ssst tttt dddd d000 0000 0001
+    :maddu RD, RS32src, RT32src                      is RS32src & RT32src & RD & zero5=0 & fct=1 {
+        tmp1:8 = sext(RS32src);
+        tmp2:8 = sext(RT32src);
+        tmp3:8 = (hi << 32) | lo;
+
+        prod:8 = tmp3 + (tmp1 * tmp2);
+        lo = sext(prod:4);
+        prod = prod >> 32;
+        hi = sext(prod:4);
+        RD = sext(prod:4);
+    }
+
+    # 0111 00ss ssst tttt dddd d000 0010 0001
+    :maddu1 RS32src, RT32src                         is RS32src & RT32src & rd=0 & zero5=0 & fct=33 {
+        tmp1:8 = sext(RS32src);
+        tmp2:8 = sext(RT32src);
+        tmp3:8 = (hi << 32) | lo;
+
+        prod:8 = tmp3 + (tmp1 * tmp2);
+        lo1 = sext(prod:4);
+        prod = prod >> 32;
+        hi1 = sext(prod:4);
+    }
+
+    # 0111 00ss ssst tttt dddd d000 0010 0001
+    :maddu1 RD, RS32src, RT32src                     is RS32src & RT32src & RD & zero5=0 & fct=33 {
+        tmp1:8 = sext(RS32src);
+        tmp2:8 = sext(RT32src);
+        tmp3:8 = (hi << 32) | lo;
+
+        prod:8 = tmp3 + (tmp1 * tmp2);
+        lo1 = sext(prod:4);
+        prod = prod >> 32;
+        hi1 = sext(prod:4);
+        RD = sext(prod:4);
+    }
+
+    # 0111 0000 0000 0000 dddd d000 0001 0000
+    :mfhi1 RD                                        is RD & zero10=0 & zero5=0 & fct=16 {
+        RD = hi1;
+    }
+
+    # 0111 0000 0000 0000 dddd d000 0001 0000
+    :mflo1 RD                                        is RD & zero10=0 & zero5=0 & fct=18 {
+        RD = lo1;
+    }
+
+    # PADDUB : Parallel Add with Unsigned Saturation Byte
+    # 0111 00ss ssst tttt dddd d110 0010 1000
+    :paddub RD128, RS128src, RT128src                is RS128src & RD128 & RT128src & mmiop=24 & fct=40 {
+        RD128 = PADDUB(RS128src, RT128src);
+    }
+
+@ifdef PSEUDO
+    # pseudo opcode, clear quad word
+    :clear.qw RD128                                  is rs=0 & RD128 & rt=0 & mmiop=24 & fct=40 {
+        RD128 = 0;
+    }
+@endif
+
+    # PADDUH : Parallel Add with Unsigned Saturation Halfword
+    # 0111 00ss ssst tttt dddd d101 0010 1000
+    :padduh RD128, RS128src, RT128src                is RS128src & RD128 & RT128src & mmiop=20 & fct=40 {
+        RD128 = PADDUH(RS128src, RT128src);
+    }
+
+    # PADDUW : Parallel Add with Unsigned Saturation Halfword
+    # 0111 00ss ssst tttt dddd d100 0010 1000
+    :padduw RD128, RS128src, RT128src                is RS128src & RD128 & RT128src & mmiop=16 & fct=40 {
+        RD128 = PADDUW(RS128src, RT128src);
+    }
 }
-
-# 0111 00ss ssst tttt dddd d000 0000 0000
-:madd RD, RS32src, RT32src 						is prime=28 & RS32src & RT32src & RD & zero5=0 & fct=0 {
-    tmp1:8 = sext(RS32src);
-    tmp2:8 = sext(RT32src);
-    tmp3:8 = (hi << 32) | lo;
-
-    prod:8 = tmp3 + (tmp1 * tmp2);
-    lo = sext(prod:4);
-    prod = prod >> 32;
-    hi = sext(prod:4);
-    RD = sext(prod:4);
-}
-
-# 0111 00ss ssst tttt dddd d000 0010 0000
-:madd1 RS32src, RT32src 						is prime=28 & RS32src & RT32src & rd=0 & zero5=0 & fct=32 {
-    tmp1:8 = sext(RS32src);
-    tmp2:8 = sext(RT32src);
-    tmp3:8 = (hi << 32) | lo;
-
-    prod:8 = tmp3 + (tmp1 * tmp2);
-    lo1 = sext(prod:4);
-    prod = prod >> 32;
-    hi1 = sext(prod:4);
-}
-
-# 0111 00ss ssst tttt dddd d000 0010 0000
-:madd1 RD, RS32src, RT32src 					is prime=28 & RS32src & RT32src & RD & zero5=0 & fct=32 {
-    tmp1:8 = sext(RS32src);
-    tmp2:8 = sext(RT32src);
-    tmp3:8 = (hi << 32) | lo;
-
-    prod:8 = tmp3 + (tmp1 * tmp2);
-    lo1 = sext(prod:4);
-    prod = prod >> 32;
-    hi1 = sext(prod:4);
-    RD = sext(prod:4);
-}
-
-
-# 0111 00ss ssst tttt dddd d000 0000 0001
-:maddu RS32src, RT32src 						is prime=28 & RS32src & RT32src & rd=0 & zero5=0 & fct=1 {
-    tmp1:8 = sext(RS32src);
-    tmp2:8 = sext(RT32src);
-    tmp3:8 = (hi << 32) | lo;
-
-    prod:8 = tmp3 + (tmp1 * tmp2);
-    lo = sext(prod:4);
-    prod = prod >> 32;
-    hi = sext(prod:4);
-}
-
-# 0111 00ss ssst tttt dddd d000 0000 0001
-:maddu RD, RS32src, RT32src 						is prime=28 & RS32src & RT32src & RD & zero5=0 & fct=1 {
-    tmp1:8 = sext(RS32src);
-    tmp2:8 = sext(RT32src);
-    tmp3:8 = (hi << 32) | lo;
-
-    prod:8 = tmp3 + (tmp1 * tmp2);
-    lo = sext(prod:4);
-    prod = prod >> 32;
-    hi = sext(prod:4);
-    RD = sext(prod:4);
-}
-
-# 0111 00ss ssst tttt dddd d000 0010 0001
-:maddu1 RS32src, RT32src 						is prime=28 & RS32src & RT32src & rd=0 & zero5=0 & fct=33 {
-    tmp1:8 = sext(RS32src);
-    tmp2:8 = sext(RT32src);
-    tmp3:8 = (hi << 32) | lo;
-
-    prod:8 = tmp3 + (tmp1 * tmp2);
-    lo1 = sext(prod:4);
-    prod = prod >> 32;
-    hi1 = sext(prod:4);
-}
-
-# 0111 00ss ssst tttt dddd d000 0010 0001
-:maddu1 RD, RS32src, RT32src 					is prime=28 & RS32src & RT32src & RD & zero5=0 & fct=33 {
-    tmp1:8 = sext(RS32src);
-    tmp2:8 = sext(RT32src);
-    tmp3:8 = (hi << 32) | lo;
-
-    prod:8 = tmp3 + (tmp1 * tmp2);
-    lo1 = sext(prod:4);
-    prod = prod >> 32;
-    hi1 = sext(prod:4);
-    RD = sext(prod:4);
-}
-
-# 0111 0000 0000 0000 dddd d000 0001 0000
-:mfhi1 RD										is prime=28 & RD & zero10=0 & zero5=0 & fct=16 {
-	RD = hi1;
-}
-
-# 0111 0000 0000 0000 dddd d000 0001 0000
-:mflo1 RD										is prime=28 & RD & zero10=0 & zero5=0 & fct=18 {
-	RD = lo1;
-}
-

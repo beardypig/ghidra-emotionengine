@@ -1,0 +1,5 @@
+<patternconstraints>
+  <language id="r5900:LE:*:*">
+    <patternfile>r5900_LE_patterns.xml</patternfile>
+  </language>
+</patternconstraints>

@@ -1,7 +1,10 @@
 # EE core-specific instructions
 
+define register offset=0x400 size=8 [ fsa ];       # 64 bit
+
 define pcodeop loadQuadWord;
 define pcodeop storeQuadWord;
+define pcodeop storeQuadWordZero;
 define pcodeop PABSH;
 define pcodeop PABSW;
 define pcodeop PADDB;
@@ -102,6 +105,52 @@ define pcodeop QFSRV;
 # 0111 11bb bbbt tttt iiii iiii iiii iiii
 :sq RT128src, OFF_BASE                      is prime=31 & OFF_BASE & RT128src {
     storeQuadWord(OFF_BASE, RT128src);
+}
+
+@ifdef PSEUDO
+:sq.zero OFF_BASE                           is prime=31 & OFF_BASE & rt=0 {
+    storeQuadWordZero(OFF_BASE);
+}
+@endif
+
+
+:mtsa RSsrc                                 is prime=0 & RSsrc & imm15=0 & fct=41 {
+    fsa = RSsrc;
+}
+
+:mtsab RSsrc, immed                         is prime=1 & RSsrc & copfct=24 & immed {
+    im:2 = immed:2;
+    tmp:8 = zext(RSsrc[0,4] ^ im[0,4]);
+    fsa = tmp * 8;
+
+}
+
+:mtsah RSsrc, immed                         is prime=1 & RSsrc & copfct=25 & immed {
+    im:2 = immed:2;
+    tmp:8 = zext(RSsrc[0,4] ^ im[0,4]);
+    fsa = tmp * 16;
+}
+
+:mult RD, RS32src, RT32src                  is prime=0 & RD & RS32src & RT32src & zero5=0 & fct=24 {
+    tmp1:8 = sext(RS32src);
+    tmp2:8 = sext(RT32src);
+
+    prod:8 = tmp1 * tmp2;
+    lo = sext(prod:4);
+    prod = prod >> 32;
+    hi = sext(prod:4);
+    RD = sext(prod:4);
+}
+
+:multu RD, RS32src, RT32src                 is prime=0 & RD & RS32src & RT32src & zero5=0 & fct=25 {
+    tmp1:8 = zext(RS32src);
+    tmp2:8 = zext(RT32src);
+
+    prod:8 = tmp1 * tmp2;
+    lo = zext(prod:4);
+    prod = prod >> 32;
+    hi = zext(prod:4);
+    RD = zext(prod:4);
 }
 
 with : prime=28 {
@@ -234,6 +283,49 @@ with : prime=28 {
     :mflo1 RD                                        is RD & zero10=0 & zero5=0 & fct=18 {
         RD = lo1;
     }
+
+    :mult1 RD, RS32src, RT32src                      is RD & RS32src & RT32src & zero5=0 & fct=24 {
+        tmp1:8 = sext(RS32src);
+        tmp2:8 = sext(RT32src);
+
+        prod:8 = tmp1 * tmp2;
+        lo = sext(prod:4);
+        prod = prod >> 32;
+        hi = sext(prod:4);
+        RD = sext(prod:4);
+    }
+
+    :mult1 RS32src, RT32src                          is rd=0 & RS32src & RT32src & zero5=0 & fct=24 {
+        tmp1:8 = sext(RS32src);
+        tmp2:8 = sext(RT32src);
+
+        prod:8 = tmp1 * tmp2;
+        lo = sext(prod:4);
+        prod = prod >> 32;
+        hi = sext(prod:4);
+    }
+
+    :multu1 RD, RS32src, RT32src                     is RD & RS32src & RT32src & zero5=0 & fct=25 {
+        tmp1:8 = zext(RS32src);
+        tmp2:8 = zext(RT32src);
+
+        prod:8 = tmp1 * tmp2;
+        lo = zext(prod:4);
+        prod = prod >> 32;
+        hi = zext(prod:4);
+        RD = zext(prod:4);
+    }
+
+    :multu1 RS32src, RT32src                         is rd=0 & RS32src & RT32src & zero5=0 & fct=25 {
+        tmp1:8 = zext(RS32src);
+        tmp2:8 = zext(RT32src);
+
+        prod:8 = tmp1 * tmp2;
+        lo = zext(prod:4);
+        prod = prod >> 32;
+        hi = zext(prod:4);
+    }
+
 
 @ifdef PSEUDO
     # pseudo opcode, clear quad word
@@ -496,7 +588,7 @@ with : prime=28 {
 
     # QFSRV
     :qfsrv RD128, RS128src, RT128src                is RS128src & RD128 & RT128src & mmiop=27 & fct=40 {
-        RD128 = QFSRV(RS128src, RT128src);
+        RD128 = QFSRV(RS128src, RT128src, fsa);
     }
 
 

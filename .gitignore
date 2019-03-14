@@ -36,3 +36,6 @@ hs_err_pid*
 .project
 .classpath
 
+# manuals
+*.pdf
+

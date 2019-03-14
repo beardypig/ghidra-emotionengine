@@ -79,6 +79,7 @@ define token instr(32)
     ind26		= (0,25) 			# 26 bit absolute address
 
     fct         = (0,5)
+    mmiop       = (6,10)
 
 # cop0 stuff
 	bit25		= (25,25)

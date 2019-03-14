@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <language_definitions>
-   <language processor="Emotion Engine"
+   <language processor="MIPS"
             endian="little"
             size="32"
-            variant="default"
+            variant="R5900-PS2"
             version="1.0"
-            slafile="emotionengine.sla"
-            processorspec="emotionengine.pspec"
-            id="skel:LE:16:default">
-    <description>Emotion Engine MIPS</description>
-    <compiler name="default" spec="emotionengine.cspec" id="default"/>
+            slafile="r5900.sla"
+            processorspec="r5900.pspec"
+            id="r5900:LE:32:default">
+    <description>Emotion Engine (Play Station 2) R5900 MIPS Core</description>
+    <compiler name="default" spec="r5900.cspec" id="default"/>
   </language> 
 </language_definitions>

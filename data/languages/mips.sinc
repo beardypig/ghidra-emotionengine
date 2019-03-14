@@ -1,5 +1,12 @@
 # Regular MIPS instructions
 
+
+#MIPS custom pcodes
+define pcodeop trap;
+define pcodeop prefetch;
+define pcodeop syscall;
+
+
 # 0000 00ss ssst tttt dddd d000 0010 0000
 :add RD32, RS32src, RT32src				is prime=0 & zero5=0 & fct=32 & RD32 & RS32src & RT32src & RD {
     RD32 = RS32src + RT32src;
@@ -426,6 +433,13 @@
 :or RD, RSsrc, RTsrc            		is prime=0 & fct=37 & RSsrc & RTsrc & RD & sa=0 {
     RD = RSsrc | RTsrc;
 }
+
+@ifdef PSEUDO
+# pseudo opcode move (rd = rs | 0)
+:move RD, RSsrc                         is prime=0 & fct=37 & RSsrc & rt=0 & RD & sa=0 {
+    RD = RSsrc;
+}
+@endif
 
 # 0011 01ss ssst tttt iiii iiii iiii iiii
 :ori RT, RSsrc, immed           		is prime=13 & RSsrc & RT & immed  {

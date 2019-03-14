@@ -20,10 +20,18 @@ define pcodeop syscall;
 }
 
 # 0010 01ss ssst tttt iiii iiii iiii iiii
-:addiu RT32, RS32src, simmed			is prime=9 & RT32 & RS32src & simmed & RT {
-    RT32 = RS32src + simmed;
+:addiu RT32, RS32src, immed			    is prime=9 & RT32 & RS32src & immed & RT {
+    RT32 = RS32src + immed;
     RT = sext(RT32);
 }
+
+@ifdef PSEUDO
+# 0010 01ss ssst tttt iiii iiii iiii iiii
+:li RT32, immed                         is prime=9 & RT32 & rs=0 & immed & RT {
+    RT32 = zext(immed:2);
+    RT = zext(RT32);
+}
+@endif
 
 # 0000 00ss ssst tttt dddd d000 0010 0001
 :addu RD32, RS32src, RT32src          	is prime=0 & zero5=0 & fct=33 & RS32src & RT32src & RD32 & RD {
@@ -286,6 +294,11 @@ define pcodeop syscall;
     delayslot(1);
  	tmp:4 = RSsrc:4;
     goto [tmp];
+}
+
+:jr ra                                  is prime=0 & fct=8 & rs=31 & ra & rt=0 & rd=0 {
+    delayslot(1);
+    return [ra];
 }
 
 # 1000 00bb bbbt tttt iiii iiii iiii iiii

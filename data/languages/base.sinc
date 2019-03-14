@@ -80,6 +80,7 @@ define token instr(32)
 
     fct         = (0,5)
     mmiop       = (6,10)
+    fmt         = (6,10)
 
 # cop0 stuff
 	bit25		= (25,25)

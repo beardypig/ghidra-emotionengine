@@ -1,4 +1,20 @@
 # ghidra-emotionengine
-Ghidra Processor for the Play Station 2's Emotion Engine MIPS based CPU
+Ghidra Processor for the Play Station 2's Emotion Engine CPU.
 
-The core MIPS instructions are based off the MIPS32/64 processor included in Ghidra, with superfluous instructions stripped out. 
+The core MIPS/FPU/COP0 instruction are based off the MIPS32/64 processor included in Ghidra, with superfluous instructions stripped out and some instructions modified.
+
+The following instuction sets are currently supported
+
+ 1. The core MIPS instruction set
+ 1. The EE core instruction set
+ 1. COP0 (System control processor) instruction set
+ 1. COP1 (FPU) instruction set
+
+##Issues
+
+I'm sure there are issues, and if you find any please report them.
+
+##TODO
+
+ - VU instruction set support
+ - Function analysis

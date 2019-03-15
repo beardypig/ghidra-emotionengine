@@ -9,6 +9,7 @@ The following instuction sets are currently supported
  1. The EE core instruction set
  1. COP0 (System control processor) instruction set
  1. COP1 (FPU) instruction set
+ 1. COP2 (VU1) macro instruction set (WIP)
 
 ##Issues
 
@@ -16,5 +17,5 @@ I'm sure there are issues, and if you find any please report them.
 
 ##TODO
 
- - VU instruction set support
+ - VU macro instruction set support
  - Function analysis

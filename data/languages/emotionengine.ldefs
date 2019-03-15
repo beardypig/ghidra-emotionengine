@@ -5,7 +5,7 @@
             endian="little"
             size="32"
             variant="R5900-PS2"
-            version="1.1.0"
+            version="1.2.0"
             slafile="r5900.sla"
             processorspec="r5900.pspec"
             manualindexfile="../manuals/eecore.idx"

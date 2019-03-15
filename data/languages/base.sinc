@@ -14,8 +14,8 @@ define register offset=0 size=16 [
 ];
 
 # other registers
-define register offset=0x3000 size=16 [ hi_qw lo_qw ];	     # 128 bit
-define register offset=0x3000 size=8 [ hi hi1 lo lo1 tsp ];  #64 bit
+define register offset=0x300 size=16 [ hi_qw lo_qw ];	     # 128 bit
+define register offset=0x300 size=8 [ hi hi1 lo lo1 tsp ];  #64 bit
 
 #64 bit representation of the 128 bit registers
 define register offset=0 size=8 [
@@ -71,6 +71,7 @@ define token instr(32)
     breakcode	= (6,25)
 
     immed       = (0,15)
+    immed26     = (0,25)
     simmed      = (0,15) signed
 
     off21		= (0,20) signed		# 21 bit signed offset in conditional branch/link
@@ -82,7 +83,7 @@ define token instr(32)
     mmiop       = (6,10)
     fmt         = (6,10)
 
-# cop0 stuff
+# cop stuff
 	bit25		= (25,25)
 	copop		= (21,25)
 	copfct		= (16,20)
@@ -105,6 +106,31 @@ define token instr(32)
     fs_fcr		= (11,15)
     fd          = (6,10)
     bigfunct	= (0,10)
+
+# cop2 stuff
+    co          = (25,25)
+    dest        = (21,24)
+    id          = (11,15)
+    ft128       = (16,20)
+    fd128       = (11,15)
+    fs128       = (11,15)
+
+    bit15       = (15,15)
+    cop2op0     = (2,5)
+    cop2op1     = (0,5)
+    cop2op2     = (2,10)
+    cop2op3     = (0,10)
+    cop2op4     = (0,10)
+    cop2op5     = (0,5)
+    cop2op6     = (0,5)
+    cop2op11    = (21,25)
+    cop2op12    = (26,31)
+    imm15       = (6,20)
+    imm5        = (6,10)
+    ftf         = (23,24)
+    fsf         = (20,21)
+    cop2zero10  = (1,10)
+
 ;
 
 # 64 bit

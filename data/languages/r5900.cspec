@@ -3,7 +3,7 @@
   <data_organization>
     <pointer_size value="4"/>
     <float_size value="4" />
-    <long_double_size value="16" /> 
+    <long_double_size value="16" />
   </data_organization>
   <stackpointer register="sp" space="ram"/>
   <funcptr align="2"/>

@@ -218,6 +218,8 @@ with : prime=17 {  #COP1
 	:suba.S fs, ft           			is fct=25 & ft & fs & fd=0 & format=0x10 {
 	    ACC = fs f- ft;
 	}
+
+	:cop1 immed26                       is immed26 { }
 }
 
 :lwc1 ft, OFF_BASE              		is prime=49 & OFF_BASE & ft {

@@ -2,9 +2,6 @@
 
 #The Emotion Engine version of MIPS COP1 only supports single precision float operations
 
-define pcodeop trapIfNaN;
-define pcodeop trapIfSNaN;
-
 define register offset=0x1000 size=4 [
     f1  f0  f3  f2  f5  f4  f7  f6
     f9  f8  f11 f10 f13 f12 f15 f14
@@ -84,22 +81,18 @@ with : prime=17 {  #COP1
 
 	# 0100 01ff ffft tttt ssss s000 0011 0010
 	:c.eq.S fs, ft              		is fct=50 & format=0x10 & fs & ft {
-	    trapIfSNaN(fs:4, ft:4);
 	    fcsr[23,1] = (fs f== ft);
 	}
 
 	:c.f.S fs, ft               		is fct=48 & format=0x10 & fs & ft {
-	    trapIfSNaN(fs:4, ft:4); # Trap if either operand is a Signaling NaN
 	    fcsr[23,1] = 0; # Always false
 	}
 
 	:c.le.S fs, ft              		is fct=54 & format=0x10 & fs & ft {
-	    trapIfNaN(fs:4, ft:4);
 	    fcsr[23,1] = (fs f<= ft);
 	}
 
 	:c.lt.S fs, ft              		is fct=52 & format=0x10 & fs & ft {
-	    trapIfNaN(fs:4, ft:4);
 	    fcsr[23,1] = (fs f< ft);
 	}
 

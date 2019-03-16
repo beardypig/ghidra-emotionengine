@@ -107,13 +107,6 @@ define pcodeop QFSRV;
     storeQuadWord(OFF_BASE, RT128src);
 }
 
-@ifdef PSEUDO
-:sq.zero OFF_BASE                           is prime=31 & OFF_BASE & rt=0 {
-    storeQuadWordZero(OFF_BASE);
-}
-@endif
-
-
 :mtsa RSsrc                                 is prime=0 & RSsrc & imm15=0 & fct=41 {
     fsa = RSsrc;
 }

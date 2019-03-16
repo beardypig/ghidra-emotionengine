@@ -275,22 +275,22 @@ with : prime=28 {
     }
 
     # 0111 0000 0000 0000 dddd d000 0001 0000
-    :mfhi1 RD                                        is RD & zero10=0 & zero5=0 & fct=16 {
+    :mfhi1 RD                                        is RD & rs=0 & rt=0 & zero5=0 & fct=16 {
         RD = hi1;
     }
 
     # 0111 00ss sss0 0000 0000 0000 0001 0001
-    :mthi1 RSsrc                                     is RSsrc & zero10=0 & zero5=0 & fct=17 {
+    :mthi1 RSsrc                                     is RSsrc & rt=0 & rd=0 & zero5=0 & fct=17 {
         hi1 = RSsrc;
     }
 
-    # 0111 0000 0000 0000 dddd d000 0001 0000
-    :mflo1 RD                                        is RD & zero10=0 & zero5=0 & fct=18 {
+    # 0111 0000 0000 0000 dddd d000 0001 0010
+    :mflo1 RD                                        is RD & rs=0 & rt=0 & zero5=0 & fct=18 {
         RD = lo1;
     }
 
     # 0111 00ss sss0 0000 0000 0000 0001 0011
-    :mtlo1 RSsrc                                     is RSsrc & zero10=0 & zero5=0 & fct=19 {
+    :mtlo1 RSsrc                                     is RSsrc & rt=0 & rd=0 & zero5=0 & fct=19 {
         lo1 = RSsrc;
     }
 

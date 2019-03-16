@@ -15,7 +15,7 @@
   </global>
   <aggressivetrim signext="true"/>  <!-- Aggressively try to eliminate sign extensions -->
   <default_proto>
-    <prototype name="__stdcall" extrapop="0" stackshift="0">
+    <prototype name="default" extrapop="0" stackshift="0">
       <input killedbycall="true">
         <pentry minsize="1" maxsize="4" metatype="float">
           <register name="f12"/>
@@ -41,30 +41,32 @@
         <pentry minsize="1" maxsize="4" metatype="float">
           <register name="f19"/>
         </pentry>
-        <pentry minsize="1" maxsize="16">
+
+        <pentry minsize="1" maxsize="16" extension="sign">
           <register name="a0_qw"/>
         </pentry>
-        <pentry minsize="1" maxsize="16">
+        <pentry minsize="1" maxsize="16" extension="sign">
           <register name="a1_qw"/>
         </pentry>
-        <pentry minsize="1" maxsize="16">
+        <pentry minsize="1" maxsize="16" extension="sign">
           <register name="a2_qw"/>
         </pentry>
-        <pentry minsize="1" maxsize="16">
+        <pentry minsize="1" maxsize="16" extension="sign">
           <register name="a3_qw"/>
         </pentry>
-        <pentry minsize="1" maxsize="16">
+        <pentry minsize="1" maxsize="16" extension="sign">
           <register name="t0_qw"/>
         </pentry>
-        <pentry minsize="1" maxsize="16">
+        <pentry minsize="1" maxsize="16" extension="sign">
           <register name="t1_qw"/>
         </pentry>
-        <pentry minsize="1" maxsize="16">
+        <pentry minsize="1" maxsize="16" extension="sign">
           <register name="t2_qw"/>
         </pentry>
-        <pentry minsize="1" maxsize="16">
+        <pentry minsize="1" maxsize="16" extension="sign">
           <register name="t3_qw"/>
         </pentry>
+
         <pentry minsize="1" maxsize="500" align="4">
           <addr offset="0" space="stack"/>
         </pentry>

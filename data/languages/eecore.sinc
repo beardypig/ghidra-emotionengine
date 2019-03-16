@@ -114,6 +114,10 @@ define pcodeop QFSRV;
 @endif
 
 
+:mfsa RD                                    is prime=0 & RD & rs=0 & rt=0 & fct=40 {
+    RD = fsa;
+}
+
 :mtsa RSsrc                                 is prime=0 & RSsrc & imm15=0 & fct=41 {
     fsa = RSsrc;
 }

@@ -20,8 +20,8 @@ define pcodeop syscall;
 }
 
 # 0010 01ss ssst tttt iiii iiii iiii iiii
-:addiu RT32, RS32src, immed			    is prime=9 & RT32 & RS32src & immed & RT {
-    RT32 = RS32src + immed;
+:addiu RT32, RS32src, simmed            is prime=9 & RT32 & RS32src & simmed & RT {
+    RT32 = RS32src + simmed;
     RT = sext(RT32);
 }
 

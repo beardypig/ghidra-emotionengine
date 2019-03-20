@@ -335,13 +335,8 @@ with : prime=28 {
 
 
 @ifdef PSEUDO
-    # pseudo opcode, clear quad word
-    :clear.qw RD128                                  is rs=0 & RD128 & rt=0 & mmiop=24 & fct=40 {
-        RD128 = 0;
-    }
-
     # pseudo opcode, move quad word
-    :move.qw RD128, RS128src                         is RS128src & RD128 & rt=0 & mmiop=24 & fct=40 {
+    :moveq RD128, RS128src                          is RS128src & RD128 & rt=0 & mmiop=24 & fct=40 {
         RD128 = RS128src;
     }
 @endif

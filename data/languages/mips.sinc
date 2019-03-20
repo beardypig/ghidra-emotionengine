@@ -197,19 +197,23 @@ define pcodeop syscall;
 # pseudo opcode move (rd = rs + 0)
 :move RD, RSsrc                         is prime=0 & fct=45 & RSsrc & RD & rt=0 & zero5=0 {
     RD = RSsrc;
-}s
+}
 @endif
 
 # 0000 00ss ssst tttt 0000 0000 0001 1010
-:div RD, RS32src, RT32src           	is prime=0 & fct=26 & zero10=0 & RD & RS32src & RT32src {
-	tmp:4 = RS32src s/ RT32src;
-	RD = sext(tmp);
+:div RS32src, RT32src                   is prime=0 & fct=26 & zero10 & RS32src & RT32src {
+    quotient:4 = RS32src s/ RT32src;
+    remainder:4 = RS32src s% RT32src;
+    lo = sext(quotient);
+    hi = sext(remainder);
 }
 
 # 0000 00ss ssst tttt 0000 0000 0001 1011
-:divu RD, RS32src, RT32src           	is prime=0 & fct=27 & zero10=0 & RD & RS32src & RT32src {
-	tmp:4 = RS32src s/ RT32src;
-	RD = sext(tmp);
+:divu RS32src, RT32src                  is prime=0 & fct=27 & zero10=0 & RS32src & RT32src {
+    quotient:4 = RS32src s/ RT32src;
+    remainder:4 = RS32src s% RT32src;
+    lo = sext(quotient);
+    hi = sext(remainder);
 }
 
 # 0000 0000 000t tttt dddd daaa aa11 1000

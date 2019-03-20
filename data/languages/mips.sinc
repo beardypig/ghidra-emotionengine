@@ -223,7 +223,7 @@ define pcodeop syscall;
 }
 
 # 0000 00ss ssst tttt dddd d000 0001 0100
-:dsllv RD, RTsrc, RSsrc					is prime=0 & fct=20 & rs=0 & RD & RTsrc & RSsrc {
+:dsllv RD, RTsrc, RSsrc					is prime=0 & fct=20 & RD & RTsrc & RSsrc {
 	RD = RTsrc << RSsrc;
 }
 

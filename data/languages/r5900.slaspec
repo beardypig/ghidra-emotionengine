@@ -7,8 +7,6 @@
 #  4. COP1 (FPU) Instruction Set
 #  5. COP2 (VU) Macro Instruction Set
 
-@define PSEUDO "1"
-
 define endian=little;
 define alignment=2;
 

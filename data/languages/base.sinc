@@ -179,8 +179,6 @@ RT32src: rt   	is rt & rt32=0      { export 0:4; }
 
 # relative offsets
 Rel16: reloc		is off16	[ reloc=inst_start+4+4*off16; ]					{ export *:4 reloc; }
-Rel21: reloc		is off21	[ reloc=inst_start+4+4*off21; ]					{ export *:4 reloc; }
-Rel26: reloc		is off26	[ reloc=inst_start+4+4*off26; ]					{ export *:4 reloc; }
 Abs26: reloc		is ind26	[ reloc=((inst_start+4) $and 0xfffffffff0000000) | 4*ind26; ]	{ export *:4 reloc; }
 
 OFF_BASE: simmed(base)  	is simmed & base    { tmp:4 = base:4 + simmed; export tmp; }

@@ -2,9 +2,6 @@
 
 define register offset=0x400 size=8 [ fsa ];       # 64 bit
 
-define pcodeop loadQuadWord;
-define pcodeop storeQuadWord;
-define pcodeop storeQuadWordZero;
 define pcodeop PABSH;
 define pcodeop PABSW;
 define pcodeop PADDB;
@@ -98,14 +95,15 @@ define pcodeop PXOR;
 define pcodeop QFSRV;
 
 # 0111 10bb bbbt tttt iiii iiii iiii iiii
-:lq RT128, OFF_BASE                         is prime=30 & OFF_BASE & RT128 {
-    RT128 = loadQuadWord(OFF_BASE);
+:lq RT, OFF_BASE                         is prime=30 & OFF_BASE & RT {
+    RT = *:8 OFF_BASE;
 }
 
 # 0111 11bb bbbt tttt iiii iiii iiii iiii
-:sq RT128src, OFF_BASE                      is prime=31 & OFF_BASE & RT128src {
-    storeQuadWord(OFF_BASE, RT128src);
+:sq RTsrc, OFF_BASE                         is prime=31 & OFF_BASE & RTsrc {
+    *[ram]:8 OFF_BASE = RTsrc;
 }
+
 
 :mfsa RD                                    is prime=0 & RD & rs=0 & rt=0 & fct=40 {
     RD = fsa;
@@ -333,13 +331,12 @@ with : prime=28 {
         hi = zext(prod:4);
     }
 
-
-@ifdef PSEUDO
-    # pseudo opcode, move quad word
-    :moveq RD128, RS128src                          is RS128src & RD128 & rt=0 & mmiop=24 & fct=40 {
-        RD128 = RS128src;
+    # special case of paddub, move quad word
+    # only operates on the 64 bit representations of the registers due to a 64 bit const varnode limitation
+    :moveq RD, RSsrc                                is RSsrc & RD & rt=0 & mmiop=24 & fct=40 {
+        RD = RSsrc;
     }
-@endif
+
 
     # PADDW
     :paddw RD128, RS128src, RT128src                is RS128src & RD128 & RT128src & mmiop=0 & fct=8 {

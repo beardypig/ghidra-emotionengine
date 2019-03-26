@@ -137,9 +137,9 @@ with : prime=17 {  #COP1
 	    fd = (fs f* ft) f+ ACC;
 	}
 
-	:madda.S fd, fs, ft      			is fct=30 & fd & fs & ft & format=0x10 {
+	:madda.S fs, ft      				is fct=30 & fd=0 & fs & ft & format=0x10 {
 	    # TODO: not a complete implementation at all
-	    fd = (fs f* ft) f+ ACC;
+	    ACC = (fs f* ft) f+ ACC;
 	}
 
 	:max.S fd, fs, ft      				is fct=40 & fd & fs & ft & format=0x10 {
@@ -167,9 +167,9 @@ with : prime=17 {  #COP1
 	    fd = ACC f- (fs f* ft);
 	}
 
-	:msuba.S fd, fs, ft      			is fct=31 & fd & fs & ft & format=0x10 {
+	:msuba.S fs, ft      				is fct=31 & fd=0 & fs & ft & format=0x10 {
 	    # TODO: not a complete implementation at all
-	    fd = ACC f- (fs f* ft);
+	    ACC = ACC f- (fs f* ft);
 	}
 
 	# 0100 0100 100t tttt dddd d000 0000 0000
@@ -184,7 +184,7 @@ with : prime=17 {  #COP1
 	}
 
 	# 0100 01ff ffft tttt ssss sddd dd00 0010
-	:mul.S fs, ft           			is fct=26 & ft & fs & fd=0 & format=0x10 {
+	:mula.S fs, ft           			is fct=26 & ft & fs & fd=0 & format=0x10 {
 	    ACC = fs f* ft;
 	}
 
@@ -194,12 +194,12 @@ with : prime=17 {  #COP1
 	}
 
 	# 0100 01ff fff0 0000 ssss sddd dd01 0110
-	:rsqrt.S fd, fs             		is ft=0 & fct=22 & fd & fs & format=0x10 {
-	    fd = 1:4 f/ sqrt(fs);
+	:rsqrt.S fd, fs, ft            		is fct=22 & fd & fs & ft & format=0x10 {
+	    fd = fs f/ sqrt(ft);
 	}
 
-	:sqrt.S fd, fs              		is ft=0 & fct=4 & fd & fs & format=0x10 {
-	    fd = sqrt(fs);
+	:sqrt.S fd, ft              		is fct=4 & fd & fs=0 & ft & format=0x10 {
+	    fd = sqrt(ft);
 	}
 
 	# 0100 0110 000t tttt ssss sddd dd00 0001
@@ -223,4 +223,3 @@ with : prime=17 {  #COP1
 :swc1 ft, OFF_BASE              		is prime=57 & OFF_BASE & ft {
     *[ram]:4 OFF_BASE = ft:4;
 }
-

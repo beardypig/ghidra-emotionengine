@@ -137,7 +137,7 @@ with : prime=17 {  #COP1
 	    fd = (fs f* ft) f+ ACC;
 	}
 
-	:madda.S fd, fs, ft      			is fct=30 & fd & fs & ft & format=0x10 {
+	:madda.S fs, ft      				is fct=30 & fd=0 & fs & ft & format=0x10 {
 	    # TODO: not a complete implementation at all
 	    ACC = (fs f* ft) f+ ACC;
 	}
@@ -167,7 +167,7 @@ with : prime=17 {  #COP1
 	    fd = ACC f- (fs f* ft);
 	}
 
-	:msuba.S fd, fs, ft      			is fct=31 & fd & fs & ft & format=0x10 {
+	:msuba.S fs, ft      				is fct=31 & fd=0 & fs & ft & format=0x10 {
 	    # TODO: not a complete implementation at all
 	    ACC = ACC f- (fs f* ft);
 	}

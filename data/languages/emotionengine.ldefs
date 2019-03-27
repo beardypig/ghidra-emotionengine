@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <language_definitions>
-   <language processor="MIPS"
+   <language processor="MIPS-R5900"
             endian="little"
             size="32"
-            variant="R5900-PS2"
-            version="1.3.3"
+            variant="PS2"
+            version="1.4.0"
             slafile="r5900.sla"
             processorspec="r5900.pspec"
             manualindexfile="../manuals/eecore.idx"

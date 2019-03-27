@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <processor_spec>
-  <properties>
-    <property key="addressesDoNotAppearDirectlyInCode" value="true"/>
-  </properties>
-  <programcounter register="pc"/>
+    <properties>
+        <property key="addressesDoNotAppearDirectlyInCode" value="true"/>
+    </properties>
+    <programcounter register="pc"/>
+
+    <default_memory_blocks>
+        <memory_block name="registers.io"   start_address="0x10000000" length="0x10000"     initialized="false" mode="rwv"/>
+        <memory_block name="vu0.code"       start_address="0x11000000" length="0x1000"      initialized="false"/>
+        <memory_block name="vu0.data"       start_address="0x11004000" length="0x1000"      initialized="false"/>
+        <memory_block name="vu1.code"       start_address="0x11008000" length="0x4000"      initialized="false"/>
+        <memory_block name="vu1.data"       start_address="0x1100C000" length="0x4000"      initialized="false"/>
+        <memory_block name="registers.gs"   start_address="0x12000000" length="0x2000"      initialized="false" mode="rwv"/>
+        <memory_block name="scratchpad"     start_address="0x70000000" length="0x4000"      initialized="false"/>
+    </default_memory_blocks>
 </processor_spec>

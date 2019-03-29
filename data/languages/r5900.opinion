@@ -47,7 +47,7 @@ Elf e_flags are used for the secondary attribute, the following are pulled from 
 0xa0000000      EF_MIPS_ARCH_64R6       MIPS64 R6
 -->
 
-    <constraint primary="8,10" processor="MIPS" size="32" variant="R5900-PS2"
+    <constraint primary="8,10" processor="MIPS-R5900" size="32" variant="PS2"
 		secondary= "0b 0010 .... .... .... 0100 0.0. 0000 ...."/>
 
     </constraint>

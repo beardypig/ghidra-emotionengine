@@ -44,6 +44,8 @@ PCR: reg        is reg              { export reg; }
 # getCopCondition(cop_num, cc)
 define pcodeop getCopCondition;
 define pcodeop cacheOp;
+define pcodeop EI;
+define pcodeop DI;
 
 define pcodeop TLB_probe_for_matching_entry;
 define pcodeop TLB_read_indexed_entryHi;
@@ -98,13 +100,13 @@ with : prime=16 { # COP0
     # Disable Interrupts
     #0100 0010 0000 0000 0000 0000 0011 1000
     :di                                         is bit25=1 & fct=0x39 & copfill=0 {
-        Status = Status & -2;
+        DI();
     }
 
     # Enable Interrupts
     #0100 0010 0000 0000 0000 0000 0011 1000
     :ei                                         is bit25=1 & fct=0x38 & copfill=0 {
-        Status = Status | 1;
+        EI();
     }
 
     # Exception Return

@@ -27,9 +27,9 @@ define pcodeop syscall;
 
 # 0010 0100 000t tttt iiii iiii iiii iiii
 # special case of ADDIU
-:li RT32, immed                         is prime=9 & RT32 & rs=0 & immed & RT {
-    RT32 = zext(immed:2);
-    RT = zext(RT32);
+:li RT32, simmed                         is prime=9 & RT32 & rs=0 & simmed & RT {
+    RT32 = sext(simmed:2);
+    RT = sext(RT32);
 }
 
 # 0000 00ss ssst tttt dddd d000 0010 0001

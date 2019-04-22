@@ -106,6 +106,11 @@ with : prime=17 {  #COP1
 	    fs_fcr = RTsrc:4;
 	}
 
+	# only defined for fcsr (31)
+	:clear fs_fcr             			is copop=6 & rt=0 & fs_fcr & fs=31 & bigfunct=0 {
+	    fs_fcr = 0;
+	}
+
 	:cvt.s.W fd, fs             		is ft=0 & fct=32 & fd & fs & format=0x14 {
     	fd = int2float(fs);
 	}
@@ -176,6 +181,11 @@ with : prime=17 {  #COP1
 	:mtc1 RT32src, fs                 	is copop=4 & RT32src & fs & bigfunct=0 {
 	    # Move 32-bits of RTsrc to FPR fs
 		fs = RT32src;
+	}
+
+	# 0100 0100 100t tttt dddd d000 0000 0000
+	:clear fs                 	is copop=4 & rt=0 & fs & bigfunct=0 {
+		fs = 0;
 	}
 
 	# 0100 01ff ffft tttt ssss sddd dd00 0010

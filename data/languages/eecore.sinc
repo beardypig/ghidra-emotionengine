@@ -134,7 +134,7 @@ define pcodeop QFSRV;
     lo = sext(prod:4);
     prod = prod >> 32;
     hi = sext(prod:4);
-    RD = sext(prod:4);
+    RD = lo;
 }
 
 :multu RD, RS32src, RT32src                 is prime=0 & RD & RS32src & RT32src & zero5=0 & fct=25 {
@@ -145,7 +145,7 @@ define pcodeop QFSRV;
     lo = zext(prod:4);
     prod = prod >> 32;
     hi = zext(prod:4);
-    RD = zext(prod:4);
+    RD = lo;
 }
 
 with : prime=28 {
@@ -297,7 +297,7 @@ with : prime=28 {
         lo = sext(prod:4);
         prod = prod >> 32;
         hi = sext(prod:4);
-        RD = sext(prod:4);
+        RD = lo;
     }
 
     :mult1 RS32src, RT32src                          is rd=0 & RS32src & RT32src & zero5=0 & fct=24 {
@@ -318,7 +318,7 @@ with : prime=28 {
         lo = zext(prod:4);
         prod = prod >> 32;
         hi = zext(prod:4);
-        RD = zext(prod:4);
+        RD = lo;
     }
 
     :multu1 RS32src, RT32src                         is rd=0 & RS32src & RT32src & zero5=0 & fct=25 {

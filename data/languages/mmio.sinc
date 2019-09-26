@@ -10,12 +10,12 @@ define ram offset=0x10001800 size=0x100 [ REG_TIMER3 ];
 
 # Image Processing Unit (IPU)
 
-define ram offset=0x10002000 size=0x8   [ REG_IPU_COMMAND             ];
-define ram offset=0x10002010 size=0x4   [ REG_IPU_CONTROL             ];
-define ram offset=0x10002020 size=0x4   [ REG_IPU_BIT_POINTER_CONTROL ];
-define ram offset=0x10002030 size=0x8   [ REG_IPU_TOP_OF_BITSTREAM    ];
-define ram offset=0x10007000 size=0x10  [ REG_IPU_OUT_FIFO_READ       ];
-define ram offset=0x10007010 size=0x10  [ REG_IPU_IN_FIFO_WRITE       ];
+define ram offset=0x10002000 size=0x8   [ REG_IPU_CMD               ]; # IPU Command
+define ram offset=0x10002010 size=0x4   [ REG_IPU_CTRL              ]; # IPU Control
+define ram offset=0x10002020 size=0x4   [ REG_IPU_BP                ]; # IPU bit pointer control
+define ram offset=0x10002030 size=0x8   [ REG_IPU_TOP               ]; # Top of bitsteam
+define ram offset=0x10007000 size=0x10  [ REG_IPU_OUT_FIFO          ]; # Out FIFO (read)
+define ram offset=0x10007010 size=0x10  [ REG_IPU_IN_FIFO           ]; # In FIFO (write)
 
 # Graphics Interface (GIF)
 

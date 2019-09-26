@@ -33,16 +33,74 @@ define ram offset=0x10006000 size=0x10  [ GIF_FIFO ];
 
 # DMA Controller (DMAC)
 
-define ram offset=0x10008000 size=0x100 [ DMAC_CHANNEL0_VIF0 ];
-define ram offset=0x10009000 size=0x100 [ DMAC_CHANNEL1_VIF1 ];
-define ram offset=0x1000A000 size=0x100 [ DMAC_CHANNEL2_GIF ];
-define ram offset=0x1000B000 size=0x100 [ DMAC_CHANNEL3_IPU_FROM ];
-define ram offset=0x1000B400 size=0x100 [ DMAC_CHANNEL4_IPU_TO ];
-define ram offset=0x1000C000 size=0x100 [ DMAC_CHANNEL5_SIF0 ];
-define ram offset=0x1000C400 size=0x100 [ DMAC_CHANNEL6_SIF1 ];
-define ram offset=0x1000C800 size=0x100 [ DMAC_CHANNEL7_SIF2 ];
-define ram offset=0x1000D000 size=0x100 [ DMAC_CHANNEL8_SPR_FROM ];
-define ram offset=0x1000D400 size=0x100 [ DMAC_CHANNEL9_SPR_TO ];
+# Channel 0
+define ram offset=0x10008000 size=0x4   [ DMAC_0_VIF0_CHCR      ]; # Channel control.
+define ram offset=0x10008010 size=0x4   [ DMAC_0_VIF0_MADR      ]; # Channel address.
+define ram offset=0x10008020 size=0x4   [ DMAC_0_VIF0_QWC       ]; # Quadword count.
+define ram offset=0x10008030 size=0x4   [ DMAC_0_VIF0_TADR      ]; # Channel tag address.
+define ram offset=0x10008040 size=0x4   [ DMAC_0_VIF0_ASR0      ]; # Channel saved tag address. Only used by the VIF0, VIF1, and GIF channels.
+define ram offset=0x10008050 size=0x4   [ DMAC_0_VIF0_ASR1      ]; # Channel saved tag address. Only used by the VIF0, VIF1, and GIF channels.
+
+# Channel 1
+define ram offset=0x10009000 size=0x4   [ DMAC_1_VIF1_CHCR      ]; # Channel control.
+define ram offset=0x10009010 size=0x4   [ DMAC_1_VIF1_MADR      ]; # Channel address.
+define ram offset=0x10009020 size=0x4   [ DMAC_1_VIF1_QWC       ]; # Quadword count.
+define ram offset=0x10009030 size=0x4   [ DMAC_1_VIF1_TADR      ]; # Channel tag address.
+define ram offset=0x10009040 size=0x4   [ DMAC_1_VIF1_ASR0      ]; # Channel saved tag address. Only used by the VIF0, VIF1, and GIF channels.
+define ram offset=0x10009050 size=0x4   [ DMAC_1_VIF1_ASR1      ]; # Channel saved tag address. Only used by the VIF0, VIF1, and GIF channels.
+
+# Channel 2
+define ram offset=0x1000A000 size=0x4   [ DMAC_2_GIF_CHCR       ]; # Channel control.
+define ram offset=0x1000A010 size=0x4   [ DMAC_2_GIF_MADR       ]; # Channel address.
+define ram offset=0x1000A020 size=0x4   [ DMAC_2_GIF_QWC        ]; # Quadword count.
+define ram offset=0x1000A030 size=0x4   [ DMAC_2_GIF_TADR       ]; # Channel tag address.
+define ram offset=0x1000A040 size=0x4   [ DMAC_2_GIF_ASR0       ]; # Channel saved tag address. Only used by the VIF0, VIF1, and GIF channels.
+define ram offset=0x1000A050 size=0x4   [ DMAC_2_GIF_ASR1       ]; # Channel saved tag address. Only used by the VIF0, VIF1, and GIF channels.
+
+# Channel 3
+define ram offset=0x1000B000 size=0x4   [ DMAC_3_IPU_FROM_CHCR  ]; # Channel control.
+define ram offset=0x1000B010 size=0x4   [ DMAC_3_IPU_FROM_MADR  ]; # Channel address.
+define ram offset=0x1000B020 size=0x4   [ DMAC_3_IPU_FROM_QWC   ]; # Quadword count.
+define ram offset=0x1000B030 size=0x4   [ DMAC_3_IPU_FROM_TADR  ]; # Channel tag address.
+
+# Channel 4
+define ram offset=0x1000B400 size=0x4   [ DMAC_4_IPU_TO_CHCR    ]; # Channel control.
+define ram offset=0x1000B410 size=0x4   [ DMAC_4_IPU_TO_MADR    ]; # Channel address.
+define ram offset=0x1000B420 size=0x4   [ DMAC_4_IPU_TO_QWC     ]; # Quadword count.
+define ram offset=0x1000B430 size=0x4   [ DMAC_4_IPU_TO_TADR    ]; # Channel tag address.
+
+# Channel 5
+define ram offset=0x1000C000 size=0x4   [ DMAC_5_SIF0_CHCR      ]; # Channel control.
+define ram offset=0x1000C010 size=0x4   [ DMAC_5_SIF0_MADR      ]; # Channel address.
+define ram offset=0x1000C020 size=0x4   [ DMAC_5_SIF0_QWC       ]; # Quadword count.
+define ram offset=0x1000C030 size=0x4   [ DMAC_5_SIF0_TADR      ]; # Channel tag address.
+
+# Channel 6
+define ram offset=0x1000C400 size=0x4   [ DMAC_6_SIF1_CHCR      ]; # Channel control.
+define ram offset=0x1000C410 size=0x4   [ DMAC_6_SIF1_MADR      ]; # Channel address.
+define ram offset=0x1000C420 size=0x4   [ DMAC_6_SIF1_QWC       ]; # Quadword count.
+define ram offset=0x1000C430 size=0x4   [ DMAC_6_SIF1_TADR      ]; # Channel tag address.
+
+# Channel 7
+define ram offset=0x1000C800 size=0x4   [ DMAC_7_SIF2_CHCR      ]; # Channel control.
+define ram offset=0x1000C810 size=0x4   [ DMAC_7_SIF2_MADR      ]; # Channel address.
+define ram offset=0x1000C820 size=0x4   [ DMAC_7_SIF2_QWC       ]; # Quadword count.
+define ram offset=0x1000C830 size=0x4   [ DMAC_7_SIF2_TADR      ]; # Channel tag address.
+
+# Channel 8
+define ram offset=0x1000D000 size=0x4   [ DMAC_8_SPR_FROM_CHCR  ]; # Channel control.
+define ram offset=0x1000D010 size=0x4   [ DMAC_8_SPR_FROM_MADR  ]; # Channel address.
+define ram offset=0x1000D020 size=0x4   [ DMAC_8_SPR_FROM_QWC   ]; # Quadword count.
+define ram offset=0x1000D030 size=0x4   [ DMAC_8_SPR_FROM_TADR  ]; # Channel tag address.
+define ram offset=0x1000D080 size=0x4   [ DMAC_8_SPR_FROM_SADR  ]; # Channel scratchpad address. Only used by SPR_FROM and SPR_TO.
+
+# Channel 9
+define ram offset=0x1000D400 size=0x4   [ DMAC_9_SPR_TO_CHCR    ]; # Channel control.
+define ram offset=0x1000D410 size=0x4   [ DMAC_9_SPR_TO_MADR    ]; # Channel address.
+define ram offset=0x1000D420 size=0x4   [ DMAC_9_SPR_TO_QWC     ]; # Quadword count.
+define ram offset=0x1000D430 size=0x4   [ DMAC_9_SPR_TO_TADR    ]; # Channel tag address.
+define ram offset=0x1000D480 size=0x4   [ DMAC_9_SPR_TO_SADR    ]; # Channel scratchpad address. Only used by SPR_FROM and SPR_TO.
+
 define ram offset=0x1000E000 size=0x4   [ DMAC_CTRL ];
 define ram offset=0x1000E010 size=0x4   [ DMAC_STAT ];
 define ram offset=0x1000E020 size=0x4   [ DMAC_PCR ];

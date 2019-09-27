@@ -72,6 +72,7 @@ define ram offset=0x10003940 size=0x4   [ REG_VIF0_COL0            ];
 define ram offset=0x10003950 size=0x4   [ REG_VIF0_COL1            ];
 define ram offset=0x10003960 size=0x4   [ REG_VIF0_COL2            ];
 define ram offset=0x10003970 size=0x4   [ REG_VIF0_COL3            ];
+
 define ram offset=0x10003C00 size=0x4   [ REG_VIF1_STAT            ];
 define ram offset=0x10003C10 size=0x4   [ REG_VIF1_FBRST           ];
 define ram offset=0x10003C20 size=0x4   [ REG_VIF1_ERR             ];
@@ -95,6 +96,7 @@ define ram offset=0x10003D40 size=0x4   [ REG_VIF1_COL0            ];
 define ram offset=0x10003D50 size=0x4   [ REG_VIF1_COL1            ];
 define ram offset=0x10003D60 size=0x4   [ REG_VIF1_COL2            ];
 define ram offset=0x10003D70 size=0x4   [ REG_VIF1_COL3            ];
+
 define ram offset=0x10004000 size=0x8   [ REG_VIF0_FIFO            ];
 define ram offset=0x10005000 size=0x8   [ REG_VIF1_FIFO            ];
 

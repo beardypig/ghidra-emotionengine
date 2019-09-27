@@ -4,10 +4,23 @@
 
 # EE Timers
 
-define ram offset=0x10000000 size=0x100 [ REG_TIMER0 ];
-define ram offset=0x10000800 size=0x100 [ REG_TIMER1 ];
-define ram offset=0x10001000 size=0x100 [ REG_TIMER2 ];
-define ram offset=0x10001800 size=0x100 [ REG_TIMER3 ];
+define ram offset=0x10000000 size=0x4   [ REG_RCNT0_COUNT          ];
+define ram offset=0x10000010 size=0x4   [ REG_RCNT0_MODE           ];
+define ram offset=0x10000020 size=0x4   [ REG_RCNT0_TARGET         ];
+define ram offset=0x10000030 size=0x4   [ REG_RCNT0_HOLD           ];
+
+define ram offset=0x10000800 size=0x4   [ REG_RCNT1_COUNT          ];
+define ram offset=0x10000810 size=0x4   [ REG_RCNT1_MODE           ];
+define ram offset=0x10000820 size=0x4   [ REG_RCNT1_TARGET         ];
+define ram offset=0x10000830 size=0x4   [ REG_RCNT1_HOLD           ];
+
+define ram offset=0x10001000 size=0x4   [ REG_RCNT2_COUNT          ];
+define ram offset=0x10001010 size=0x4   [ REG_RCNT2_MODE           ];
+define ram offset=0x10001020 size=0x4   [ REG_RCNT2_TARGET         ];
+
+define ram offset=0x10001800 size=0x4   [ REG_RCNT3_COUNT          ];
+define ram offset=0x10001810 size=0x4   [ REG_RCNT3_MODE           ];
+define ram offset=0x10001820 size=0x4   [ REG_RCNT3_TARGET         ];
 
 # Image Processing Unit (IPU)
 
@@ -15,6 +28,7 @@ define ram offset=0x10002000 size=0x8   [ REG_IPU_CMD              ]; # IPU Comm
 define ram offset=0x10002010 size=0x4   [ REG_IPU_CTRL             ]; # IPU Control
 define ram offset=0x10002020 size=0x4   [ REG_IPU_BP               ]; # IPU bit pointer control
 define ram offset=0x10002030 size=0x8   [ REG_IPU_TOP              ]; # Top of bitsteam
+
 define ram offset=0x10007000 size=0x10  [ REG_IPU_OUT_FIFO         ]; # Out FIFO (read)
 define ram offset=0x10007010 size=0x10  [ REG_IPU_IN_FIFO          ]; # In FIFO (write)
 
@@ -30,7 +44,57 @@ define ram offset=0x10003070 size=0x4   [ REG_GIF_TAG3             ]; # Bits 96-
 define ram offset=0x10003080 size=0x4   [ REG_GIF_CNT              ]; # Transfer status counter
 define ram offset=0x10003090 size=0x4   [ REG_GIF_P3CNT            ]; # PATH3 transfer status counter
 define ram offset=0x100030A0 size=0x4   [ REG_GIF_P3TAG            ]; # Bits 0-31 of PATH3 tag when interrupted
+
 define ram offset=0x10006000 size=0x10  [ REG_GIF_FIFO             ];
+
+# VIF
+
+# Some of the sizes may be wrong.
+define ram offset=0x10003800 size=0x4   [ REG_VIF0_STAT            ];
+define ram offset=0x10003810 size=0x4   [ REG_VIF0_FBRST           ];
+define ram offset=0x10003820 size=0x4   [ REG_VIF0_ERR             ];
+define ram offset=0x10003830 size=0x4   [ REG_VIF0_MARK            ];
+define ram offset=0x10003840 size=0x4   [ REG_VIF0_CYCLE           ];
+define ram offset=0x10003850 size=0x4   [ REG_VIF0_MODE            ];
+define ram offset=0x10003860 size=0x4   [ REG_VIF0_NUM             ];
+define ram offset=0x10003870 size=0x4   [ REG_VIF0_MASK            ];
+define ram offset=0x10003880 size=0x4   [ REG_VIF0_CODE            ];
+define ram offset=0x10003890 size=0x4   [ REG_VIF0_ITOPS           ];
+define ram offset=0x100038D0 size=0x4   [ REG_VIF0_ITOP            ];
+define ram offset=0x100038E0 size=0x4   [ REG_VIF0_TOP             ];
+define ram offset=0x10003900 size=0x4   [ REG_VIF0_ROW0            ];
+define ram offset=0x10003910 size=0x4   [ REG_VIF0_ROW1            ];
+define ram offset=0x10003920 size=0x4   [ REG_VIF0_ROW2            ];
+define ram offset=0x10003930 size=0x4   [ REG_VIF0_ROW3            ];
+define ram offset=0x10003940 size=0x4   [ REG_VIF0_COL0            ];
+define ram offset=0x10003950 size=0x4   [ REG_VIF0_COL1            ];
+define ram offset=0x10003960 size=0x4   [ REG_VIF0_COL2            ];
+define ram offset=0x10003970 size=0x4   [ REG_VIF0_COL3            ];
+define ram offset=0x10003C00 size=0x4   [ REG_VIF1_STAT            ];
+define ram offset=0x10003C10 size=0x4   [ REG_VIF1_FBRST           ];
+define ram offset=0x10003C20 size=0x4   [ REG_VIF1_ERR             ];
+define ram offset=0x10003C30 size=0x4   [ REG_VIF1_MARK            ];
+define ram offset=0x10003C40 size=0x4   [ REG_VIF1_CYCLE           ];
+define ram offset=0x10003C50 size=0x4   [ REG_VIF1_MODE            ];
+define ram offset=0x10003C60 size=0x4   [ REG_VIF1_NUM             ];
+define ram offset=0x10003C70 size=0x4   [ REG_VIF1_MASK            ];
+define ram offset=0x10003C80 size=0x4   [ REG_VIF1_CODE            ];
+define ram offset=0x10003C90 size=0x4   [ REG_VIF1_ITOPS           ];
+define ram offset=0x10003Ca0 size=0x4   [ REG_VIF1_BASE            ];
+define ram offset=0x10003Cb0 size=0x4   [ REG_VIF1_OFST            ];
+define ram offset=0x10003Cc0 size=0x4   [ REG_VIF1_TOPS            ];
+define ram offset=0x10003cd0 size=0x4   [ REG_VIF1_ITOP            ];
+define ram offset=0x10003ce0 size=0x4   [ REG_VIF1_TOP             ];
+define ram offset=0x10003d00 size=0x4   [ REG_VIF1_ROW0            ];
+define ram offset=0x10003D10 size=0x4   [ REG_VIF1_ROW1            ];
+define ram offset=0x10003D20 size=0x4   [ REG_VIF1_ROW2            ];
+define ram offset=0x10003D30 size=0x4   [ REG_VIF1_ROW3            ];
+define ram offset=0x10003D40 size=0x4   [ REG_VIF1_COL0            ];
+define ram offset=0x10003D50 size=0x4   [ REG_VIF1_COL1            ];
+define ram offset=0x10003D60 size=0x4   [ REG_VIF1_COL2            ];
+define ram offset=0x10003D70 size=0x4   [ REG_VIF1_COL3            ];
+define ram offset=0x10004000 size=0x8   [ REG_VIF0_FIFO            ];
+define ram offset=0x10005000 size=0x8   [ REG_VIF1_FIFO            ];
 
 # DMA Controller (DMAC)
 
@@ -117,6 +181,18 @@ define ram offset=0x1000F590 size=0x4   [ REG_DMAC_ENABLEW         ]; # DMAC dis
 define ram offset=0x1000F000 size=0x4   [ REG_INTC_STAT            ]; # Interrupt status
 define ram offset=0x1000F010 size=0x4   [ REG_INTC_MASK            ]; # Interrupt mask
 
+# SIO
+
+# Some of the sizes may be wrong.
+define ram offset=0x1000F100 size=0x4   [ REG_SIO_LCR              ];
+define ram offset=0x1000F110 size=0x4   [ REG_SIO_LSR              ];
+define ram offset=0x1000F120 size=0x4   [ REG_SIO_IER              ];
+define ram offset=0x1000F130 size=0x4   [ REG_SIO_ISR              ];
+define ram offset=0x1000F140 size=0x4   [ REG_SIO_FCR              ];
+define ram offset=0x1000F150 size=0x4   [ REG_SIO_BGR              ];
+define ram offset=0x1000F180 size=0x1   [ REG_SIO_TXFIFO           ];
+define ram offset=0x1000F1C0 size=0x4   [ REG_SIO_RXFIFO           ];
+
 # Subsystem Interface (SIF)
 
 define ram offset=0x1000F200 size=0x4   [ REG_SIF_MSCOM            ]; # EE->IOP communication
@@ -124,6 +200,15 @@ define ram offset=0x1000F210 size=0x4   [ REG_SIF_SMCOM            ]; # IOP->EE 
 define ram offset=0x1000F220 size=0x4   [ REG_SIF_MSFLAG           ]; # EE->IOP flags
 define ram offset=0x1000F230 size=0x4   [ REG_SIF_SMFLAG           ]; # IOP->EE flags
 define ram offset=0x1000F240 size=0x4   [ REG_SIF_CONTROL          ]; # Control register
+define ram offset=0x1000F250 size=0x4   [ REG_SIF_F250             ];
+define ram offset=0x1000F260 size=0x4   [ REG_SIF_F260             ];
+define ram offset=0x1000F300 size=0x4   [ REG_SIF_F300             ];
+define ram offset=0x1000F380 size=0x4   [ REG_SIF_F380             ];
+
+# MCH
+
+define ram offset=0x1000F430 size=0x4   [ REG_MCH_RICM             ];
+define ram offset=0x1000F440 size=0x4   [ REG_MCH_DRD              ];
 
 # Privileged GS registers
 

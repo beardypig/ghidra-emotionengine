@@ -1,5 +1,6 @@
 # MMIO registers
 # For reference: https://psi-rockin.github.io/ps2tek/
+#                https://github.com/PCSX2/pcsx2/blob/c783b6d7b56916f62de53e50828355b214159a08/pcsx2/Hw.h
 
 # EE Timers
 

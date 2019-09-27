@@ -141,7 +141,7 @@ define ram offset=0x120000B0 size=0x8   [ REG_GS_EXTBUF            ];
 define ram offset=0x120000C0 size=0x8   [ REG_GS_EXTDATA           ];
 define ram offset=0x120000D0 size=0x8   [ REG_GS_EXTWRITE          ];
 define ram offset=0x120000E0 size=0x8   [ REG_GS_BGCOLOR           ]; # background color
-define ram offset=0x12001000 size=0x8   [ REG_GS_GS_CSR            ]; # control register
-define ram offset=0x12001010 size=0x8   [ REG_GS_GS_IMR            ]; # GS interrupt control
+define ram offset=0x12001000 size=0x8   [ REG_GS_CSR               ]; # control register
+define ram offset=0x12001010 size=0x8   [ REG_GS_IMR               ]; # GS interrupt control
 define ram offset=0x12001040 size=0x8   [ REG_GS_BUSDIR            ]; # transfer direction
 define ram offset=0x12001080 size=0x8   [ REG_GS_SIGLBLID          ]; # signal

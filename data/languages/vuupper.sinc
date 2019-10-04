@@ -1,0 +1,314 @@
+# VU upper instructions
+
+define pcodeop BC2F;
+define pcodeop BC2FL;
+define pcodeop BC2T;
+define pcodeop BC2TL;
+define pcodeop CFC2;
+define pcodeop CTC2;
+define pcodeop QMFC2;
+define pcodeop QMTC2;
+define pcodeop VABS;
+define pcodeop VADD;
+define pcodeop VADDI;
+define pcodeop VADDQ;
+define pcodeop VADDBC;
+define pcodeop VADDA;
+define pcodeop VADDAI;
+define pcodeop VADDAQ;
+define pcodeop VADDABC;
+define pcodeop VCALLMS;
+define pcodeop VCALLMSR;
+define pcodeop VCLIP;
+define pcodeop VDIV;
+define pcodeop VFTOI0;
+define pcodeop VFTOI4;
+define pcodeop VFTOI12;
+define pcodeop VFTOI15;
+define pcodeop VIADD;
+define pcodeop VIADDI;
+define pcodeop VIAND;
+define pcodeop VILWR;
+define pcodeop VIOR;
+define pcodeop VISUB;
+define pcodeop VISWR;
+define pcodeop VITOF0;
+define pcodeop VITOF4;
+define pcodeop VITOF12;
+define pcodeop VITOF15;
+define pcodeop VLQD;
+define pcodeop VLQI;
+define pcodeop VMADD;
+define pcodeop VMADDI;
+define pcodeop VMADDQ;
+define pcodeop VMADDBC;
+define pcodeop VMADDA;
+define pcodeop VMADDAI;
+define pcodeop VMADDAQ;
+define pcodeop VMADDABC;
+define pcodeop VMAX;
+define pcodeop VMAXI;
+define pcodeop VMAXBC;
+define pcodeop VMFIR;
+define pcodeop VMINI;
+define pcodeop VMINII;
+define pcodeop VMINIBC;
+define pcodeop VMOVE;
+define pcodeop VMR32;
+define pcodeop VMSUB;
+define pcodeop VMSUBI;
+define pcodeop VMSUBQ;
+define pcodeop VMSUBBC;
+define pcodeop VMSUBA;
+define pcodeop VMSUBAI;
+define pcodeop VMSUBAQ;
+define pcodeop VMSUBABC;
+define pcodeop VMTIR;
+define pcodeop VMUL;
+define pcodeop VMULI;
+define pcodeop VMULQ;
+define pcodeop VMULBC;
+define pcodeop VMULA;
+define pcodeop VMULAI;
+define pcodeop VMULAQ;
+define pcodeop VMULABC;
+define pcodeop VNOP;
+define pcodeop VOPMULA;
+define pcodeop VOPMSUB;
+define pcodeop VRGET;
+define pcodeop VRINIT;
+define pcodeop VRNEXT;
+define pcodeop VRSQvurt;
+define pcodeop VRXOR;
+define pcodeop VSQD;
+define pcodeop VSQI;
+define pcodeop VSQvurt;
+define pcodeop VSUB;
+define pcodeop VSUBI;
+define pcodeop VSUBQ;
+define pcodeop VSUBBC;
+define pcodeop VSUBA;
+define pcodeop VSUBAI;
+define pcodeop VSUBAQ;
+define pcodeop VSUBABC;
+define pcodeop VWAITQ;
+
+I: "NI" is vuinterlock=0 {}
+I: "I"  is vuinterlock=1 {}
+
+dest: ""      is vudest=0b0000 {}
+dest: ".w"    is vudest=0b0001 {}
+dest: ".z"    is vudest=0b0010 {}
+dest: ".zw"   is vudest=0b0011 {}
+dest: ".y"    is vudest=0b0100 {}
+dest: ".yw"   is vudest=0b0101 {}
+dest: ".yz"   is vudest=0b0110 {}
+dest: ".yzw"  is vudest=0b0111 {}
+dest: ".x"    is vudest=0b1000 {}
+dest: ".xw"   is vudest=0b1001 {}
+dest: ".xz"   is vudest=0b1010 {}
+dest: ".xzw"  is vudest=0b1011 {}
+dest: ".xy"   is vudest=0b1100 {}
+dest: ".xyw"  is vudest=0b1101 {}
+dest: ".xyz"  is vudest=0b1110 {}
+dest: ".xyzw" is vudest=0b1111 {}
+
+bc: "x"      is vubc=0 {}
+bc: "y"      is vubc=1 {}
+bc: "z"      is vubc=2 {}
+bc: "w"      is vubc=3 {}
+
+fsf: "x"     is vufsf=0 {}
+fsf: "y"     is vufsf=1 {}
+fsf: "z"     is vufsf=2 {}
+fsf: "w"     is vufsf=3 {}
+
+ftf: "x"     is vuftf=0 {}
+ftf: "y"     is vuftf=1 {}
+ftf: "z"     is vuftf=2 {}
+ftf: "w"     is vuftf=3 {}
+
+:bc2f vuoffset                                    is vuop_21_25=0b01000 & vuop_16_20=0b00000 & vuoffset
+    { BC2F(vuoffset:4); }
+:bc2fl vuoffset                                   is vuop_21_25=0b01000 & vuop_16_20=0b00010 & vuoffset
+    { BC2FL(vuoffset:4); }
+:bc2t vuoffset                                    is vuop_21_25=0b01000 & vuop_16_20=0b00001 & vuoffset
+    { BC2T(vuoffset:4); }
+:bc2tl vuoffset                                   is vuop_21_25=0b01000 & vuop_16_20=0b00011 & vuoffset
+    { BC2TL(vuoffset:4); }
+:cfc2.I vurt, vuccid                              is vuop_21_25=0b00010       & vurt & vuccid        & vuop_1_10=0b0000000000 & I
+    { CFC2(I, vurt:4, vuccid:4); }
+:ctc2.I vurt, vuccid                              is vuop_21_25=0b00110       & vurt & vuccid        & vuop_1_10=0b0000000000 & I
+    { CTC2(I, vurt:4, vuccid:4); }
+:qmfc2.I vurt, vufd                               is vuop_21_25=0b00001       & vurt & vufd & I
+    { QMFC2(I, vurt:4, vufd:4); }
+:qmtc2.I vufd, vurt                               is vuop_21_25=0b00101       & vurt & vufd          & vuop_1_10=0b0000000000 & I
+    { QMTC2(I, vufd:4, vurt:4); }
+:vabs^dest vuft, vufs                             is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00111111101
+    { VABS(dest, vuft:4, vufs:4); }
+:vadd^dest vufd, vufs, vuft                       is vuco=0b1 & dest          & vuft & vufs & vufd   & vuop_0_5=0b101000
+    { VADD(dest, vufd, vufs, vuft); }
+:vaddi^dest vufd, vufs, "I"                       is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b100010
+    { VADDI(dest, vufd, vufs); }
+:vaddq^dest vufd, vufs, "Q"                       is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b100000
+    { VADDQ(dest, vufd, vufs); }
+:vadd^bc^dest vufd, vufs, vuft                    is vuco=0b1 & dest          & vuft & vufs & vufd   & vuop_2_5=0b0000 & bc
+    { VADDBC(bc, dest, vufd, vufs, vuft); }
+:vadda^dest "ACC" vuft vufs                       is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b01010111100
+    { VADDA(dest, vuft, vufs); }
+:vaddai^dest "ACC", vufs, "I"                     is vuco=0b1 & dest          & vuft=0b00000 & vufs  & vuop_0_10=0b01000111110
+    { VADDAI(dest, vufs); }
+:vaddaq^dest "ACC", vufs, "Q"                     is vuco=0b1 & dest          & vuft=0b00000 & vufs  & vuop_0_10=0b01000111100
+    { VADDAQ(dest, vufs); }
+:vadda^bc^dest "ACC", vufs, vuft                  is vuco=0b1 & dest          & vuft & vufs          & vuop_2_10=0b000001111 & bc
+    { VADDABC(bc, dest, vufs, vuft); }
+:vcallms imm15 "; address =" address              is vuco=0b1 & vudest=0b0000 & imm15 & vuop_0_5=0b111000 [ address = imm15 * 8; ]
+    { VCALLMS(imm15:4); }
+:vcallmsr "vi27"                                  is vuco=0b1 & vudest=0b0000 & vuft=0b00000 & vufs=0b11011 & fd=0b00000 & vuop_0_5=0b111001
+    { VCALLMSR(); }
+:vclip"w.xyz" vufs, vuft                          is vuco=0b1 & vudest=0b1110 & vuft & vufs          & vuop_0_10=0b00111111111
+    { VCLIP(vuft, vufs); }
+:vdiv "Q", vufs^fsf, vuft^ftf                     is vuco=0b1 & ftf & fsf     & vuft & vufs          & vuop_0_10=0b01110111100
+    { VDIV(vufs, fsf, vuft, ftf); }
+:vftoi0^dest vuft, vufs                           is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00101111100
+    { VFTOI0(dest, vuft, vufs); }
+:vftoi4^dest vuft, vufs                           is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00101111101
+    { VFTOI4(dest, vuft, vufs); }
+:vftoi12^dest vuft, vufs                          is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00101111110
+    { VFTOI12(dest, vuft, vufs); }
+:vftoi15^dest vuft, vufs                          is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00101111111
+    { VFTOI15(dest, vuft, vufs); }
+:viadd vuid, vuis, vuit                           is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuid   & vuop_0_5=0b110000
+    { VIADD(vuid:4, vuis:4, vuit:4); }
+:viaddi vuit, vuis, vuimm5                        is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuimm5 & vuop_0_5=0b110010
+    { VIADDI(vuit:4, vuis:4, vuimm5:4); }
+:viand vuid, vuis, vuit                           is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuid   & vuop_0_5=0b110100
+    { VIAND(vuid:4, vuis:4, vuit:4); }
+:vilwr^dest vuit, (vuis)                          is vuco=0b1 & dest          & vuit & vuis          & vuop_0_10=0b01111111110
+    { VILWR(dest, vuit:4, vuis:4); }
+:vior vuid, vuis, vuit                            is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuid   & vuop_0_5=0b110101
+    { VIOR(vuid:4, vuis:4, vuit:4); }
+:visub vuid, vuis, vuit                           is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuid   & vuop_0_5=0b110001
+    { VISUB(vuid:4, vuis:4, vuit:4); }
+:viswr^dest vuit, (vuis)                          is vuco=0b1 & dest          & vuit & vuis          & vuop_0_10=0b01111111111
+    { VISWR(dest, vuit:4, vuis:4); }
+:vitof0^dest vuft, vufs                           is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00100111100
+    { VITOF0(dest, vuft, vufs); }
+:vitof4^dest vuft, vufs                           is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00100111101
+    { VITOF4(dest, vuft, vufs); }
+:vitof12^dest vuft, vufs                          is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00100111110
+    { VITOF12(dest, vuft, vufs); }
+:vitof15^dest vuft, vufs                          is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00100111111
+    { VITOF15(dest, vuft, vufs); }
+:vlqd^dest vuft, (--vuis)                         is vuco=0b1 & dest          & vuft & vuis          & vuop_0_10=0b01101111110
+    { VLQD(dest, vuft, vuis:4); }
+:vlqi^dest vuft, (vuis++)                         is vuco=0b1 & dest          & vuft & vuis          & vuop_0_10=0b01101111100
+    { VLQI(dest, vuft, vuis:4); }
+:vmadd^dest vufd, vufs, vuft                      is vuco=0b1 & dest          & vuft & vufs & vufd   & vuop_0_5=0b101001
+    { VMADD(vufd, vufs, vuft); }
+:vmaddi^dest vufd, vufs, "I"                      is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b100011
+    { VMADDI(vufd, vufs); }
+:vmaddq^dest vufd, vufs, "Q"                      is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b100001
+    { VMADDQ(vufd, vufs); }
+:vmadd^bc^dest vufd, vufs, vuft                   is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_2_5=0b0010 & bc
+    { VMADDBC(bc, dest, vufd, vufs, vuft); }
+:vmadda^dest "ACC", vufs, vuft                    is vuco=0b1 & dest & vuft          & vufs          & vuop_0_10=0b01010111101
+    { VMADDA(dest, vufs, vuft); }
+:vmaddai^dest "ACC", vufs, "I"                    is vuco=0b1 & dest & vuft=0b00000  & vufs          & vuop_0_10=0b01000111111
+    { VMADDAI(dest, vufs); }
+:vmaddaq^dest "ACC", vufs, "Q"                    is vuco=0b1 & dest & vuft=0b00000  & vufs          & vuop_0_10=0b01000111101
+    { VMADDAQ(dest, vufs); }
+:vmadda^bc^dest "ACC", vufs, vuft                 is vuco=0b1 & dest & vuft          & vufs          & vuop_2_10=0b000101111 & bc
+    { VMADDABC(bc, dest, vufs, vuft); }
+:vmax^dest vufd, vufs, vuft                       is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_0_5=0b101011
+    { VMAX(dest, vufd, vufs, vuft); }
+:vmaxi^dest vufd, vufs, "I"                       is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b011101
+    { VMAXI(dest, vufd, vufs); }
+:vmax^bc^dest vufd, vufs, vuft                    is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_2_5=0b0100 & bc
+    { VMAXBC(bc, dest, vufd, vufs, vuft); }
+:vmfir^dest vuft, vuis                            is vuco=0b1 & dest & vuft          & vuis          & vuop_0_10=0b01111111101
+    { VMFIR(dest, vuft, vuis:4); }
+:vmini^dest vufd, vufs, vuft                      is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_0_5=0b101111
+    { VMINI(dest, vufd, vufs, vuft); }
+:vminii^dest vufd, vufs, "I"                      is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b011111
+    { VMINII(dest, vufd, vufs); }
+:vminibc^bc^dest vufd, vufs, vuft                 is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_2_5=0b0101 & bc
+    { VMINIBC(dest, vufd, vufs, vuft); }
+:vmove^dest vuft, vufs                            is vuco=0b1 & dest & vuft          & vufs          & vuop_0_10=0b01100111100
+    { VMOVE(dest, vuft, vufs); }
+:vmr32^dest vuft, vufs                            is vuco=0b1 & dest & vuft          & vufs          & vuop_0_10=0b01100111101
+    { VMR32(dest, vuft, vufs); }
+:vmsub^dest vufd, vufs, vuft                      is vuco=0b1 & dest & vufd          & vufs & vuft   & vuop_0_5=0b101101
+    { VMSUB(dest, vufd, vufs, vuft); }
+:vmsubi^dest vufd, vufs, "I"                      is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b100111
+    { VMSUBI(dest, vufd, vufs); }
+:vmsubq^dest vufd, vufs, "Q"                      is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b100101
+    { VMSUBQ(dest, vufd, vufs); }
+:vmsub^bc^dest vufd, vufs, vuft                   is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_2_5=0b0011 & bc
+    { VMSUBBC(bc, dest, vufd, vufs, vuft); }
+:vmsuba^dest "ACC", vufs, vuft                    is vuco=0b1 & dest & vuft          & vufs          & vuop_0_10=0b01011111101
+    { VMSUBA(dest, vufs, vuft); }
+:vmsubai^dest "ACC", vufs, "I"                    is vuco=0b1 & dest & vuft=0b00000  & vufs          & vuop_0_10=0b01001111111
+    { VMSUBAI(dest, vufs); }
+:vmsubaq^dest "ACC", vufs, "Q"                    is vuco=0b1 & dest & vuft=0b00000  & vufs          & vuop_0_10=0b01001111101
+    { VMSUBAQ(dest, vufs); }
+:vmsuba^bc^dest "ACC", vufs, vuft                 is vuco=0b1 & dest & vuft          & vufs          & vuop_2_10=0b000111111 & bc
+    { VMSUBABC(bc, dest, vufs, vuft); }
+:vmtir vuit, vufs                                 is vuco=0b1 & vuftf=0b00 & vufsf   & vuit & vufs   & vuop_0_10=0b01111111100
+    { VMTIR(vuit:4, vufs); }
+:vmul^dest vufd, vufs, vuft                       is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_0_5=0b101010
+    { VMUL(dest, vufd, vufs, vuft); }
+:vmuli^dest vufd, vufs, "I"                       is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b011110
+    { VMULI(dest, vufd, vufs); }
+:vmulq^dest vufd, vufs, "Q"                       is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b011100
+    { VMULQ(dest, vufd, vufs); }
+:vmul^bc^dest vufd, vufs, vuft                    is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_2_5=0b0110 & bc
+    { VMULBC(bc, dest, vufd, vufs, vuft); }
+:vmula^dest "ACC", vufs, vuft                     is vuco=0b1 & dest & vuft          & vufs          & vuop_0_10=0b01010111110
+    { VMULA(dest, vufs, vuft); }
+:vmulai^dest "ACC", vufs, "I"                     is vuco=0b1 & dest & vuft=0b00000  & vufs          & vuop_0_10=0b00111111110
+    { VMULAI(dest, vufs); }
+:vmulaq^dest "ACC", vufs, "Q"                     is vuco=0b1 & dest & vuft=0b00000  & vufs          & vuop_0_10=0b00111111100
+    { VMULAQ(dest, vufs); }
+:vmula^bc^dest "ACC", vufs, vuft                  is vuco=0b1 & dest & vuft          & vufs          & vuop_2_10=0b001101111 & bc
+    { VMULABC(bc, dest, vufs, vuft); }
+:vnop                                             is vuco=0b1 & vudest=0b0000 & vuft=0b00000 & vufs=0b00000 & vuop_0_10=0b01011111111
+    { VNOP(); }
+:vopmula."xyz" "ACC", vufs, vuft                  is vuco=0b1 & vudest=0b1110 & vuft & vufs          & vuop_0_10=0b01011111110
+    { VOPMULA(vufs, vuft); }
+:vopmsub."xyz" vufd, vufs, vuft                   is vuco=0b1 & vudest=0b1110 & vuft & vufs & vufd   & vuop_0_5=0b101110
+    { VOPMSUB(vufd, vufs, vuft); }
+:vrget^dest vuft, "R"                             is vuco=0b1 & dest          & vuft & vufs=0b00000  & vuop_0_10=0b10000111101
+    { VRGET(dest, vuft); }
+:vrinit "R", vufs                                 is vuco=0b1 & vuftf=0b00 & vufsf & vuft=0b00000 & vufs & vuop_0_10=0b10000111110
+    { VRINIT(vufs); }
+:vrnext^dest vuft, "R"                            is vuco=0b1 & dest          & vuft & vufs=0b00000  & vuop_0_10=0b10000111100
+    { VRNEXT(dest, vuft); }
+:vrsqvurt "Q", vufs, vuft                         is vuco=0b1 & vuftf & vufsf & vuft & vufs          & vuop_0_10=0b01110111110
+    { VRSQvurt(vufs, vuft); }
+:vrxor "R", vufs                                  is vuco=0b1 & vuftf=0b00 & vufsf & vuft=0b00000 & vufs & vuop_0_10=0b10000111111
+    { VRXOR(vufs); }
+:vsqd^dest vufs (--vuit)                          is vuco=0b1 & dest          & vuit & vufs          & vuop_0_10=0b01101111111
+    { VSQD(dest, vuit:4, vufs); }
+:vsqi^dest vufs (vuit++)                          is vuco=0b1 & dest          & vuit & vufs          & vuop_0_10=0b01101111101
+    { VSQI(dest, vufs, vuit:4); }
+:vsqrt "Q", vuft^vuftf                            is vuco=0b1 & vuftf & vufsf=0b00 & vuft & vufs=0b00000 & vuop_0_10=0b01110111101
+    { VSQvurt(vuft, vuftf:4); }
+:vsub^dest vufd, vufs, vuft                       is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_0_5=0b101100
+    { VSUB(dest, vufd, vufs, vuft); }
+:vsubi^dest vufd, vufs, "I"                       is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b100110
+    { VSUBI(dest, vufd, vufs); }
+:vsubq^dest vufd, vufs, "Q"                       is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b100100
+    { VSUBQ(dest, vufd, vufs); }
+:vsub^bc^dest vufd, vufs, vuft                    is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_2_5=0b0001 & bc
+    { VSUBBC(bc, dest, vufd, vufs, vuft); }
+:vsuba^dest "ACC", vufs vuft                      is vuco=0b1 & dest & vuft          & vufs          & vuop_0_10=0b01011111100
+    { VSUBA(dest, vufs, vuft); }
+:vsubai^dest "ACC", vufs, "I"                     is vuco=0b1 & dest & vuft=0b00000  & vufs          & vuop_0_10=0b01001111110
+    { VSUBAI(dest, vufs); }
+:vsubaq^dest "ACC", vufs, "Q"                     is vuco=0b1 & dest & vuft=0b00000  & vufs          & vuop_0_10=0b01001111100
+    { VSUBAQ(dest, vufs); }
+:vsuba^bc^dest "ACC", vufs, vuft                  is vuco=0b1 & dest & vuft          & vufs          & vuop_2_10=0b000011111 & bc
+    { VSUBABC(bc, dest, vufs, vuft); }
+:vwaitq                                           is vuco=0b1 & vudest=0b0000 & vuft=0b00000 & vufs=0b00000 & vuop_0_10=0b01110111111
+    { VWAITQ(); }

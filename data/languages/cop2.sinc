@@ -59,7 +59,7 @@ define register offset=0x4100 size=4 [
     vf31w       vf31y       vf31z       vf31x
 ];
 
-attach variables [ ft128 fd128 fs128 ] [
+attach variables [ vuft vufd vufs ] [
     vf0     vf1     vf2     vf3
     vf4     vf5     vf6     vf7
     vf8     vf9     vf10    vf11
@@ -70,7 +70,7 @@ attach variables [ ft128 fd128 fs128 ] [
     vf28    vf29    vf30    vf31
 ];
 
-attach variables [ id ] [
+attach variables [ vuid ] [
      vi0     vi1     vi2     vi3
      vi4     vi5     vi6     vi7
      vi8     vi9    vi10    vi11
@@ -81,87 +81,16 @@ attach variables [ id ] [
     vc12    vc13    vc14    vc15
 ];
 
-FT128: ft128      is ft128 { export ft128; }
-FD128: fd128      is fd128 { export fd128; }
-FS128: fs128      is fs128 { export fs128; }
-
-bc: ".I"    is bit0=0 {  }
-bc: ".NI"   is bit0=1 {  }
-
-wyzx: ""        is dest=0 {}
-wyzx: ".x"      is dest=1 {}
-wyzx: ".z"      is dest=2 {}
-wyzx: ".zx"     is dest=3 {}
-wyzx: ".y"      is dest=4 {}
-wyzx: ".yx"     is dest=5 {}
-wyzx: ".yz"     is dest=6 {}
-wyzx: ".yzx"    is dest=7 {}
-wyzx: ".w"      is dest=8 {}
-wyzx: ".wx"     is dest=9 {}
-wyzx: ".wz"     is dest=10 {}
-wyzx: ".wzx"    is dest=11 {}
-wyzx: ".wy"     is dest=12 {}
-wyzx: ".wyx"    is dest=13 {}
-wyzx: ".wyz"    is dest=14 {}
-wyzx: ".wyzx"   is dest=15 {}
-
-:lqc2 FT128, OFF_BASE                  is prime=54 & OFF_BASE & FT128 {
-    FT128 = *:16 OFF_BASE;
+:lqc2 vuft, OFF_BASE                              is prime=54 & OFF_BASE & vuft {
+    vuft = *:16 OFF_BASE;
 }
 
-:sqc2 FT128, OFF_BASE                  is prime=62 & OFF_BASE & FT128 {
-    *:16 OFF_BASE = FT128;
+:sqc2 vuft, OFF_BASE                              is prime=62 & OFF_BASE & vuft {
+    *:16 OFF_BASE = vuft;
 }
 
 with : prime=18 {  # COP2
 
-    :bc2f Rel16                         is copop=8 & copfct=0 & Rel16 {
-        tmp:1 = getCopCondition(2:1, 0:1);
-        delayslot(1);
-        if (tmp != 0) goto inst_next;
-        goto Rel16;
-    }
-
-    :bc2fl Rel16                        is copop=8 & copfct=2 & Rel16 {
-        tmp:1 = getCopCondition(2:1, 0:1);
-        if (tmp != 0) goto inst_next;
-        delayslot(1);
-        goto Rel16;
-    }
-
-    :bc2t Rel16                         is copop=8 & copfct=1 & Rel16 {
-        tmp:1 = getCopCondition(2:1, 0:1);
-        if (tmp == 0) goto inst_next;
-        delayslot(1);
-        goto Rel16;
-    }
-
-    :bc2tl Rel16                        is copop=8 & copfct=3 & Rel16 {
-        tmp:1 = getCopCondition(2:1, 0:1);
-        if (tmp == 0) goto inst_next;
-        delayslot(1);
-        goto Rel16;
-    }
-
-    :cfc2^bc RT, id                     is copop=2 & RT & id & cop2zero10=0 & bc {
-        build bc;
-        RT = zext(id);
-    }
-
-    :ctc2^bc RTsrc, id                  is copop=6 & RTsrc & id & cop2zero10=0 & bc {
-        build bc;
-        id = RTsrc:4;
-    }
-
-    :qmfc2^bc RT128, FD128              is copop=1 & RT128 & FD128 & cop2zero10=0 & bc {
-        build bc;
-        RT128 = FD128;
-    }
-
-    :qmtc2^bc FD128, RT128              is copop=5 & RT128 & FD128 & cop2zero10=0 & bc {
-        FD128 = RT128;
-    }
-
-    :cop2 immed26                       is immed26 { }
+@include "vuupper.sinc"
 
 }

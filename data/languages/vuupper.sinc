@@ -78,11 +78,11 @@ define pcodeop VOPMSUB;
 define pcodeop VRGET;
 define pcodeop VRINIT;
 define pcodeop VRNEXT;
-define pcodeop VRSQvurt;
+define pcodeop VRSQRT;
 define pcodeop VRXOR;
 define pcodeop VSQD;
 define pcodeop VSQI;
-define pcodeop VSQvurt;
+define pcodeop VSQRT;
 define pcodeop VSUB;
 define pcodeop VSUBI;
 define pcodeop VSUBQ;
@@ -268,16 +268,16 @@ ftf: "w"     is vuftf=3 { export 0:1; }
     { vuR = VRINIT(vufs); }
 :vrnext^dest vuft, "R"                            is vuco=0b1 & dest          & vuft & vufs=0b00000  & vuop_0_10=0b10000111100
     { vuft = VRNEXT(vuR); }
-:vrsqvurt "Q", vufs, vuft                         is vuco=0b1 & vuftf & vufsf & vuft & vufs          & vuop_0_10=0b01110111110
-    { vuQ = VRSQvurt(vufs, vuft); }
+:vrsqrt "Q", vufs, vuft                         is vuco=0b1 & vuftf & vufsf & vuft & vufs          & vuop_0_10=0b01110111110
+    { vuQ = VRSQRT(vufs, vuft); }
 :vrxor "R", vufs                                  is vuco=0b1 & vuftf=0b00 & vufsf & vuft=0b00000 & vufs & vuop_0_10=0b10000111111
     { vuR = VRXOR(vufs); }
 :vsqd^dest vufs (--vuit)                          is vuco=0b1 & dest          & vuit & vufs          & vuop_0_10=0b01101111111
     { VSQD(vuit:4, vufs); }
 :vsqi^dest vufs (vuit++)                          is vuco=0b1 & dest          & vuit & vufs          & vuop_0_10=0b01101111101
     { vuQ = VSQI(vufs, vuit:4); }
-:vsqvurt "Q", vuft^vuftf                            is vuco=0b1 & vuftf & vufsf=0b00 & vuft & vufs=0b00000 & vuop_0_10=0b01110111101
-    { vuQ = VSQvurt(vuft); }
+:vsqrt "Q", vuft^vuftf                            is vuco=0b1 & vuftf & vufsf=0b00 & vuft & vufs=0b00000 & vuop_0_10=0b01110111101
+    { vuQ = VSQRT(vuft); }
 :vsub^dest vufd, vufs, vuft                       is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_0_5=0b101100
     { vufd = VSUB(vufs, vuft); }
 :vsubi^dest vufd, vufs, "I"                       is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b100110

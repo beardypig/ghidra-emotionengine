@@ -59,6 +59,11 @@ define register offset=0x4100 size=4 [
     vf31w       vf31y       vf31z       vf31x
 ];
 
+define register offset=0x4300 size=4 [
+    vuACC       vuI         vuQ         vuCF
+    vuR
+];
+
 attach variables [ vuft vufd vufs ] [
     vf0     vf1     vf2     vf3
     vf4     vf5     vf6     vf7

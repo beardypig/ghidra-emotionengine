@@ -128,22 +128,6 @@ ftf: "y"     is vuftf=1 {}
 ftf: "z"     is vuftf=2 {}
 ftf: "w"     is vuftf=3 {}
 
-:bc2f vuoffset                                    is vuop_21_25=0b01000 & vuop_16_20=0b00000 & vuoffset
-    { BC2F(vuoffset:4); }
-:bc2fl vuoffset                                   is vuop_21_25=0b01000 & vuop_16_20=0b00010 & vuoffset
-    { BC2FL(vuoffset:4); }
-:bc2t vuoffset                                    is vuop_21_25=0b01000 & vuop_16_20=0b00001 & vuoffset
-    { BC2T(vuoffset:4); }
-:bc2tl vuoffset                                   is vuop_21_25=0b01000 & vuop_16_20=0b00011 & vuoffset
-    { BC2TL(vuoffset:4); }
-:cfc2.I vurt, vuccid                              is vuop_21_25=0b00010       & vurt & vuccid        & vuop_1_10=0b0000000000 & I
-    { CFC2(I, vurt:4, vuccid:4); }
-:ctc2.I vurt, vuccid                              is vuop_21_25=0b00110       & vurt & vuccid        & vuop_1_10=0b0000000000 & I
-    { CTC2(I, vurt:4, vuccid:4); }
-:qmfc2.I vurt, vufd                               is vuop_21_25=0b00001       & vurt & vufd & I
-    { QMFC2(I, vurt:4, vufd:4); }
-:qmtc2.I vufd, vurt                               is vuop_21_25=0b00101       & vurt & vufd          & vuop_1_10=0b0000000000 & I
-    { QMTC2(I, vufd:4, vurt:4); }
 :vabs^dest vuft, vufs                             is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00111111101
     { VABS(dest, vuft:4, vufs:4); }
 :vadd^dest vufd, vufs, vuft                       is vuco=0b1 & dest          & vuft & vufs & vufd   & vuop_0_5=0b101000

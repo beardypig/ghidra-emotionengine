@@ -106,13 +106,13 @@ with : prime=18 {  # COP2
         { BC2T(vuoffset:4); }
     :bc2tl vuoffset                               is vuop_21_25=0b01000 & vuop_16_20=0b00011 & vuoffset
         { BC2TL(vuoffset:4); }
-    :cfc2.I vurt, vuccid                          is vuop_21_25=0b00010 & vurt & vuccid & vuop_1_10=0b0000000000 & I
-        { CFC2(I, vurt:4, vuccid:4); }
-    :ctc2.I vurt, vuccid                          is vuop_21_25=0b00110 & vurt & vuccid & vuop_1_10=0b0000000000 & I
-        { CTC2(I, vurt:4, vuccid:4); }
-    :qmfc2.I vurt, vufd                           is vuop_21_25=0b00001 & vurt & vufd                            & I
-        { QMFC2(I, vurt:4, vufd:4); }
-    :qmtc2.I vufd, vurt                           is vuop_21_25=0b00101 & vurt & vufd   & vuop_1_10=0b0000000000 & I
-        { QMTC2(I, vufd:4, vurt:4); }
+    :cfc2.I RT, vuccid                            is vuop_21_25=0b00010 & RT & vuccid & vuop_1_10=0b0000000000 & I
+        { RT = zext(vuccid:4); }
+    :ctc2.I RTsrc, vuccid                         is vuop_21_25=0b00110 & RTsrc & vuccid & vuop_1_10=0b0000000000 & I
+        { vuccid = RTsrc:4; }
+    :qmfc2.I RT128, vufd                          is vuop_21_25=0b00001 & RT128 & vufd                            & I
+        { RT128 = vufd; }
+    :qmtc2.I RT128, vufd                          is vuop_21_25=0b00101 & RT128 & vufd   & vuop_1_10=0b0000000000 & I
+        { vufd = RT128; }
 
 }

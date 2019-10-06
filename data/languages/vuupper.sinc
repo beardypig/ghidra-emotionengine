@@ -164,11 +164,11 @@ ftf: "w"     is vuftf=3 { export 0:1; }
     { vuft = VFTOI15(vufs); }
 :viadd vuid, vuis, vuit                           is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuid   & vuop_0_5=0b110000
     { vuid = VIADD(vuis:4, vuit:4); }
-:viaddi vuit:4, vuis, vuimm5                        is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuimm5 & vuop_0_5=0b110010
+:viaddi vuit:4, vuis, vuimm5                      is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuimm5 & vuop_0_5=0b110010
     { VIADDI(vuis:4, vuimm5:4); }
 :viand vuid, vuis, vuit                           is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuid   & vuop_0_5=0b110100
     { vuid = VIAND(vuis:4, vuit:4); }
-:vilwr^dest vuit:4, (vuis)                          is vuco=0b1 & dest          & vuit & vuis          & vuop_0_10=0b01111111110
+:vilwr^dest vuit:4, (vuis)                        is vuco=0b1 & dest          & vuit & vuis          & vuop_0_10=0b01111111110
     { VILWR(vuis:4); }
 :vior vuid, vuis, vuit                            is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuid   & vuop_0_5=0b110101
     { vuid = VIOR(vuis:4, vuit:4); }
@@ -238,7 +238,7 @@ ftf: "w"     is vuftf=3 { export 0:1; }
     { vuACC = VMSUBAQ(vufs, vuQ); }
 :vmsuba^bc^dest "ACC", vufs, vuft                 is vuco=0b1 & dest & vuft          & vufs          & vuop_2_10=0b000111111 & bc
     { vuACC = VMSUBABC(vufs, vuft); }
-:vmtir vuit:4, vufs                                 is vuco=0b1 & vuftf=0b00 & vufsf   & vuit & vufs   & vuop_0_10=0b01111111100
+:vmtir vuit:4, vufs                               is vuco=0b1 & vuftf=0b00 & vufsf   & vuit & vufs   & vuop_0_10=0b01111111100
     { VMTIR(vufs); }
 :vmul^dest vufd, vufs, vuft                       is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_0_5=0b101010
     { vufd = VMUL(vufs, vuft); }
@@ -268,7 +268,7 @@ ftf: "w"     is vuftf=3 { export 0:1; }
     { vuR = VRINIT(vufs); }
 :vrnext^dest vuft, "R"                            is vuco=0b1 & dest          & vuft & vufs=0b00000  & vuop_0_10=0b10000111100
     { vuft = VRNEXT(vuR); }
-:vrsqrt "Q", vufs, vuft                         is vuco=0b1 & vuftf & vufsf & vuft & vufs          & vuop_0_10=0b01110111110
+:vrsqrt "Q", vufs, vuft                           is vuco=0b1 & vuftf & vufsf & vuft & vufs          & vuop_0_10=0b01110111110
     { vuQ = VRSQRT(vufs, vuft); }
 :vrxor "R", vufs                                  is vuco=0b1 & vuftf=0b00 & vufsf & vuft=0b00000 & vufs & vuop_0_10=0b10000111111
     { vuR = VRXOR(vufs); }

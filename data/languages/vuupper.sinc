@@ -146,10 +146,6 @@ ftf: "w"     is vuftf=3 { export 0:1; }
     { vuACC = VADDAQ(vufs, vuQ); }
 :vadda^bc^dest "ACC", vufs, vuft                  is vuco=0b1 & dest          & vuft & vufs          & vuop_2_10=0b000001111 & bc
     { vuACC = VADDABC(vufs, vuft); }
-:vcallms imm15 "; address =" address              is vuco=0b1 & vudest=0b0000 & imm15 & vuop_0_5=0b111000 [ address = imm15 * 8; ]
-    { VCALLMS(imm15:4); }
-:vcallmsr "vi27"                                  is vuco=0b1 & vudest=0b0000 & vuft=0b00000 & vufs=0b11011 & fd=0b00000 & vuop_0_5=0b111001
-    { VCALLMSR(); }
 :vclip"w.xyz" vufs, vuft                          is vuco=0b1 & vudest=0b1110 & vuft & vufs          & vuop_0_10=0b00111111111
     { vuCF = VCLIP(vufs, vuft); }
 :vdiv "Q", vufs^fsf, vuft^ftf                     is vuco=0b1 & ftf & fsf     & vuft & vufs          & vuop_0_10=0b01110111100

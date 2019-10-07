@@ -159,19 +159,19 @@ ftf: "w"     is vuftf=3 { export 0:1; }
 :vftoi15^dest vuft, vufs                          is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00101111111
     { vuft = VFTOI15(vufs); }
 :viadd vuid, vuis, vuit                           is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuid   & vuop_0_5=0b110000
-    { vuid = VIADD(vuis:4, vuit:4); }
-:viaddi vuit:4, vuis, vuimm5                      is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuimm5 & vuop_0_5=0b110010
-    { VIADDI(vuis:4, vuimm5:4); }
+    { vuid = VIADD(vuis, vuit); }
+:viaddi vuit, vuis, vuimm5                      is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuimm5 & vuop_0_5=0b110010
+    { vuit = VIADDI(vuis, vuimm5:4); }
 :viand vuid, vuis, vuit                           is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuid   & vuop_0_5=0b110100
-    { vuid = VIAND(vuis:4, vuit:4); }
-:vilwr^dest vuit:4, (vuis)                        is vuco=0b1 & dest          & vuit & vuis          & vuop_0_10=0b01111111110
-    { VILWR(vuis:4); }
+    { vuid = VIAND(vuis, vuit); }
+:vilwr^dest vuit, (vuis)                        is vuco=0b1 & dest          & vuit & vuis          & vuop_0_10=0b01111111110
+    { vuit = VILWR(vuis); }
 :vior vuid, vuis, vuit                            is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuid   & vuop_0_5=0b110101
-    { vuid = VIOR(vuis:4, vuit:4); }
+    { vuid = VIOR(vuis, vuit); }
 :visub vuid, vuis, vuit                           is vuco=0b1 & vudest=0b0000 & vuit & vuis & vuid   & vuop_0_5=0b110001
-    { vuid = VISUB(vuis:4, vuit:4); }
+    { vuid = VISUB(vuis, vuit); }
 :viswr^dest vuit, (vuis)                          is vuco=0b1 & dest          & vuit & vuis          & vuop_0_10=0b01111111111
-    { VISWR(dest, vuit:4, vuis:4); }
+    { VISWR(vuit, vuis); }
 :vitof0^dest vuft, vufs                           is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00100111100
     { vuft = VITOF0(vufs); }
 :vitof4^dest vuft, vufs                           is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00100111101
@@ -181,9 +181,9 @@ ftf: "w"     is vuftf=3 { export 0:1; }
 :vitof15^dest vuft, vufs                          is vuco=0b1 & dest          & vuft & vufs          & vuop_0_10=0b00100111111
     { vuft = VITOF15(vufs); }
 :vlqd^dest vuft, (--vuis)                         is vuco=0b1 & dest          & vuft & vuis          & vuop_0_10=0b01101111110
-    { vuft = VLQD(vuis:4); }
+    { vuft = VLQD(vuis); }
 :vlqi^dest vuft, (vuis++)                         is vuco=0b1 & dest          & vuft & vuis          & vuop_0_10=0b01101111100
-    { vuft = VLQI(vuis:4); }
+    { vuft = VLQI(vuis); }
 :vmadd^dest vufd, vufs, vuft                      is vuco=0b1 & dest          & vuft & vufs & vufd   & vuop_0_5=0b101001
     { vufd = VMADD(vufs, vuft); }
 :vmaddi^dest vufd, vufs, "I"                      is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b100011
@@ -207,7 +207,7 @@ ftf: "w"     is vuftf=3 { export 0:1; }
 :vmax^bc^dest vufd, vufs, vuft                    is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_2_5=0b0100 & bc
     { vufd = VMAXBC(vufs, vuft); }
 :vmfir^dest vuft, vuis                            is vuco=0b1 & dest & vuft          & vuis          & vuop_0_10=0b01111111101
-    { vuft = VMFIR(vuis:4); }
+    { vuft = VMFIR(vuis); }
 :vmini^dest vufd, vufs, vuft                      is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_0_5=0b101111
     { vufd = VMINI(vufs, vuft); }
 :vminii^dest vufd, vufs, "I"                      is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b011111
@@ -234,8 +234,8 @@ ftf: "w"     is vuftf=3 { export 0:1; }
     { vuACC = VMSUBAQ(vufs, vuQ); }
 :vmsuba^bc^dest "ACC", vufs, vuft                 is vuco=0b1 & dest & vuft          & vufs          & vuop_2_10=0b000111111 & bc
     { vuACC = VMSUBABC(vufs, vuft); }
-:vmtir vuit:4, vufs                               is vuco=0b1 & vuftf=0b00 & vufsf   & vuit & vufs   & vuop_0_10=0b01111111100
-    { VMTIR(vufs); }
+:vmtir vuit, vufs                               is vuco=0b1 & vuftf=0b00 & vufsf   & vuit & vufs   & vuop_0_10=0b01111111100
+    { vuit = VMTIR(vufs); }
 :vmul^dest vufd, vufs, vuft                       is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_0_5=0b101010
     { vufd = VMUL(vufs, vuft); }
 :vmuli^dest vufd, vufs, "I"                       is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b011110
@@ -269,9 +269,9 @@ ftf: "w"     is vuftf=3 { export 0:1; }
 :vrxor "R", vufs                                  is vuco=0b1 & vuftf=0b00 & vufsf & vuft=0b00000 & vufs & vuop_0_10=0b10000111111
     { vuR = VRXOR(vufs); }
 :vsqd^dest vufs (--vuit)                          is vuco=0b1 & dest          & vuit & vufs          & vuop_0_10=0b01101111111
-    { VSQD(vuit:4, vufs); }
+    { VSQD(vuit, vufs); }
 :vsqi^dest vufs (vuit++)                          is vuco=0b1 & dest          & vuit & vufs          & vuop_0_10=0b01101111101
-    { vuQ = VSQI(vufs, vuit:4); }
+    { vuQ = VSQI(vufs, vuit); }
 :vsqrt "Q", vuft^vuftf                            is vuco=0b1 & vuftf & vufsf=0b00 & vuft & vufs=0b00000 & vuop_0_10=0b01110111101
     { vuQ = VSQRT(vuft); }
 :vsub^dest vufd, vufs, vuft                       is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_0_5=0b101100

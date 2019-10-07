@@ -281,7 +281,7 @@ ftf: "w"     is vuftf=3 { export 0:1; }
 :vsubq^dest vufd, vufs, "Q"                       is vuco=0b1 & dest & vuft=0b00000  & vufs & vufd   & vuop_0_5=0b100100
     { vufd = VSUBQ(vufd, vufs, vuQ); }
 :vsub^bc^dest vufd, vufs, vuft                    is vuco=0b1 & dest & vuft          & vufs & vufd   & vuop_2_5=0b0001 & bc
-    { VSUBBC(vufs, vuft); }
+    { vufd = VSUBBC(vufs, vuft); }
 :vsuba^dest "ACC", vufs vuft                      is vuco=0b1 & dest & vuft          & vufs          & vuop_0_10=0b01011111100
     { vuACC = VSUBA(vufs, vuft); }
 :vsubai^dest "ACC", vufs, "I"                     is vuco=0b1 & dest & vuft=0b00000  & vufs          & vuop_0_10=0b01001111110

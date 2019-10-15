@@ -1,13 +1,5 @@
 # VU upper instructions
 
-define pcodeop BC2F;
-define pcodeop BC2FL;
-define pcodeop BC2T;
-define pcodeop BC2TL;
-define pcodeop CFC2;
-define pcodeop CTC2;
-define pcodeop QMFC2;
-define pcodeop QMTC2;
 define pcodeop VABS;
 define pcodeop VADD;
 define pcodeop VADDI;
@@ -17,8 +9,6 @@ define pcodeop VADDA;
 define pcodeop VADDAI;
 define pcodeop VADDAQ;
 define pcodeop VADDABC;
-define pcodeop VCALLMS;
-define pcodeop VCALLMSR;
 define pcodeop VCLIP;
 define pcodeop VDIV;
 define pcodeop VFTOI0;

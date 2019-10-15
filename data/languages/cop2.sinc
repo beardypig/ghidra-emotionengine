@@ -1,5 +1,16 @@
 # COP2 (VU) macro instruction set
 
+define pcodeop BC2F;
+define pcodeop BC2FL;
+define pcodeop BC2T;
+define pcodeop BC2TL;
+define pcodeop CFC2;
+define pcodeop CTC2;
+define pcodeop QMFC2;
+define pcodeop QMTC2;
+define pcodeop VCALLMS;
+define pcodeop VCALLMSR;
+
 # COP2 integer/control registers
 define register offset=0x4000 size=4 [
      vi0     vi1     vi2     vi3

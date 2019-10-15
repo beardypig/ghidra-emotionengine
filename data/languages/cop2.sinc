@@ -87,12 +87,8 @@ attach variables [ vuit vuis vuid ] [
 ];
 
 vuinst: is prime=18 & vuco=1 { export 0:1; }
-@include "vuupper.sinc"
 
-:vcallms imm15 "; address =" address              is vuinst & vudest=0b0000 & imm15 & vuop_0_5=0b111000 [ address = imm15 * 8; ]
-    { VCALLMS(imm15:4); }
-:vcallmsr "vi27"                                  is vuinst & vudest=0b0000 & vuft=0b00000 & vufs=0b11011 & fd=0b00000 & vuop_0_5=0b111001
-    { VCALLMSR(); }
+@include "vuupper.sinc"
 
 :lqc2 vuft, OFF_BASE                              is prime=54 & OFF_BASE & vuft {
     vuft = *:16 OFF_BASE;
@@ -139,4 +135,8 @@ with : prime=18 {
         { RT128 = vufd; }
     :qmtc2.I RT128, vufd                          is vuop_21_25=0b00101 & RT128 & vufd   & vuop_1_10=0b0000000000 & I
         { vufd = RT128; }
+    :vcallms imm15 "; address =" address          is vuco=1 & vudest=0b0000 & imm15 & vuop_0_5=0b111000 [ address = imm15 * 8; ]
+        { VCALLMS(imm15:4); }
+    :vcallmsr "vi27"                              is vuco=1 & vudest=0b0000 & vuft=0b00000 & vufs=0b11011 & fd=0b00000 & vuop_0_5=0b111001
+        { VCALLMSR(); }
 }

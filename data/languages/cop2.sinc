@@ -103,14 +103,34 @@ vuinst: is prime=18 & vuco=1 { export 0:1; }
 }
 
 with : prime=18 {
-    :bc2f vuoffset                                is vuop_21_25=0b01000 & vuop_16_20=0b00000 & vuoffset
-        { BC2F(vuoffset:4); }
-    :bc2fl vuoffset                               is vuop_21_25=0b01000 & vuop_16_20=0b00010 & vuoffset
-        { BC2FL(vuoffset:4); }
-    :bc2t vuoffset                                is vuop_21_25=0b01000 & vuop_16_20=0b00001 & vuoffset
-        { BC2T(vuoffset:4); }
-    :bc2tl vuoffset                               is vuop_21_25=0b01000 & vuop_16_20=0b00011 & vuoffset
-        { BC2TL(vuoffset:4); }
+    :bc2f Rel16                                   is vuop_21_25=0b01000 & vuop_16_20=0b00000 & Rel16 {
+        tmp:1 = getCopCondition(2:1, 0:1);
+        delayslot(1);
+        if (tmp != 0) goto inst_next;
+        goto Rel16;
+    }
+
+    :bc2fl Rel16                                  is vuop_21_25=0b01000 & vuop_16_20=0b00010 & Rel16 {
+        tmp:1 = getCopCondition(2:1, 0:1);
+        if (tmp != 0) goto inst_next;
+        delayslot(1);
+        goto Rel16;
+    }
+
+    :bc2t Rel16                                   is vuop_21_25=0b01000 & vuop_16_20=0b00001 & Rel16 {
+        tmp:1 = getCopCondition(2:1, 0:1);
+        if (tmp == 0) goto inst_next;
+        delayslot(1);
+        goto Rel16;
+    }
+
+    :bc2tl Rel16                                  is vuop_21_25=0b01000 & vuop_16_20=0b00011 & Rel16 {
+        tmp:1 = getCopCondition(2:1, 0:1);
+        if (tmp == 0) goto inst_next;
+        delayslot(1);
+        goto Rel16;
+    }
+    
     :cfc2.I RT, vuccid                            is vuop_21_25=0b00010 & RT & vuccid & vuop_1_10=0b0000000000 & I
         { RT = zext(vuccid:4); }
     :ctc2.I RTsrc, vuccid                         is vuop_21_25=0b00110 & RTsrc & vuccid & vuop_1_10=0b0000000000 & I

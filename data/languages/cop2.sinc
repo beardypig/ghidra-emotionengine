@@ -75,7 +75,7 @@ define register offset=0x4300 size=4 [
     vuR
 ];
 
-attach variables [ vuft vufd vufs ] [
+attach variables [ vuft vufd vufd_qmc2 vufs ] [
     vf0     vf1     vf2     vf3
     vf4     vf5     vf6     vf7
     vf8     vf9     vf10    vf11
@@ -138,14 +138,14 @@ with : prime=18 {
         goto Rel16;
     }
     
-    :cfc2.I RT, vuccid                            is vuop_21_25=0b00010 & RT & vuccid & vuop_1_10=0b0000000000 & I
+    :cfc2.I RT, vuccid                            is vuop_21_25=0b00010 & RT    & vuccid    & vuop_1_10=0b0000000000 & I
         { RT = zext(vuccid:4); }
-    :ctc2.I RTsrc, vuccid                         is vuop_21_25=0b00110 & RTsrc & vuccid & vuop_1_10=0b0000000000 & I
+    :ctc2.I RTsrc, vuccid                         is vuop_21_25=0b00110 & RTsrc & vuccid    & vuop_1_10=0b0000000000 & I
         { vuccid = RTsrc:4; }
-    :qmfc2.I RT128, vufd                          is vuop_21_25=0b00001 & RT128 & vufd                            & I
-        { RT128 = vufd; }
-    :qmtc2.I RT128, vufd                          is vuop_21_25=0b00101 & RT128 & vufd   & vuop_1_10=0b0000000000 & I
-        { vufd = RT128; }
+    :qmfc2.I RT128, vufd_qmc2                     is vuop_21_25=0b00001 & RT128 & vufd_qmc2                          & I
+        { RT128 = vufd_qmc2; }
+    :qmtc2.I RT128, vufd_qmc2                     is vuop_21_25=0b00101 & RT128 & vufd_qmc2 & vuop_1_10=0b0000000000 & I
+        { vufd_qmc2 = RT128; }
     :vcallms imm15 "; address =" address          is vuco=1 & vudest=0b0000 & imm15 & vuop_0_5=0b111000 [ address = imm15 * 8; ]
         { VCALLMS(imm15:4); }
     :vcallmsr "vi27"                              is vuco=1 & vudest=0b0000 & vuft=0b00000 & vufs=0b11011 & fd=0b00000 & vuop_0_5=0b111001

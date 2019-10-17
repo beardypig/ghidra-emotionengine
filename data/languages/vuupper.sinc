@@ -262,7 +262,7 @@ ftf: "w"     is vuftf=3 { export 0:1; }
     { VSQD(vuit, vufs); }
 :vsqi^dest vufs (vuit++)                          is vuinst & dest          & vuit & vufs          & vuop_0_10=0b01101111101
     { vuQ = VSQI(vufs, vuit); }
-:vsqrt "Q", vuft^vuftf                            is vuinst & vuftf & vufsf=0b00 & vuft & vufs=0b00000 & vuop_0_10=0b01110111101
+:vsqrt "Q", vuft^ftf                              is vuinst & ftf & vufsf=0b00 & vuft & vufs=0b00000 & vuop_0_10=0b01110111101
     { vuQ = VSQRT(vuft); }
 :vsub^dest vufd, vufs, vuft                       is vuinst & dest & vuft          & vufs & vufd   & vuop_0_5=0b101100
     { vufd = VSUB(vufs, vuft); }

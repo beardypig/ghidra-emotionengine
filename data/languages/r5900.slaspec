@@ -15,6 +15,7 @@ define space register type=register_space size=4;
 
 @include "base.sinc"
 @include "mips.sinc"
+@include "macros.sinc"
 @include "eecore.sinc"
 @include "cop0.sinc"
 @include "cop1.sinc"

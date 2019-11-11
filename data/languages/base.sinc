@@ -73,6 +73,7 @@ define token instr(32)
     immed       = (0,15)
     immed26     = (0,25)
     simmed      = (0,15) signed
+    imm15       = (6,20)
 
     off21		= (0,20) signed		# 21 bit signed offset in conditional branch/link
     off16		= (0,15) signed		# 16 bit signed offset in conditional branch/link
@@ -82,6 +83,10 @@ define token instr(32)
     fct         = (0,5)
     mmiop       = (6,10)
     fmt         = (6,10)
+    
+    ft128       = (16,20)
+    fd128       = (11,15)
+    fs128       = (11,15)
 
 # cop stuff
 	bit25		= (25,25)
@@ -108,29 +113,30 @@ define token instr(32)
     bigfunct	= (0,10)
 
 # cop2 stuff
-    co          = (25,25)
-    dest        = (21,24)
-    id          = (11,15)
-    ft128       = (16,20)
-    fd128       = (11,15)
-    fs128       = (11,15)
-
-    bit15       = (15,15)
-    cop2op0     = (2,5)
-    cop2op1     = (0,5)
-    cop2op2     = (2,10)
-    cop2op3     = (0,10)
-    cop2op4     = (0,10)
-    cop2op5     = (0,5)
-    cop2op6     = (0,5)
-    cop2op11    = (21,25)
-    cop2op12    = (26,31)
-    imm15       = (6,20)
-    imm5        = (6,10)
-    ftf         = (23,24)
-    fsf         = (20,21)
-    cop2zero10  = (1,10)
-
+    vuoffset    = (0,15)
+    vuop_0_5    = (0,5)
+    vuop_0_10   = (0,10)
+    vuop_1_10   = (1,10)
+    vuop_2_5    = (2,5)
+    vuop_2_10   = (2,10)
+    vuop_21_25  = (21,25)
+    vuop_16_20  = (16,20)
+    vurt        = (16,20)
+    vuft        = (16,20)
+    vufd        = (6,10)
+    vufd_qmc2   = (11,15)
+    vuccid      = (11,15)
+    vufs        = (11,15)
+    vuinterlock = (0,0)
+    vudest      = (21,24)
+    vuco        = (25,25)
+    vubc        = (0,1)
+    vufsf       = (21,22)
+    vuftf       = (23,24)
+    vuit        = (16,20)
+    vuis        = (11,15)
+    vuid        = (6,10)
+    vuimm5      = (6,10)
 ;
 
 # 64 bit

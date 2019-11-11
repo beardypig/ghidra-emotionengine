@@ -14,20 +14,51 @@
 // application.gradle.version property in <GHIDRA_INSTALL_DIR>/Ghidra/application.properties
 // for the correction version of Gradle to use for the Ghidra installation you specify.
 
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
 //----------------------START "DO NOT MODIFY" SECTION------------------------------
 def ghidraInstallDir
 
 if (System.env.GHIDRA_INSTALL_DIR) {
-	ghidraInstallDir = System.env.GHIDRA_INSTALL_DIR
+    ghidraInstallDir = System.env.GHIDRA_INSTALL_DIR
 }
 else if (project.hasProperty("GHIDRA_INSTALL_DIR")) {
-	ghidraInstallDir = project.getProperty("GHIDRA_INSTALL_DIR")
+    ghidraInstallDir = project.getProperty("GHIDRA_INSTALL_DIR")
 }
 
 if (ghidraInstallDir) {
-	apply from: new File(ghidraInstallDir).getCanonicalPath() + "/support/buildExtension.gradle"
+    apply from: new File(ghidraInstallDir).getCanonicalPath() + "/support/buildExtension.gradle"
 }
 else {
-	throw new GradleException("GHIDRA_INSTALL_DIR is not defined!")
+    throw new GradleException("GHIDRA_INSTALL_DIR is not defined!")
 }
 //----------------------END "DO NOT MODIFY" SECTION-------------------------------
+
+dependencies {
+	runtimeOnly fileTree(dir: ghidraInstallDir + '/Ghidra/Framework', include: "**/*.jar")
+	runtimeOnly fileTree(dir: ghidraInstallDir + '/Ghidra/Features', include: "**/*.jar")
+	compileOnly fileTree(dir: ghidraInstallDir + '/Ghidra/Processors', include: "**/*.jar")
+}
+
+eclipse.classpath.file.whenMerged {
+	File javaDoc = new File(ghidraInstallDir+"/docs/GhidraAPI_javadoc.zip");
+	def destroy = [];
+	for (entry in entries) {
+		if (entry.getPath().toString().contains("emotionengine")) {
+			destroy.add(entry);
+			continue;
+		} else if (entry.path.contains('jar')) {
+			File folder = new File(entry.getPath()).getParentFile();
+			for (File file : folder.listFiles()) {
+				if (file.getName().endsWith(".zip")) {
+					entry.setSourcePath(it.fileReference(file));
+					entry.setJavadocPath(it.fileReference(javaDoc));
+				}
+			}
+		}
+	}
+	for (entry in destroy) {
+		entries.remove(entry);
+	}
+}

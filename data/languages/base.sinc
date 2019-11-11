@@ -14,20 +14,20 @@ define register offset=0 size=16 [
 ];
 
 # other registers
-define register offset=0x300 size=16 [ hi_qw lo_qw ];	     # 128 bit
+define register offset=0x300 size=16 [ hi_qw lo_qw ];	    # 128 bit
 define register offset=0x300 size=8 [ hi hi1 lo lo1 tsp ];  #64 bit
 
 #64 bit representation of the 128 bit registers
 define register offset=0 size=8 [
-    zero _ at _ v0 _ v1 _
-    a0 _ a1 _ a2 _ a3 _
-    t0 _ t1 _ t2 _ t3 _
-    t4 _ t5 _ t6 _ t7 _
-    s0 _ s1 _ s2 _ s3 _
-    s4 _ s5 _ s6 _ s7 _
-    t8 _ t9 _ k0 _ k1 _
-    gp _ sp _ s8 _ ra _
-    pc _
+    zero zero_udw at at_udw v0 v0_udw v1 v1_udw
+    a0 a0_udw a1 a1_udw a2 a2_udw a3 a3_udw
+    t0 t0_udw t1 t1_udw t2 t2_udw t3 t3_udw
+    t4 t4_udw t5 t5_udw t6 t6_udw t7 t7_udw
+    s0 s0_udw s1 s1_udw s2 s2_udw s3 s3_udw
+    s4 s4_udw s5 s5_udw s6 s6_udw s7 s7_udw
+    t8 t8_udw t9 t9_udw k0 k0_udw k1 k1_udw
+    gp gp_udw sp sp_udw s8 s8_udw ra ra_udw
+    pc pc_udw
 ];
 
 # 32 bit representation of the 128 bit registers

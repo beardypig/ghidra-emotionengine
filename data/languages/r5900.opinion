@@ -48,7 +48,7 @@ Elf e_flags are used for the secondary attribute, the following are pulled from 
 -->
 
     <constraint primary="8,10" processor="MIPS-R5900" size="32" variant="PS2"
-		secondary= "0b 0010 .... .... .... 0100 0.0. 0000 ...."/>
+		secondary= "0b 0010 .... .... .... 0.00 0.0. 0000 ...."/>
 
     </constraint>
 

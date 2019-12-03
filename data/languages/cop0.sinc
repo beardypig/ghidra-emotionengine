@@ -54,6 +54,17 @@ define pcodeop TLB_read_indexed_entryLo1;
 define pcodeop TLB_write_indexed_entry;
 define pcodeop TLB_write_random_entry;
 
+attach names op [
+    IXLTG IXLDT BXLBT _
+    IXSTG IXSDT BXSBT IXIN
+    BPR _ BHINBT IHIN
+    BFH _ IFL _
+    DXLTG DXLDT DXSTG DXSDT
+    GXWBIN _ DXIN _
+    DHWBIN _ DHIN _
+    DHWOIN _ _ _
+];
+
 with : microMode=0 {
     # Various cache instructions with different ops
     # 1011 11bb bbbo oooo iiii iiii iiii iiii

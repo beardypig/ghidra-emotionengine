@@ -1008,7 +1008,7 @@ with : prime=28 {
         RD128[64,32] = zext(RT128src[80,16] >> sa:2);
         RD128[96,32] = zext(RT128src[96,16] >> sa:2);
     }
-    :psubb RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=9 & fct=8 {
+    :psubb RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=0x9 & fct=8 {
         RD128[0,8] = RS128src[0,8] - RT128src[0,8];
         RD128[8,8] = RS128src[8,8] - RT128src[8,8];
         RD128[16,8] = RS128src[16,8] - RT128src[16,8];
@@ -1026,6 +1026,52 @@ with : prime=28 {
         RD128[112,8] = RS128src[112,8] - RT128src[112,8];
         RD128[120,8] = RS128src[120,8] - RT128src[120,8];
     }
+    :psubub RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=0x19 & fct=0x28 {
+        uSatByte(RD128[0,8], RS128src[0,8] - RT128src[0,8]);
+        uSatByte(RD128[8,8], RS128src[8,8] - RT128src[8,8]);
+        uSatByte(RD128[16,8], RS128src[16,8] - RT128src[16,8]);
+        uSatByte(RD128[24,8], RS128src[24,8] - RT128src[24,8]);
+        uSatByte(RD128[32,8], RS128src[32,8] - RT128src[32,8]);
+        uSatByte(RD128[40,8], RS128src[40,8] - RT128src[40,8]);
+        uSatByte(RD128[48,8], RS128src[48,8] - RT128src[48,8]);
+        uSatByte(RD128[56,8], RS128src[56,8] - RT128src[56,8]);
+        uSatByte(RD128[64,8], RS128src[64,8] - RT128src[64,8]);
+        uSatByte(RD128[72,8], RS128src[72,8] - RT128src[72,8]);
+        uSatByte(RD128[80,8], RS128src[80,8] - RT128src[80,8]);
+        uSatByte(RD128[88,8], RS128src[88,8] - RT128src[88,8]);
+        uSatByte(RD128[96,8], RS128src[96,8] - RT128src[96,8]);
+        uSatByte(RD128[104,8], RS128src[104,8] - RT128src[104,8]);
+        uSatByte(RD128[112,8], RS128src[112,8] - RT128src[112,8]);
+        uSatByte(RD128[120,8], RS128src[120,8] - RT128src[120,8]);
+    }
+    :psubsb RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=0x19 & fct=0x8 {
+        sSatByte(RD128[0,8], RS128src[0,8] - RT128src[0,8]);
+        sSatByte(RD128[8,8], RS128src[8,8] - RT128src[8,8]);
+        sSatByte(RD128[16,8], RS128src[16,8] - RT128src[16,8]);
+        sSatByte(RD128[24,8], RS128src[24,8] - RT128src[24,8]);
+        sSatByte(RD128[32,8], RS128src[32,8] - RT128src[32,8]);
+        sSatByte(RD128[40,8], RS128src[40,8] - RT128src[40,8]);
+        sSatByte(RD128[48,8], RS128src[48,8] - RT128src[48,8]);
+        sSatByte(RD128[56,8], RS128src[56,8] - RT128src[56,8]);
+        sSatByte(RD128[64,8], RS128src[64,8] - RT128src[64,8]);
+        sSatByte(RD128[72,8], RS128src[72,8] - RT128src[72,8]);
+        sSatByte(RD128[80,8], RS128src[80,8] - RT128src[80,8]);
+        sSatByte(RD128[88,8], RS128src[88,8] - RT128src[88,8]);
+        sSatByte(RD128[96,8], RS128src[96,8] - RT128src[96,8]);
+        sSatByte(RD128[104,8], RS128src[104,8] - RT128src[104,8]);
+        sSatByte(RD128[112,8], RS128src[112,8] - RT128src[112,8]);
+        sSatByte(RD128[120,8], RS128src[120,8] - RT128src[120,8]);
+    }
+    :psubh RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=0x5 & fct=0x8 {
+        RD128[0,16] = RS128src[0,16] - RT128src[0,16];
+        RD128[16,16] = RS128src[16,16] - RT128src[16,16];
+        RD128[32,16] = RS128src[32,16] - RT128src[32,16];
+        RD128[48,16] = RS128src[48,16] - RT128src[48,16];
+        RD128[64,16] = RS128src[64,16] - RT128src[64,16];
+        RD128[80,16] = RS128src[80,16] - RT128src[80,16];
+        RD128[96,16] = RS128src[96,16] - RT128src[96,16];
+        RD128[112,16] = RS128src[112,16] - RT128src[112,16];
+    }
     :psubuh RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=0x15 & fct=0x28 {
         uSatHalfWord(RD128[0,16], RS128src[0,16] - RT128src[0,16]);
         uSatHalfWord(RD128[16,16], RS128src[16,16] - RT128src[16,16]);
@@ -1036,17 +1082,33 @@ with : prime=28 {
         uSatHalfWord(RD128[96,16], RS128src[96,16] - RT128src[96,16]);
         uSatHalfWord(RD128[112,16], RS128src[112,16] - RT128src[112,16]);
     }
-    :psubuw RD128, RS128src, RT128src    is microMode=0 & RD128 & RT128src & RS128src & mmiop=0x11 & fct=0x28 {
-        uSatWord(RD128[0,32], RS128src[0,32] - RT128src[0,32]);
-        uSatWord(RD128[32,32], RS128src[32,32] - RT128src[32,32]);
-        uSatWord(RD128[64,32], RS128src[64,32] - RT128src[64,32]);
-        uSatWord(RD128[96,32], RS128src[96,32] - RT128src[96,32]);
+    :psubsh RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=0x15 & fct=0x8 {
+        sSatHalfWord(RD128[0,16], RS128src[0,16] - RT128src[0,16]);
+        sSatHalfWord(RD128[16,16], RS128src[16,16] - RT128src[16,16]);
+        sSatHalfWord(RD128[32,16], RS128src[32,16] - RT128src[32,16]);
+        sSatHalfWord(RD128[48,16], RS128src[48,16] - RT128src[48,16]);
+        sSatHalfWord(RD128[64,16], RS128src[64,16] - RT128src[64,16]);
+        sSatHalfWord(RD128[80,16], RS128src[80,16] - RT128src[80,16]);
+        sSatHalfWord(RD128[96,16], RS128src[96,16] - RT128src[96,16]);
+        sSatHalfWord(RD128[112,16], RS128src[112,16] - RT128src[112,16]);
     }
     :psubw RD128, RS128src, RT128src    is microMode=0 & RD128 & RT128src & RS128src & mmiop=1 & fct=0x8 {
         RD128[0,32] = RS128src[0,32] - RT128src[0,32];
         RD128[32,32] = RS128src[32,32] - RT128src[32,32];
         RD128[64,32] = RS128src[64,32] - RT128src[64,32];
         RD128[96,32] = RS128src[96,32] - RT128src[96,32];
+    }
+    :psubuw RD128, RS128src, RT128src    is microMode=0 & RD128 & RT128src & RS128src & mmiop=0x11 & fct=0x28 {
+        uSatWord(RD128[0,32], RS128src[0,32] - RT128src[0,32]);
+        uSatWord(RD128[32,32], RS128src[32,32] - RT128src[32,32]);
+        uSatWord(RD128[64,32], RS128src[64,32] - RT128src[64,32]);
+        uSatWord(RD128[96,32], RS128src[96,32] - RT128src[96,32]);
+    }
+    :psubsw RD128, RS128src, RT128src    is microMode=0 & RD128 & RT128src & RS128src & mmiop=0x11 & fct=0x8 {
+        sSatWord(RD128[0,32], RS128src[0,32] - RT128src[0,32]);
+        sSatWord(RD128[32,32], RS128src[32,32] - RT128src[32,32]);
+        sSatWord(RD128[64,32], RS128src[64,32] - RT128src[64,32]);
+        sSatWord(RD128[96,32], RS128src[96,32] - RT128src[96,32]);
     }
     :pxor RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=0x13 & fct=0x9 {
         RD128 = (RS128src ^ RT128src);

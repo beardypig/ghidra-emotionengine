@@ -3,8 +3,90 @@
 <processor_spec>
     <properties>
         <property key="addressesDoNotAppearDirectlyInCode" value="true"/>
+        <property key="parallelInstructionHelperClass" value="ghidra.emotionengine.VuInstructionHelper"/>
+        <property key="pcodeInjectLibraryClass" value="ghidra.emotionengine.PcodeInjectLibraryVu"/>
     </properties>
     <programcounter register="pc"/>
+    <context_data>
+        <context_set space="ram" first="0x11008000" last="0x1100BFFF">
+            <set name="microMode" val="1" description="vu micro mode"/>
+        </context_set>
+        <context_set space="ram">
+            <set name="cM" val="0" description="vu M bit"/>
+            <set name="cE" val="0" description="vu E bit"/>
+            <set name="cUpper" val="0" description="vu1 upper instruction flag"/>
+        </context_set>
+    </context_data>
+    <register_data>
+        <register name="microMode" hidden="true"/>
+        <register name="cUpper" hidden="true"/>
+        <register name="cM" hidden="true"/>
+        <register name="cE" hidden="true"/>
+        <register name="vuCF_32" hidden="true"/>
+        <register name="vuStatus_32" hidden="true"/>
+        <register name="vuMAC_32" hidden="true"/>
+        <register name="fsa" rename="sa"/>
+        <register name="vf0" vector_lane_sizes="4"/>
+        <register name="vf1" vector_lane_sizes="4"/>
+        <register name="vf2" vector_lane_sizes="4"/>
+        <register name="vf3" vector_lane_sizes="4"/>
+        <register name="vf4" vector_lane_sizes="4"/>
+        <register name="vf5" vector_lane_sizes="4"/>
+        <register name="vf6" vector_lane_sizes="4"/>
+        <register name="vf7" vector_lane_sizes="4"/>
+        <register name="vf8" vector_lane_sizes="4"/>
+        <register name="vf9" vector_lane_sizes="4"/>
+        <register name="vf10" vector_lane_sizes="4"/>
+        <register name="vf11" vector_lane_sizes="4"/>
+        <register name="vf12" vector_lane_sizes="4"/>
+        <register name="vf13" vector_lane_sizes="4"/>
+        <register name="vf14" vector_lane_sizes="4"/>
+        <register name="vf15" vector_lane_sizes="4"/>
+        <register name="vf16" vector_lane_sizes="4"/>
+        <register name="vf17" vector_lane_sizes="4"/>
+        <register name="vf18" vector_lane_sizes="4"/>
+        <register name="vf19" vector_lane_sizes="4"/>
+        <register name="vf20" vector_lane_sizes="4"/>
+        <register name="vf21" vector_lane_sizes="4"/>
+        <register name="vf22" vector_lane_sizes="4"/>
+        <register name="vf23" vector_lane_sizes="4"/>
+        <register name="vf24" vector_lane_sizes="4"/>
+        <register name="vf25" vector_lane_sizes="4"/>
+        <register name="vf26" vector_lane_sizes="4"/>
+        <register name="vf27" vector_lane_sizes="4"/>
+        <register name="vf28" vector_lane_sizes="4"/>
+        <register name="vf29" vector_lane_sizes="4"/>
+        <register name="vf30" vector_lane_sizes="4"/>
+        <register name="vf31" vector_lane_sizes="4"/>
+        <register name="vuACC" vector_lane_sizes="4"/>
+        
+        <register name="zero_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="at_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="v0_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="v1_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="a0_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="a1_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="a2_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="a3_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="t0_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="t1_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="t2_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="t3_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="t4_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="t5_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="t6_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="t7_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="s0_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="s1_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="s2_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="s3_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="s4_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="s5_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="s6_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="s7_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="t8_qw" vector_lane_sizes="1,2,4,8"/>
+        <register name="t9_qw" vector_lane_sizes="1,2,4,8"/>
+    </register_data>
 
     <default_memory_blocks>
         <memory_block name="registers.io"   start_address="0x10000000" length="0x10000"     initialized="false" mode="rwv"/>

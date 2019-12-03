@@ -11,6 +11,14 @@ The following instuction sets are currently supported
  1. COP1 (FPU) instruction set
  1. COP2 (VU0) macro instruction set
 
+## Compilation
+
+If you want to build the extension yourself, install `gradle` and run
+ 
+```
+gradle -PGHIDRA_INSTALL_DIR=/path/to/ghidra buildExtension
+```
+
 ## Installation
 
 Precompiled packages for each version of Ghidra are available in the [releases](https://github.com/beardypig/ghidra-emotionengine/releases) tab. To install the package, follow the instructions in the [Ghidra docs](https://ghidra-sre.org/InstallationGuide.html#Extensions).

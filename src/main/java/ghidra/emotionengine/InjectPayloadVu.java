@@ -54,7 +54,7 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 	private static final String FLOAT_GREATER_THAN = " f> ";
 	private static final String FLOAT_LESS_THAN = " f< ";
 	private static final String ASSIGNMENT = " = ";
-	private static final String GOTO = " goto ";
+	private static final String GOTO = "goto ";
 	private static final String IF = "if (";
 	private static final String MAX = "<max";
 	private static final String MIN = "<min";
@@ -116,12 +116,12 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		"vuStatus_32[11,1]"
 	};
 
-	private static final String OPEN_COND = " (";
-	private static final String ZERO_COND = " == 0 ";
-	private static final String LT_ZERO_COND = " < 0 ";
+	private static final String OPEN_COND = "(";
+	private static final String ZERO_COND = " == 0";
+	private static final String LT_ZERO_COND = " < 0";
 	private static final String CLOSE_COND = ");\n";
 
-	private long dest;
+	protected long dest;
 	
 	private static final Map<String, Function<InjectPayloadVu, String>>
 		INSTRUCTIONS = getInstructionMap();
@@ -165,6 +165,11 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		catch (Exception e) {
 			throw new PcodeXMLException("Failed to instantiate XML parser", e);
 		}
+	}
+
+	// for testing use only
+	protected final Function<InjectPayloadVu, String> getInstruction() {
+		return INSTRUCTIONS.get(name);
 	}
 
 	public OpTpl[] getPcode(PcodeParser parser, Program program, String context) {
@@ -502,7 +507,8 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 				.append(VUFS)
 				.append(VECTOR_DIRECTIONS[i])
 				.append(END_LINE)
-				.append(end);
+				.append(end)
+				.append('\n');
 			}
 		}
 		return builder.toString();
@@ -551,7 +557,8 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 				.append(VUFS)
 				.append(VECTOR_DIRECTIONS[i])
 				.append(END_LINE)
-				.append(end);
+				.append(end)
+				.append('\n');
 			}
 		}
 		return builder.toString();

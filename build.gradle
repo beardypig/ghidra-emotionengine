@@ -35,10 +35,15 @@ else {
 }
 //----------------------END "DO NOT MODIFY" SECTION-------------------------------
 
+repositories { mavenCentral() }
+
 dependencies {
+	testCompile "org.hamcrest:hamcrest-all:1.3"
+	testCompile "org.jmockit:jmockit:1.44"
+	testCompile "junit:junit:4.12"
 	runtimeOnly fileTree(dir: ghidraInstallDir + '/Ghidra/Framework', include: "**/*.jar")
 	runtimeOnly fileTree(dir: ghidraInstallDir + '/Ghidra/Features', include: "**/*.jar")
-	compileOnly fileTree(dir: ghidraInstallDir + '/Ghidra/Processors', include: "**/*.jar")
+	runtimeOnly fileTree(dir: ghidraInstallDir + '/Ghidra/Processors', include: "**/*.jar")
 }
 
 if (ghidra_version < "9.2") {

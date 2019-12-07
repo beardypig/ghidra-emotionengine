@@ -842,19 +842,19 @@ with : prime=28 {
         hi1 = sext(product[32,32]);
         RD128[64,64] = product;
     }
-    :pmthi RD128    is microMode=0 & RD128 & rs=0 & rt=0 & mmiop=0x8 & fct=0x29 {
-        hi = RD128[0,64];
-        hi1 = RD128[64,64];
+    :pmthi RS128src    is microMode=0 & RS128src & rd=0 & rt=0 & mmiop=0x8 & fct=0x29 {
+        hi = RS128src[0,64];
+        hi1 = RS128src[64,64];
     }
-    :pmthl.lw RD128    is microMode=0 & RD128 & rs=0 & rt=0 & mmiop=0x0 & fct=0x31 {
-        lo[0,32] = RD128[0,32];
-        hi[0,32] = RD128[32,32];
-        lo1[0,32] = RD128[64,32];
-        hi1[0,32] = RD128[96,32];
+    :pmthl.lw RS128src    is microMode=0 & RS128src & rd=0 & rt=0 & mmiop=0x0 & fct=0x31 {
+        lo[0,32] = RS128src[0,32];
+        hi[0,32] = RS128src[32,32];
+        lo1[0,32] = RS128src[64,32];
+        hi1[0,32] = RS128src[96,32];
     }
-    :pmtlo RD128    is microMode=0 & RD128 & rs=0 & rt=0 & mmiop=0x9 & fct=0x29 {
-        lo = RD128[0,64];
-        lo1 = RD128[64,64];
+    :pmtlo RS128src    is microMode=0 & RS128src & rd=0 & rt=0 & mmiop=0x9 & fct=0x29 {
+        lo = RS128src[0,64];
+        lo1 = RS128src[64,64];
     }
     :pmulth RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=0x1C & fct=0x9 {
         lo[0,32] = sext(RS128src[0,16] * RT128src[0,16]);

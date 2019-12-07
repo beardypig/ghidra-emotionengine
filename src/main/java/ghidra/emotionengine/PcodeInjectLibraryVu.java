@@ -62,7 +62,7 @@ public class PcodeInjectLibraryVu extends PcodeInjectLibrary {
 		}
     }
 
-    private static Set<String> getVectorInstructions() {
+    static Set<String> getVectorInstructions() {
         Set<String> instructions = new HashSet<>();
         instructions.add(VABS);
         instructions.add(VADD);

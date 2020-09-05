@@ -57,9 +57,8 @@ with : prime=17 & microMode=0 {  #COP1
 
 	# 0100 0101 0000 0010 iiii iiii iiii iiii
 	:bc1fl Rel16                    	is copop=8 & copfct=2 & Rel16 {
-	    tmp:1 = fcsr[23,1]; # The floating point condition bit
+	    if (fcsr[23,1] != 0) goto inst_next;
 	    delayslot(1);
-	    if (tmp != 0) goto inst_next;
 	    goto Rel16;
 	}
 
@@ -73,9 +72,8 @@ with : prime=17 & microMode=0 {  #COP1
 
 	# 0100 0101 0000 0011 iiii iiii iiii iiii
 	:bc1tl Rel16                     	is copop=8 & copfct=3 & Rel16 {
-	    tmp:1 = fcsr[23,1];
+	    if (fcsr[23,1] == 0) goto inst_next;
 	    delayslot(1);
-	    if (tmp == 0) goto inst_next;
 	    goto Rel16;
 	}
 

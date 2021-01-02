@@ -19,6 +19,8 @@ If you want to build the extension yourself, install `gradle` and run
 gradle -PGHIDRA_INSTALL_DIR=/path/to/ghidra buildExtension
 ```
 
+Only Ghidra versions 9.2 and above are supported.
+
 ## Installation
 
 Precompiled packages for each version of Ghidra are available in the [releases](https://github.com/beardypig/ghidra-emotionengine/releases) tab. To install the package, follow the instructions in the [Ghidra docs](https://ghidra-sre.org/InstallationGuide.html#Extensions).

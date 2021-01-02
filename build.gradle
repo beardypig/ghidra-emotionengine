@@ -41,6 +41,10 @@ dependencies {
 	compileOnly fileTree(dir: ghidraInstallDir + '/Ghidra/Processors', include: "**/*.jar")
 }
 
+if (ghidra_version < "9.2") {
+    throw new GradleException("Requires at least Ghidra 9.2, but was run with $ghidra_version")
+}
+
 eclipse.classpath.file.whenMerged {
 	File javaDoc = new File(ghidraInstallDir+"/docs/GhidraAPI_javadoc.zip");
 	def destroy = [];

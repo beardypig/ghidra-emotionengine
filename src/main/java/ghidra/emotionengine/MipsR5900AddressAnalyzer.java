@@ -332,7 +332,7 @@ public class MipsR5900AddressAnalyzer extends ConstantPropagationAnalyzer {
 									}
 								}
 								symEval.makeReference(context, lastSetInstr, -1,
-									instr.getMinAddress().getAddressSpace().getBaseSpaceID(),
+									instr.getMinAddress().getAddressSpace().getSpaceID(),
 									unsignedValue, 1, RefType.DATA, PcodeOp.UNIMPLEMENTED, true,
 									monitor);
 								if (gp_assumption_value == null) {

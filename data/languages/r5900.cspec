@@ -152,6 +152,62 @@
       </killedbycall>    
     </prototype>
   </default_proto>
+  <callfixup name="dpadd">
+    <target name="dpadd"/>
+    <pcode>
+      <body><![CDATA[
+        v0 = a0 f+ a1;
+      ]]></body>
+    </pcode>
+  </callfixup>
+  <callfixup name="dpsub">
+    <target name="dpsub"/>
+    <pcode>
+      <body><![CDATA[
+        v0 = a0 f- a1;
+      ]]></body>
+    </pcode>
+  </callfixup>
+  <callfixup name="dpmul">
+    <target name="dpmul"/>
+    <pcode>
+      <body><![CDATA[
+        v0 = a0 f* a1;
+      ]]></body>
+    </pcode>
+  </callfixup>
+  <callfixup name="dpdiv">
+    <target name="dpdiv"/>
+    <pcode>
+      <body><![CDATA[
+        v0 = a0 f/ a1;
+      ]]></body>
+    </pcode>
+  </callfixup>
+  <callfixup name="inttodp">
+    <target name="litodp"/>
+    <pcode>
+      <body><![CDATA[
+        v0 = int2float(a0);
+      ]]></body>
+    </pcode>
+  </callfixup>
+  <callfixup name="dptofp">
+    <target name="dptofp"/>
+    <pcode>
+      <body><![CDATA[
+        f0 = float2float(a0);
+      ]]></body>
+    </pcode>
+  </callfixup>
+  <callfixup name="fptodp">
+    <target name="fptodp"/>
+    <pcode>
+      <body><![CDATA[
+        v0 = float2float(f12);
+      ]]></body>
+    </pcode>
+  </callfixup>
   <callotherfixup targetop="VABS">
       <pcode dynamic="true">
         <input name="DEST"/>

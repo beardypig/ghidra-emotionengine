@@ -959,54 +959,54 @@ with : prime=28 {
         RD128[112,16] = RT128src[112,16] << sa;
     }
     :psllvw RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=0x2 & fct=0x9 {
-        RD128[0,64] = sext(RT128src[0,27] << RS128src[0,5]);
-        RD128[64,64] = sext(RT128src[64,27] << RS128src[64,5]);
+        RD128[0,64] = sext(RT128src[0,32] << RS128src[0,5]);
+        RD128[64,64] = sext(RT128src[64,32] << RS128src[64,5]);
     }
     :psllw RD128, RT128src, sa    is microMode=0 & RD128 & RT128src & rs=0 & sa & fct=0x3C {
-        RD128[0,32] = zext(RT128src[0,16]) << sa:4;
-        RD128[32,32] = zext(RT128src[32,16]) << sa:4;
-        RD128[64,32] = zext(RT128src[64,16]) << sa:4;
-        RD128[96,32] = zext(RT128src[96,16]) << sa:4;
+        RD128[0,32] = zext(RT128src[0,32]) << sa:4;
+        RD128[32,32] = zext(RT128src[32,32]) << sa:4;
+        RD128[64,32] = zext(RT128src[64,32]) << sa:4;
+        RD128[96,32] = zext(RT128src[96,32]) << sa:4;
     }
     :psrah RD128, RT128src, sa    is microMode=0 & RD128 & RT128src & rs=0 & sa & fct=0x37 {
-        RD128[0,16] = sext(RT128src[0,8] s>> sa:1);
-        RD128[16,16] = sext(RT128src[16,8] s>> sa:1);
-        RD128[32,16] = sext(RT128src[32,8] s>> sa:1);
-        RD128[48,16] = sext(RT128src[48,8] s>> sa:1);
-        RD128[64,16] = sext(RT128src[64,8] s>> sa:1);
-        RD128[80,16] = sext(RT128src[80,8] s>> sa:1);
-        RD128[96,16] = sext(RT128src[96,8] s>> sa:1);
-        RD128[112,16] = sext(RT128src[112,8] s>> sa:1);
+        RD128[0,16] = sext(RT128src[0,16] s>> sa:1);
+        RD128[16,16] = sext(RT128src[16,16] s>> sa:1);
+        RD128[32,16] = sext(RT128src[32,16] s>> sa:1);
+        RD128[48,16] = sext(RT128src[48,16] s>> sa:1);
+        RD128[64,16] = sext(RT128src[64,16] s>> sa:1);
+        RD128[80,16] = sext(RT128src[80,16] s>> sa:1);
+        RD128[96,16] = sext(RT128src[96,16] s>> sa:1);
+        RD128[112,16] = sext(RT128src[112,16] s>> sa:1);
     }
     :psravw RD128, RT128src, RS128src    is microMode=0 & RD128 & RT128src & RS128src & mmiop=3 & fct=0x29 {
-        RD128[0,64] = sext(RT128src[0,27] >> RS128src[0,5]);
-        RD128[64,64] = sext(RT128src[64,27] >> RS128src[64,5]);
+        RD128[0,64] = sext(RT128src[0,32] >> RS128src[0,5]);
+        RD128[64,64] = sext(RT128src[64,32] >> RS128src[64,5]);
     }
     :psraw RD128, RT128src, sa    is microMode=0 & RD128 & RT128src & rs=0 & sa & fct=0x3F {
-        RD128[0,32] = sext(RT128src[16,16] s>> sa);
-        RD128[32,32] = sext(RT128src[48,16] s>> sa);
-        RD128[64,32] = sext(RT128src[80,16] s>> sa);
-        RD128[96,32] = sext(RT128src[96,16] s>> sa);
+        RD128[0,32] = sext(RT128src[0,32] s>> sa);
+        RD128[32,32] = sext(RT128src[32,32] s>> sa);
+        RD128[64,32] = sext(RT128src[64,32] s>> sa);
+        RD128[96,32] = sext(RT128src[96,32] s>> sa);
     }
     :psrlh RD128, RT128src, sa    is microMode=0 & RD128 & RT128src & rs=0 & sa & fct=0x36 {
-        RD128[0,16] = zext(RT128src[0,8] >> sa:1);
-        RD128[16,16] = zext(RT128src[16,8] >> sa:1);
-        RD128[32,16] = zext(RT128src[32,8] >> sa:1);
-        RD128[48,16] = zext(RT128src[48,8] >> sa:1);
-        RD128[64,16] = zext(RT128src[64,8] >> sa:1);
-        RD128[80,16] = zext(RT128src[80,8] >> sa:1);
-        RD128[96,16] = zext(RT128src[96,8] >> sa:1);
-        RD128[112,16] = zext(RT128src[112,8] >> sa:1);
+        RD128[0,16] = zext(RT128src[0,16] >> sa:1);
+        RD128[16,16] = zext(RT128src[16,16] >> sa:1);
+        RD128[32,16] = zext(RT128src[32,16] >> sa:1);
+        RD128[48,16] = zext(RT128src[48,16] >> sa:1);
+        RD128[64,16] = zext(RT128src[64,16] >> sa:1);
+        RD128[80,16] = zext(RT128src[80,16] >> sa:1);
+        RD128[96,16] = zext(RT128src[96,16] >> sa:1);
+        RD128[112,16] = zext(RT128src[112,16] >> sa:1);
     }
     :psrlvw RD128, RT128src, RS128src    is microMode=0 & RD128 & RT128src & RS128src & mmiop=3 & fct=0x9 {
-        RD128[0,64] = zext(RT128src[0,27] >> RS128src[0,5]);
-        RD128[64,64] = zext(RT128src[64,27] >> RS128src[64,5]);
+        RD128[0,64] = zext(RT128src[0,32] >> RS128src[0,5]);
+        RD128[64,64] = zext(RT128src[64,32] >> RS128src[64,5]);
     }
     :psrlw RD128, RT128src, sa    is microMode=0 & RD128 & RT128src & rs=0 & sa & fct=0x3E {
-        RD128[0,32] = zext(RT128src[16,16] >> sa:2);
-        RD128[32,32] = zext(RT128src[48,16] >> sa:2);
-        RD128[64,32] = zext(RT128src[80,16] >> sa:2);
-        RD128[96,32] = zext(RT128src[96,16] >> sa:2);
+        RD128[0,32] = zext(RT128src[0,32] >> sa:2);
+        RD128[32,32] = zext(RT128src[32,32] >> sa:2);
+        RD128[64,32] = zext(RT128src[64,32] >> sa:2);
+        RD128[96,32] = zext(RT128src[96,32] >> sa:2);
     }
     :psubb RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=0x9 & fct=8 {
         RD128[0,8] = RS128src[0,8] - RT128src[0,8];

@@ -50,6 +50,12 @@ if (ghidra_version < "9.2") {
     throw new GradleException("Requires at least Ghidra 9.2, but was run with $ghidra_version")
 }
 
+test {
+    useJUnit()
+
+    maxHeapSize = '1G'
+}
+
 eclipse.classpath.file.whenMerged {
 	File javaDoc = new File(ghidraInstallDir+"/docs/GhidraAPI_javadoc.zip");
 	def destroy = [];

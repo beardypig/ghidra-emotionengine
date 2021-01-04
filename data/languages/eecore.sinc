@@ -959,11 +959,8 @@ with : prime=28 {
         RD128[112,16] = RT128src[112,16] << sa;
     }
     :psllvw RD128, RS128src, RT128src    is microMode=0 & RD128 & RS128src & RT128src & mmiop=0x2 & fct=0x9 {
-        local tmp:4;
-        tmp = RT128src[0,32] << RS128src[0,5];
-        RD128[0,64] = sext(tmp);
-        tmp = RT128src[64,32] << RS128src[64,5];
-        RD128[64,64] = sext(tmp);
+        RD128[0,64] = sext(RT128src[0,32] << RS128src[0,5]);
+        RD128[64,64] = sext(RT128src[64,32] << RS128src[64,5]);
     }
     :psllw RD128, RT128src, sa    is microMode=0 & RD128 & RT128src & rs=0 & sa & fct=0x3C {
         RD128[0,32] = zext(RT128src[0,32]) << sa:4;

@@ -96,11 +96,9 @@ public class PCSX2SaveStateImporter extends GhidraScript {
         byte[] bytes = new byte[(int) block.getSize()];
         buf.get(bytes);
         if (!block.isInitialized()) {
-            if (block instanceof MemoryBlockDB) {
-                ((MemoryBlockDB) block).initializeBlock((byte) 0);
-                block.setRead(true);
-                block.setWrite(true);
-            }
+			block = currentProgram.getMemory().convertToInitialized(block, (byte) 0);
+            block.setRead(true);
+            block.setWrite(true);
         }
         block.putBytes(block.getStart(), bytes);
     }

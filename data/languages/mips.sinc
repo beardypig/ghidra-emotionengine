@@ -50,6 +50,13 @@ define pcodeop syscall;
     }
 
     # 0001 00ss ssst tttt iiii iiii iiii iiii
+    # Special case of beq
+    :b Rel16        		                is prime=4 & rs = 0 & rt = 0 & Rel16 {
+        delayslot( 1 );
+        goto Rel16;
+    }
+
+    # 0001 00ss ssst tttt iiii iiii iiii iiii
     :beq RSsrc, RTsrc, Rel16        		is prime=4 & RSsrc & RTsrc & Rel16 {
         delayflag:1 = ( RSsrc == RTsrc );
         delayslot( 1 );

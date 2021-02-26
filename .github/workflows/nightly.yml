@@ -1,10 +1,9 @@
 name: Publish nightly build artifacts
 
 on:
-  push:
-    branches:
-      - master
-    
+  schedule:
+    - cron: '0 0 * * *'
+
 jobs:
   build_and_publish:
     runs-on: ubuntu-latest
@@ -21,6 +20,10 @@ jobs:
       - uses: er28-0652/setup-ghidra@master
         with:
           version: ${{ matrix.ghidra }}
+      - uses: eskatos/gradle-command-action@v1
+        with:
+          gradle-version: current
+          arguments: test -PGHIDRA_INSTALL_DIR=${{ env.GHIDRA_INSTALL_DIR }}
       - uses: eskatos/gradle-command-action@v1
         with:
           gradle-version: current

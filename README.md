@@ -1,4 +1,4 @@
-# ghidra-emotionengine
+# ghidra-emotionengine [![run tests](https://github.com/beardypig/ghidra-emotionengine/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/beardypig/ghidra-emotionengine/actions/workflows/test.yml)
 Ghidra Processor for the Play Station 2's Emotion Engine CPU.
 
 The core MIPS/FPU/COP0 instruction are based off the MIPS32/64 processor included in Ghidra, with superfluous instructions stripped out and some instructions modified.

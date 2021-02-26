@@ -24,6 +24,7 @@ Only Ghidra versions 9.2 and above are supported.
 ## Installation
 
 Precompiled packages for each version of Ghidra are available in the [releases](https://github.com/beardypig/ghidra-emotionengine/releases) tab. To install the package, follow the instructions in the [Ghidra docs](https://ghidra-sre.org/InstallationGuide.html#Extensions).
+A "nightly" version of the plugin is available under the [latest](https://github.com/beardypig/ghidra-emotionengine/releases/tag/latest) tag. This version is updated once per day. 
 
 ## Issues
 

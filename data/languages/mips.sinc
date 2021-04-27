@@ -21,22 +21,22 @@ define pcodeop syscall;
     }
 
     # 0010 01ss ssst tttt iiii iiii iiii iiii
-    :addiu RT32, RS32src, simmed            is prime=9 & RT32 & RS32src & simmed & RT {
-        RT32 = RS32src + simmed;
-        RT = sext(RT32);
+    :addiu RT32, RS32src, immed            is prime=9 & RT32 & RS32src & immed & RT {
+        RT32 = RS32src + immed;
+        RT = zext(RT32);
     }
 
     # 0010 0100 000t tttt iiii iiii iiii iiii
     # special case of ADDIU
-    :li RT32, simmed                         is prime=9 & RT32 & rs=0 & simmed & RT {
-        RT32 = sext(simmed:2);
-        RT = sext(RT32);
+    :li RT32, immed                         is prime=9 & RT32 & rs=0 & immed & RT {
+        RT32 = zext(immed:2);
+        RT = zext(RT32);
     }
 
     # 0000 00ss ssst tttt dddd d000 0010 0001
     :addu RD32, RS32src, RT32src          	is prime=0 & zero5=0 & fct=33 & RS32src & RT32src & RD32 & RD {
         RD32 = RS32src + RT32src;
-        RD = sext(RD32);
+        RD = zext(RD32);
     }
 
     # 0000 00ss ssst tttt dddd d000 0010 0100
@@ -191,8 +191,8 @@ define pcodeop syscall;
     }
 
     # 0110 01ss ssst tttt iiii iiii iiii iiii
-    :daddiu RT, RSsrc, simmed      		 	is prime=25 & RSsrc & RT & simmed {
-        RT = RSsrc + simmed;
+    :daddiu RT, RSsrc, immed      		 	is prime=25 & RSsrc & RT & immed {
+        RT = RSsrc + immed;
     }
 
     # 0000 00ss ssst tttt dddd d000 0010 1101
@@ -550,8 +550,8 @@ define pcodeop syscall;
     }
 
     # 0010 11ss ssst tttt iiii iiii iiii iiii
-    :sltiu RT, RSsrc, simmed        		is prime=11 & RSsrc & RT & simmed {
-        RT = zext( RSsrc < simmed );
+    :sltiu RT, RSsrc, immed        		is prime=11 & RSsrc & RT & immed {
+        RT = zext( RSsrc < immed );
     }
 
     # 0000 00ss ssst tttt dddd d000 0010 1011
@@ -666,8 +666,8 @@ define pcodeop syscall;
     }
 
     # 0000 01ss sss0 1001 iiii iiii iiii iiii
-    :tgeiu RSsrc, simmed            		is prime=1 & cond=9 & RSsrc & simmed {
-        if (RSsrc < simmed) goto <done>;
+    :tgeiu RSsrc, immed            		is prime=1 & cond=9 & RSsrc & immed {
+        if (RSsrc < immed) goto <done>;
         trap();
         <done>
     }
@@ -696,8 +696,8 @@ define pcodeop syscall;
     }
 
     # 0000 01ss sss0 1011 iiii iiii iiii iiii
-    :tltiu RSsrc, simmed            		is prime=1 & cond=11 & RSsrc & simmed {
-        if (RSsrc >= simmed) goto <done>;
+    :tltiu RSsrc, immed            		is prime=1 & cond=11 & RSsrc & immed {
+        if (RSsrc >= immed) goto <done>;
         trap();
         <done>
     }

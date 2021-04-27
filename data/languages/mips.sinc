@@ -368,8 +368,8 @@ define pcodeop syscall;
     }
 
     # 0011 1100 000t tttt iiii iiii iiii iiii
-    :lui RT, immed                  		is prime=15 & rs=0 & RT & immed {
-        tmp:4 = immed << 16;
+    :lui RT, simmed                  		is prime=15 & rs=0 & RT & simmed {
+        tmp:4 = ((simmed-1) << 16);
         RT = sext(tmp);
     }
 

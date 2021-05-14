@@ -22,11 +22,11 @@ jobs:
           version: ${{ matrix.ghidra }}
       - uses: eskatos/gradle-command-action@v1
         with:
-          gradle-version: current
+          gradle-version: 6.9
           arguments: test -PGHIDRA_INSTALL_DIR=${{ env.GHIDRA_INSTALL_DIR }}
       - uses: eskatos/gradle-command-action@v1
         with:
-          gradle-version: current
+          gradle-version: 6.9
           arguments: buildExtension -PGHIDRA_INSTALL_DIR=${{ env.GHIDRA_INSTALL_DIR }}
       - uses: svenstaro/upload-release-action@v1-release
         with:

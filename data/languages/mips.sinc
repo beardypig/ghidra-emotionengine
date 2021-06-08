@@ -21,16 +21,16 @@ define pcodeop syscall;
     }
 
     # 0010 01ss ssst tttt iiii iiii iiii iiii
-    :addiu RT32, RS32src, immed            is prime=9 & RT32 & RS32src & immed & RT {
-        RT32 = RS32src + immed;
-        RT = zext(RT32);
+    :addiu RT32, RS32src, simmed            is prime=9 & RT32 & RS32src & simmed & RT {
+        RT32 = RS32src + simmed;
+        RT = sext(RT32);
     }
 
     # 0010 0100 000t tttt iiii iiii iiii iiii
     # special case of ADDIU
-    :li RT32, immed                         is prime=9 & RT32 & rs=0 & immed & RT {
-        RT32 = zext(immed:2);
-        RT = zext(RT32);
+    :li RT32, simmed                         is prime=9 & RT32 & rs=0 & simmed & RT {
+        RT32 = sext(simmed:2);
+        RT = sext(RT32);
     }
 
     # 0000 00ss ssst tttt dddd d000 0010 0001
@@ -191,8 +191,8 @@ define pcodeop syscall;
     }
 
     # 0110 01ss ssst tttt iiii iiii iiii iiii
-    :daddiu RT, RSsrc, immed      		 	is prime=25 & RSsrc & RT & immed {
-        RT = RSsrc + immed;
+    :daddiu RT, RSsrc, simmed      		 	is prime=25 & RSsrc & RT & simmed {
+        RT = RSsrc + simmed;
     }
 
     # 0000 00ss ssst tttt dddd d000 0010 1101

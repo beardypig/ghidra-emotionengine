@@ -115,19 +115,7 @@ with : prime=17 & microMode=0 {  #COP1
 
 	# 0100 0110 0000 0000 ssss sddd dd10 0100
 	:cvt.w.S fd, fs             		is ft=0 & fct=36 & fd & fs & format=0x10 {
-	    # Convert from single float source to 32-bit integer word, using the fcsr RM rounding mode bits
-	    bias:1 = fs[23,8];
-	    msb:1 = fs[31,1];
-
-	    if (bias > 0x9d) goto <clamp>;
 	    fd = trunc(fs);
-	    goto inst_next;
-	   <clamp>
-	    if (msb == 0) goto <neg>;
-	    fd = 0x7FFFFFFF;
-	    goto inst_next;
-	   <neg>
-		fd = 0x80000000;
 	}
 
 	# 0100 01ff ffft tttt ssss sddd dd00 0011

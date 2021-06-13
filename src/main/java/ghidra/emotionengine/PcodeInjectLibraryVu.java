@@ -5,20 +5,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ghidra.app.plugin.processors.sleigh.SleighLanguage;
-import ghidra.app.plugin.processors.sleigh.template.OpTpl;
 import ghidra.pcodeCPort.slgh_compile.PcodeParser;
 import ghidra.program.model.lang.InjectPayload;
-import ghidra.program.model.lang.InjectPayloadSleigh;
 import ghidra.program.model.lang.PcodeInjectLibrary;
-import ghidra.program.model.listing.Program;
 import ghidra.util.Msg;
 
 import org.jdom.JDOMException;
 
 public class PcodeInjectLibraryVu extends PcodeInjectLibrary {
 
-    private PcodeParser parser;
-    private SleighLanguage language;
+    private final PcodeParser parser;
+    private final SleighLanguage language;
 
     // vector
     protected static final String VABS = "VABS";
@@ -53,13 +50,20 @@ public class PcodeInjectLibraryVu extends PcodeInjectLibrary {
         language = l;
         String translateSpec = l.buildTranslatorTag(l.getAddressFactory(),
 			getUniqueBase(), l.getSymbolTable());
-		parser = null;
+        PcodeParser tmpParser = null;
 		try {
-			parser = new PcodeParser(translateSpec);
+			tmpParser = new PcodeParser(translateSpec);
 		}
 		catch (JDOMException e1) {
 			Msg.error(this, e1);
 		}
+        parser = tmpParser;
+    }
+
+    public PcodeInjectLibraryVu(PcodeInjectLibraryVu op2) {
+        super(op2);
+        this.parser = op2.parser;
+        this.language = op2.language;
     }
 
     static Set<String> getVectorInstructions() {
@@ -92,7 +96,12 @@ public class PcodeInjectLibraryVu extends PcodeInjectLibrary {
     }
 
     @Override
-	protected InjectPayloadSleigh allocateInject(String sourceName, String name, int tp) {
+	public PcodeInjectLibrary clone() {
+		return new PcodeInjectLibraryVu(this);
+	}
+
+    @Override
+	public InjectPayload allocateInject(String sourceName, String name, int tp) {
 		if (tp != InjectPayload.CALLOTHERFIXUP_TYPE) {
 			return super.allocateInject(sourceName, name, tp);
 		}
@@ -101,30 +110,4 @@ public class PcodeInjectLibraryVu extends PcodeInjectLibrary {
         }
 		return super.allocateInject(sourceName, name, InjectPayload.CALLOTHERFIXUP_TYPE);
     }
-
-    @Override
-	/**
-	* This method is called by DecompileCallback.getPcodeInject.
-	*/
-	public InjectPayload getPayload(int type, String name, Program program, String context) {
-		if (!VECTOR_INSTRUCTIONS.contains(name)) {
-			return super.getPayload(type, name, program, context);
-		}
-
-		InjectPayloadVu payload =
-			(InjectPayloadVu) super.getPayload(InjectPayload.CALLOTHERFIXUP_TYPE, name, program,
-				context);
-
-		synchronized (parser) {
-            try {
-                OpTpl[] opTemplates = payload.getPcode(parser, program, context);
-                adjustUniqueBase(opTemplates);
-            } finally {
-                //clear the added symbols so that the parser can be used again without
-                //duplicate symbol name conflicts.
-                parser.clearSymbols();
-            }
-		}
-		return payload;
-	}
 }

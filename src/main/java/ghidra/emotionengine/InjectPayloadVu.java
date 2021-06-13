@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *	  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@ package ghidra.emotionengine;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.jdom.JDOMException;
 import org.xml.sax.*;
 
 import java.util.Collections;
@@ -28,14 +29,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import ghidra.app.plugin.processors.sleigh.ParserWalker;
+import ghidra.app.plugin.processors.sleigh.PcodeEmitObjects;
 import ghidra.app.plugin.processors.sleigh.SleighException;
 import ghidra.app.plugin.processors.sleigh.SleighLanguage;
+import ghidra.app.plugin.processors.sleigh.SleighParserContext;
 import ghidra.app.plugin.processors.sleigh.template.ConstructTpl;
-import ghidra.app.plugin.processors.sleigh.template.OpTpl;
 import ghidra.pcodeCPort.slgh_compile.PcodeParser;
 import ghidra.program.model.address.Address;
 import ghidra.program.model.lang.*;
 import ghidra.program.model.listing.Program;
+import ghidra.program.model.pcode.PcodeOp;
 import ghidra.program.model.pcode.PcodeXMLException;
 import ghidra.sleigh.grammar.Location;
 import ghidra.util.Msg;
@@ -87,7 +91,7 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		"<end%3$d>\n");
 
 	private static final String MOVE_OPERATION = "VUFT%s = VUFS%s;\n";
-	
+
 	private static final Map<String, Function<InjectPayloadVu, String>>
 		INSTRUCTIONS = getInstructionMap();
 	private static final Map<String, String> OPERATIONS = getOperationMap();
@@ -141,10 +145,22 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		return INSTRUCTIONS.get(name);
 	}
 
-	public OpTpl[] getPcode(PcodeParser parser, Program program, String context) {
+	@Override
+	public PcodeOp[] getPcode(Program program, InjectContext con) {
 		Address vf0Address = program.getRegister(VEC_ZERO).getAddress();
 		if (!INSTRUCTIONS.containsKey(getName())) {
-			return new OpTpl[0];
+			return new PcodeOp[0];
+		}
+		SleighLanguage l = language;
+		String translateSpec = l.buildTranslatorTag(l.getAddressFactory(),
+			l.getUniqueBase(), l.getSymbolTable());
+		PcodeParser parser = null;
+		try {
+			parser = new PcodeParser(translateSpec);
+		}
+		catch (JDOMException e1) {
+			Msg.error(this, e1);
+			return new PcodeOp[0];
 		}
 		String sourceName = getSource();
 		Location loc = new Location(sourceName, 1);
@@ -156,13 +172,12 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		for (InjectParameter element : output) {
 			parser.addOperand(loc, element.getName(), element.getIndex());
 		}
-		InjectContext injectContext = getInjectContext(program, context);
-		dest = injectContext.inputlist.get(0).getOffset();
+		dest = con.inputlist.get(0).getOffset();
 		Function<InjectPayloadVu, String> function = INSTRUCTIONS.get(name);
 		StringBuilder pcodeTextBuilder = new StringBuilder();
-		for (int i = 1; i < injectContext.inputlist.size(); i++) {
-			if (injectContext.inputlist.get(i).getSize() == 0x10) {
-				if (vf0Address.equals(injectContext.inputlist.get(i).getAddress())) {
+		for (int i = 1; i < con.inputlist.size(); i++) {
+			if (con.inputlist.get(i).getSize() == 0x10) {
+				if (vf0Address.equals(con.inputlist.get(i).getAddress())) {
 					pcodeTextBuilder.append(setZero(dest, input[i].getName()));
 				}
 			}
@@ -174,26 +189,11 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		if (constructTplXml == null) {
 			throw new SleighException("pcode compile failed " + sourceName);
 		}
-		final SAXParseException[] exception = new SAXParseException[1];
+		VuErrorHandler errHandler = new VuErrorHandler();
 		XmlPullParser xmlParser = null;
 		try {
 			xmlParser =
-				XmlPullParserFactory.create(constructTplXml, sourceName, new ErrorHandler() {
-					@Override
-					public void warning(SAXParseException e) throws SAXException {
-						Msg.warn(this, e.getMessage());
-					}
-
-					@Override
-					public void fatalError(SAXParseException e) throws SAXException {
-						exception[0] = e;
-					}
-
-					@Override
-					public void error(SAXParseException e) throws SAXException {
-						exception[0] = e;
-					}
-				}, false);
+				XmlPullParserFactory.create(constructTplXml, sourceName, errHandler, false);
 		}
 		catch (SAXException e) {
 			Msg.error(this, e);
@@ -206,15 +206,19 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		catch (UnknownInstructionException e) {
 			Msg.error(this, e);
 		}
-		if (exception[0] != null) {
+		if (errHandler.e != null) {
 			throw new SleighException("pcode compiler returned invalid xml " + sourceName,
-				exception[0]);
+				errHandler.e);
 		}
-		OpTpl[] opTemplates = constructTpl.getOpVec();
 		setTemplate(constructTpl);
-		return opTemplates;
+		SleighParserContext protoContext =
+			new SleighParserContext(con.baseAddr, con.nextAddr, con.refAddr, con.callAddr);
+		ParserWalker walker = new ParserWalker(protoContext);
+		PcodeEmitObjects emit = new PcodeEmitObjects(walker);
+		inject(con, emit);
+		return emit.getPcodeOp();
 	}
-	
+
 	private static String setZero(long dest, String register) {
 		final int MAX_STRING_LENGTH = 119;
 		StringBuilder builder = new StringBuilder(MAX_STRING_LENGTH);
@@ -319,7 +323,7 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		}
 		return builder.append(buildStatus()).toString();
 	}
-	
+
 	private static String getMultiplyOperationText3(InjectPayloadVu self) {
 		StringBuilder builder = new StringBuilder();
 		boolean broadcast = self.name.endsWith(BROADCAST);
@@ -338,7 +342,7 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		}
 		return builder.append(buildStatus()).toString();
 	}
-	
+
 	private static String getLoadText(InjectPayloadVu self) {
 			StringBuilder builder = new StringBuilder();
 			for(int i = 3; i >= 0; i--) {
@@ -349,7 +353,7 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 			}
 			return builder.toString();
 	}
-	
+
 	private static String getStoreText(InjectPayloadVu self) {
 		StringBuilder builder = new StringBuilder();
 		for(int i = 3; i >= 0; i--) {
@@ -460,7 +464,7 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		instructions.put(PcodeInjectLibraryVu.VCLEAR, InjectPayloadVu::clearRegister);
 		return Collections.unmodifiableMap(instructions);
 	}
-	
+
 	private static Map<String, String> getOperationMap() {
 		Map<String, String> operations = new HashMap<>();
 		operations.put(PcodeInjectLibraryVu.VABS, ABS);
@@ -477,5 +481,25 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		operations.put(PcodeInjectLibraryVu.VFTOI, TRUNC);
 		operations.put(PcodeInjectLibraryVu.VITOF, INT2FLOAT);
 		return Collections.unmodifiableMap(operations);
+	}
+
+	private static class VuErrorHandler implements ErrorHandler {
+
+		private SAXParseException e;
+
+		@Override
+		public void warning(SAXParseException e) throws SAXException {
+			Msg.warn(this, e.getMessage());
+		}
+
+		@Override
+		public void fatalError(SAXParseException e) throws SAXException {
+			this.e = e;
+		}
+
+		@Override
+		public void error(SAXParseException e) throws SAXException {
+			this.e = e;
+		}
 	}
 }

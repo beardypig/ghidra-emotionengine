@@ -8,15 +8,15 @@ jobs:
   build_and_publish:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        ghidra: ["9.2", "9.2.1", "9.2.2", "9.2.3"]
+        ghidra: ['9.2', '9.2.1', '9.2.2', '9.2.3']
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v2
         with:
-          java-version: "11"
-          java-package: jdk
-          architecture: x64
+          distribution: adopt
+          java-version: 11
       - uses: er28-0652/setup-ghidra@master
         with:
           version: ${{ matrix.ghidra }}
@@ -32,6 +32,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: dist/*ghidra-emotionengine.zip
-          tag: "latest"
+          tag: latest
           overwrite: true
           file_glob: true

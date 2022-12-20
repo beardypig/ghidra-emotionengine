@@ -18,34 +18,23 @@
 
 package ghidra.emotionengine;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.jdom.JDOMException;
-import org.xml.sax.*;
+import ghidra.app.plugin.processors.sleigh.ParserWalker;
+import ghidra.app.plugin.processors.sleigh.PcodeEmitObjects;
+import ghidra.app.plugin.processors.sleigh.SleighLanguage;
+import ghidra.app.plugin.processors.sleigh.SleighParserContext;
+import ghidra.app.plugin.processors.sleigh.template.ConstructTpl;
+import ghidra.program.model.address.Address;
+import ghidra.program.model.lang.InjectContext;
+import ghidra.program.model.lang.InjectPayloadCallother;
+import ghidra.program.model.lang.PcodeParser;
+import ghidra.program.model.listing.Program;
+import ghidra.program.model.pcode.PcodeOp;
+import ghidra.sleigh.grammar.Location;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import ghidra.app.plugin.processors.sleigh.ParserWalker;
-import ghidra.app.plugin.processors.sleigh.PcodeEmitObjects;
-import ghidra.app.plugin.processors.sleigh.SleighException;
-import ghidra.app.plugin.processors.sleigh.SleighLanguage;
-import ghidra.app.plugin.processors.sleigh.SleighParserContext;
-import ghidra.app.plugin.processors.sleigh.template.ConstructTpl;
-import ghidra.pcodeCPort.slgh_compile.PcodeParser;
-import ghidra.program.model.address.Address;
-import ghidra.program.model.lang.*;
-import ghidra.program.model.listing.Program;
-import ghidra.program.model.pcode.PcodeOp;
-import ghidra.program.model.pcode.PcodeXMLException;
-import ghidra.sleigh.grammar.Location;
-import ghidra.util.Msg;
-import ghidra.util.xml.XmlUtilities;
-import ghidra.xml.XmlPullParser;
-import ghidra.xml.XmlPullParserFactory;
 
 public class InjectPayloadVu extends InjectPayloadCallother {
 
@@ -97,47 +86,15 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 	private static final Map<String, String> OPERATIONS = getOperationMap();
 
 	private SleighLanguage language;
-	private SAXParser saxParser;
 	protected long dest;
 
 	public InjectPayloadVu(String sourceName, SleighLanguage language) {
 		super(sourceName);
 		this.language = language;
-		try {
-			saxParser = getSAXParser();
-		}
-		catch (PcodeXMLException e) {
-			Msg.error(this, e);
-		}
 	}
 
 	SleighLanguage getLanguage() {
 		return language;
-	}
-
-	InjectContext getInjectContext(Program program, String context) {
-		InjectContext injectContext = new InjectContext();
-		injectContext.language = language;
-		try {
-			injectContext.restoreXml(saxParser, context, program.getAddressFactory());
-			saxParser.reset();
-		}
-		catch (PcodeXMLException e) {
-			Msg.error(this, e);
-		}
-		return injectContext;
-	}
-
-	private static SAXParser getSAXParser() throws PcodeXMLException {
-		try {
-			SAXParserFactory saxParserFactory = XmlUtilities.createSecureSAXParserFactory(false);
-			saxParserFactory.setFeature("http://xml.org/sax/features/namespaces", false);
-			saxParserFactory.setFeature("http://xml.org/sax/features/validation", false);
-			return saxParserFactory.newSAXParser();
-		}
-		catch (Exception e) {
-			throw new PcodeXMLException("Failed to instantiate XML parser", e);
-		}
 	}
 
 	// for testing use only
@@ -152,16 +109,7 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 			return new PcodeOp[0];
 		}
 		SleighLanguage l = language;
-		String translateSpec = l.buildTranslatorTag(l.getAddressFactory(),
-			l.getUniqueBase(), l.getSymbolTable());
-		PcodeParser parser = null;
-		try {
-			parser = new PcodeParser(translateSpec);
-		}
-		catch (JDOMException e1) {
-			Msg.error(this, e1);
-			return new PcodeOp[0];
-		}
+		PcodeParser parser = new PcodeParser(l, l.getUniqueBase());
 		String sourceName = getSource();
 		Location loc = new Location(sourceName, 1);
 		InjectParameter[] input = getInput();
@@ -183,33 +131,7 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 			}
 		}
 		pcodeTextBuilder.append(function.apply(this));
-		String constructTplXml =
-			PcodeParser.stringifyTemplate(parser.compilePcode(
-				pcodeTextBuilder.toString(), sourceName, 1));
-		if (constructTplXml == null) {
-			throw new SleighException("pcode compile failed " + sourceName);
-		}
-		VuErrorHandler errHandler = new VuErrorHandler();
-		XmlPullParser xmlParser = null;
-		try {
-			xmlParser =
-				XmlPullParserFactory.create(constructTplXml, sourceName, errHandler, false);
-		}
-		catch (SAXException e) {
-			Msg.error(this, e);
-		}
-
-		ConstructTpl constructTpl = new ConstructTpl();
-		try {
-			constructTpl.restoreXml(xmlParser, language.getAddressFactory());
-		}
-		catch (UnknownInstructionException e) {
-			Msg.error(this, e);
-		}
-		if (errHandler.e != null) {
-			throw new SleighException("pcode compiler returned invalid xml " + sourceName,
-				errHandler.e);
-		}
+		ConstructTpl constructTpl = parser.compilePcode(pcodeTextBuilder.toString(), sourceName, 1);
 		setTemplate(constructTpl);
 		SleighParserContext protoContext =
 			new SleighParserContext(con.baseAddr, con.nextAddr, con.refAddr, con.callAddr);
@@ -481,25 +403,5 @@ public class InjectPayloadVu extends InjectPayloadCallother {
 		operations.put(PcodeInjectLibraryVu.VFTOI, TRUNC);
 		operations.put(PcodeInjectLibraryVu.VITOF, INT2FLOAT);
 		return Collections.unmodifiableMap(operations);
-	}
-
-	private static class VuErrorHandler implements ErrorHandler {
-
-		private SAXParseException e;
-
-		@Override
-		public void warning(SAXParseException e) throws SAXException {
-			Msg.warn(this, e.getMessage());
-		}
-
-		@Override
-		public void fatalError(SAXParseException e) throws SAXException {
-			this.e = e;
-		}
-
-		@Override
-		public void error(SAXParseException e) throws SAXException {
-			this.e = e;
-		}
 	}
 }

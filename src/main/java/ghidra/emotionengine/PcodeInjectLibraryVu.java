@@ -1,16 +1,13 @@
 package ghidra.emotionengine;
 
+import ghidra.app.plugin.processors.sleigh.SleighLanguage;
+import ghidra.program.model.lang.InjectPayload;
+import ghidra.program.model.lang.PcodeInjectLibrary;
+import ghidra.program.model.lang.PcodeParser;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import ghidra.app.plugin.processors.sleigh.SleighLanguage;
-import ghidra.pcodeCPort.slgh_compile.PcodeParser;
-import ghidra.program.model.lang.InjectPayload;
-import ghidra.program.model.lang.PcodeInjectLibrary;
-import ghidra.util.Msg;
-
-import org.jdom.JDOMException;
 
 public class PcodeInjectLibraryVu extends PcodeInjectLibrary {
 
@@ -48,16 +45,7 @@ public class PcodeInjectLibraryVu extends PcodeInjectLibrary {
     public PcodeInjectLibraryVu(SleighLanguage l) {
         super(l);
         language = l;
-        String translateSpec = l.buildTranslatorTag(l.getAddressFactory(),
-			getUniqueBase(), l.getSymbolTable());
-        PcodeParser tmpParser = null;
-		try {
-			tmpParser = new PcodeParser(translateSpec);
-		}
-		catch (JDOMException e1) {
-			Msg.error(this, e1);
-		}
-        parser = tmpParser;
+        parser = new PcodeParser(language, language.getUniqueBase());
     }
 
     public PcodeInjectLibraryVu(PcodeInjectLibraryVu op2) {

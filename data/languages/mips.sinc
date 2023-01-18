@@ -247,9 +247,6 @@ define pcodeop syscall;
         RD = RTsrc s>> (sa + 32);
     }
 
-    # Special Case, does nothing. Unwanted outputs are occasionally have RD as the zero register
-    :dsra32 RD, RTsrc, sa           		is prime=0 & fct=63 & RTsrc & RD & rd=0 & sa {}
-
     # 0000 00ss ssst tttt dddd d000 0001 0111
     :dsrav RD, RTsrc, RSsrc         		is prime=0 & fct=23 & RSsrc & RTsrc & RD & sa=0 {
         RD = RTsrc s>> RSsrc;
@@ -469,6 +466,10 @@ define pcodeop syscall;
     :nor RD, RSsrc, RTsrc           		is prime=0 & fct=39 & RSsrc & RTsrc & RD & sa=0 {
         RD = ~(RSsrc | RTsrc);
     }
+
+    # 1111 1111 0000 0000 1111 1111 0000 0000
+    # Special case for dsa32 zero,ra,0x3 which is functionally a nop.
+    :nop           		                is prime=0 & fct=63 {}
 
     :nop 									is op32=0 {}
 
